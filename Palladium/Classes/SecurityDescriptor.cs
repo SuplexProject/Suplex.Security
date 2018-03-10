@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Palladium.Security
 {
-    public    class SecurityDescriptor
+    public class SecurityDescriptor
     {
+        public DiscretionaryAccessControlList Dacl { get; set; }
+        public SystemAccessControlList Sacl { get; set; }
+
+        public SecurityResults ResultantSecurity { get; internal set; }
     }
 }
