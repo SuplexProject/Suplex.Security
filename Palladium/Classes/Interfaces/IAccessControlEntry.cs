@@ -8,16 +8,18 @@ namespace Palladium.Security
 {
     public interface IAccessControlEntry
     {
-        string GetRightType();
+        Guid? UId { get; set; }
+        bool Allowed { get; set; }
+        bool Inherit { get; set; }
+        Guid? InheritedFrom { get; set; }
+
+        string RightType { get; }
+        int RightValue { get; }
     }
 
     public interface IAccessControlEntry<T> : IAccessControlEntry, ICloneable where T : struct, IConvertible
     {
-        Guid? UId { get; set; }
         T Right { get; set; }
-        bool Allowed { get; set; }
-        bool Inherit { get; set; }
-        Guid? InheritedFrom { get; set; }
     }
 
 

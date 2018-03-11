@@ -14,14 +14,8 @@ namespace Palladium.Security
         public virtual bool Inherit { get; set; }
         public virtual Guid? InheritedFrom { get; set; }
 
-        public override string ToString()
-        {
-            string s = $"Access->Allowed: {Allowed}";
-            if( this is IAccessControlEntryAudit )
-                s = $"Audit->Success: {Allowed}/Failure: {((IAccessControlEntryAudit)this).Denied}";
-
-            return $"{Right.GetType()}/{Right}: {s}, Inherit: {Inherit}, InheritedFrom: {InheritedFrom}";
-        }
+        public string RightType { get { return Right.GetRightTypeName(); } }
+        public int RightValue { get { return (int)Enum.Parse( Right.GetType(), Right.ToString() ); } }
 
 
         public object Clone()
@@ -29,9 +23,13 @@ namespace Palladium.Security
             return MemberwiseClone();
         }
 
-        public string GetRightType()
+        public override string ToString()
         {
-            return Right.GetRightType();
+            string aa = $"Access->Allowed: {Allowed}";
+            if( this is IAccessControlEntryAudit )
+                aa = $"Audit->Success: {Allowed}/Failure: {((IAccessControlEntryAudit)this).Denied}";
+
+            return $"{RightType}/{Right}: {aa}, Inherit: {Inherit}, InheritedFrom: {InheritedFrom}";
         }
     }
 
