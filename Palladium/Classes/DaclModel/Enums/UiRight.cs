@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Palladium.Security
+namespace Palladium.Security.DaclModel
 {
     [Flags]
     public enum UIRight

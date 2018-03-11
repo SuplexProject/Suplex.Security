@@ -5,38 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Palladium.Security
+namespace Palladium.Security.DaclModel
 {
-    public interface IAccessControlList : System.Collections.IEnumerable
-    {
-        bool AllowInherit { get; set; }
-    }
-
-    public static class AccessControlListExtensions
-    {
-        public static bool ContainsRightType<T>(this IAccessControlList acl, T rightType) where T : struct, IConvertible
-        {
-            string rt = rightType.GetRightTypeName();
-
-            bool found = false;
-
-            foreach( IAccessControlEntry ace in acl )
-                if( ace.RightType.Equals( rt ) )
-                {
-                    found = true;
-                    break;
-                }
-
-            return found;
-        }
-    }
-
     public class DiscretionaryAccessControlList : List<IAccessControlEntry>, IAccessControlList
     {
-        public bool AllowInherit { get; set; }
+        public bool AllowInherit { get; set; } = true;  //default ACLs allow inheritance
 
-        public void Eval<T>(T rightType, ref SecurityResults securityResults) where T : struct, IConvertible
+        public void Eval(SecurityResults securityResults)
         {
+        }
+
+        public void Eval<T>(SecurityResults securityResults) where T : struct, IConvertible
+        {
+            T rightType = (T)Activator.CreateInstance( typeof( T ) );
             securityResults.InitResult( rightType );
 
             string rt = rightType.GetRightTypeName();
@@ -79,13 +60,13 @@ namespace Palladium.Security
                 RightsAccessorAttribute attrib =
                     (RightsAccessorAttribute)Attribute.GetCustomAttribute( rightType.GetType(), typeof( RightsAccessorAttribute ) );
                 if( attrib != null && attrib.HasMask )
-                    HasAccessExtended( rightType, mask, ref securityResults, attrib );
+                    HasAccessExtended( rightType, mask, securityResults, attrib );
             }
         }
 
         //HACK: Minor hack to address extended rights where the bitmask doesn't bear it out naturally.
         //NOTE: If I was smarter, I would be able to figure out the right bitmask for SyncRights and then probably drop the hack.
-        void HasAccessExtended<T>(T rightType, int summaryMask, ref SecurityResults securityResults, RightsAccessorAttribute ra) where T : struct, IConvertible
+        void HasAccessExtended<T>(T rightType, int summaryMask, SecurityResults securityResults, RightsAccessorAttribute ra) where T : struct, IConvertible
         {
             if( rightType.GetType() == typeof( SynchronizationRight ) )
             {

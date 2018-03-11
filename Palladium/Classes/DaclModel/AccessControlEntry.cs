@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Palladium.Security
+namespace Palladium.Security.DaclModel
 {
     public class AccessControlEntry<T> : IAccessControlEntry<T> where T : struct, IConvertible
     {
         public virtual Guid? UId { get; set; }
         public virtual T Right { get; set; }
         public virtual bool Allowed { get; set; }
-        public virtual bool Inherit { get; set; }
+        public virtual bool Inherit { get; set; } = true;  //default Aces are inheritable
         public virtual Guid? InheritedFrom { get; set; }
 
         public string RightType { get { return Right.GetRightTypeName(); } }

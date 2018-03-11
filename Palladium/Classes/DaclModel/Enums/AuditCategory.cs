@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Palladium.Security
+namespace Palladium.Security.DaclModel
 {
-    public class Group : SecurityPrinicpalBase
+    public enum AuditCategory
     {
-        public virtual byte[] RlsMask { get; set; }
+        Access,
+        Action
     }
 }

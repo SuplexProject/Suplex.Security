@@ -4,20 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Palladium.Security
+namespace Palladium.Security.DaclModel
 {
     public static class EnumExtensions
     {
         /// <summary>
         /// Gets the simple Tppe Name sans "Right". Ex: "Palladium.Security.RecordRight" -> "Record"
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="rightType"></param>
+        /// <typeparam name="T">The enum type.</typeparam>
+        /// <param name="rightType">The enum type.</param>
         /// <returns></returns>
         public static string GetRightTypeName<T>(this T rightType) where T : struct, IConvertible
         {
             return rightType.GetType().Name.Replace( "Right", string.Empty );
         }
+
+        ///// <summary>
+        ///// Gets the simple Tppe Name sans "Right". Ex: "Palladium.Security.RecordRight" -> "Record"
+        ///// </summary>
+        ///// <param name="rightType">The enum type.</param>
+        ///// <returns></returns>
+        //public static string GetRightTypeName(this Type rightType)
+        //{
+        //    return rightType.GetType().Name.Replace( "Right", string.Empty );
+        //}
 
 
         /// <summary>

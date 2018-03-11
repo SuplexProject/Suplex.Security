@@ -4,13 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Palladium.Security
+namespace Palladium.Security.DaclModel
 {
     public class SecurityDescriptor
     {
         public DiscretionaryAccessControlList Dacl { get; set; }
         public SystemAccessControlList Sacl { get; set; }
 
-        public SecurityResults ResultantSecurity { get; internal set; }
+        public SecurityResults ResultantSecurity { get; internal set; } = new SecurityResults();
+
+
+        public void Eval<T>() where T : struct, IConvertible
+        {
+            Dacl.Eval<T>( ResultantSecurity );
+        }
     }
 }

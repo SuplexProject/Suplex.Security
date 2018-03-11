@@ -40,25 +40,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Classes\Abstract\SecurityPrinicpalBase.cs" />
-    <Compile Include="Classes\AccessControlList.cs" />
-    <Compile Include="Classes\Enums\AuditType.cs" />
-    <Compile Include="Classes\Enums\AuditCategory.cs" />
-    <Compile Include="Classes\Utilities\EnumExtensions.cs" />
-    <Compile Include="Classes\AccessControlEntry.cs" />
-    <Compile Include="Classes\Interfaces\IAccessControlEntry.cs" />
-    <Compile Include="Classes\SecurityDescriptor.cs" />
-    <Compile Include="Classes\SecurityResults.cs" />
-    <Compile Include="Classes\Utilities\RightsAccessorAttribute.cs" />
-    <Compile Include="Classes\Enums\SynchronizationRight.cs" />
-    <Compile Include="Classes\Enums\FileSystemRight.cs" />
-    <Compile Include="Classes\Enums\RecordRight.cs" />
-    <Compile Include="Classes\Enums\UiRight.cs" />
-    <Compile Include="Classes\Interfaces\ISecurityPrinicpal.cs" />
-    <Compile Include="Classes\Group.cs" />
-    <Compile Include="Classes\User.cs" />
-    <Compile Include="Classes\Utilities\UtilityExtensions.cs" />
+    <Compile Include="Classes\DaclModel\Interfaces\IAccessControlList.cs" />
+    <Compile Include="Classes\Principal\Abstract\SecurityPrinicpalBase.cs" />
+    <Compile Include="Classes\DaclModel\AccessControlList.cs" />
+    <Compile Include="Classes\DaclModel\Enums\AuditType.cs" />
+    <Compile Include="Classes\DaclModel\Enums\AuditCategory.cs" />
+    <Compile Include="Classes\DaclModel\Utilities\EnumExtensions.cs" />
+    <Compile Include="Classes\DaclModel\AccessControlEntry.cs" />
+    <Compile Include="Classes\DaclModel\Interfaces\IAccessControlEntry.cs" />
+    <Compile Include="Classes\DaclModel\SecurityDescriptor.cs" />
+    <Compile Include="Classes\DaclModel\SecurityResults.cs" />
+    <Compile Include="Classes\DaclModel\Utilities\RightsAccessorAttribute.cs" />
+    <Compile Include="Classes\DaclModel\Enums\SynchronizationRight.cs" />
+    <Compile Include="Classes\DaclModel\Enums\FileSystemRight.cs" />
+    <Compile Include="Classes\DaclModel\Enums\RecordRight.cs" />
+    <Compile Include="Classes\DaclModel\Enums\UiRight.cs" />
+    <Compile Include="Classes\Principal\Interfaces\ISecurityPrinicpal.cs" />
+    <Compile Include="Classes\Principal\Group.cs" />
+    <Compile Include="Classes\Principal\User.cs" />
+    <Compile Include="Classes\DaclModel\Utilities\UtilityExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Palladium.Security
+namespace Palladium.Security.DaclModel
 {
     public class SecurityResults : Dictionary<string, Dictionary<int, SecurityResult>>
     {
@@ -19,7 +19,7 @@ namespace Palladium.Security
             this[rt] = new Dictionary<int, SecurityResult>();
 
             foreach( int right in rightType.GetRightTypeValues() )
-                this[rt].Add( right, new SecurityResult() { Right = right } );
+                this[rt].Add( right, new SecurityResult() { RightType = typeof( T ), RightValue = right } );
         }
 
         public SecurityResult GetByTypeRight<T>(T rightType, int right) where T : struct, IConvertible
@@ -36,16 +36,28 @@ namespace Palladium.Security
 
     public class SecurityResult
     {
+        int _rightValue = 0;
+
         public SecurityResult() { }
 
-        public int Right { get; internal set; }
+        public Type RightType { get; set; }
+        public int RightValue
+        {
+            get { return _rightValue; }
+            internal set
+            {
+                _rightValue = value;
+                RightName = Enum.Parse( RightType, RightValue.ToString() ).ToString();
+            }
+        }
+        public string RightName { get; private set; }
         public bool AccessAllowed { get; internal set; }
         public bool AuditSuccess { get; internal set; }
         public bool AuditFailure { get; internal set; }
 
         public override string ToString()
         {
-            return $"{Right}: {AccessAllowed.FormatString()}/{AuditSuccess.FormatString()}/{AuditFailure.FormatString()}";
+            return $"{RightName}: {AccessAllowed.FormatString()}/{AuditSuccess.FormatString()}/{AuditFailure.FormatString()}";
         }
     }
 }
