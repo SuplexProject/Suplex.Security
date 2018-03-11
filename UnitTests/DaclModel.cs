@@ -22,16 +22,19 @@ namespace UnitTests
             SecurityResults srs = new SecurityResults();
 
             dacl.Eval<UIRight>( srs );
+            dacl.Eval( typeof( UIRight ), srs );
         }
 
         [Test]
-        [Category( "EvalDacl" )]
+        [Category( "SecurityDescriptor" )]
         public void SecurityDescriptor()
         {
             DiscretionaryAccessControlList dacl = new DiscretionaryAccessControlList
             {
+                new AccessControlEntry<FileSystemRight>(){Allowed = true, Right = FileSystemRight.FullControl },
                 new AccessControlEntry<UIRight>() { Allowed = true, Right = UIRight.FullControl },
-                new AccessControlEntry<UIRight>() { Allowed = false, Right = UIRight.Enabled }
+                new AccessControlEntry<UIRight>() { Allowed = false, Right = UIRight.Enabled },
+                new AccessControlEntry<FileSystemRight>(){Allowed = false, Right = FileSystemRight.Execute }
             };
 
             SecurityDescriptor sd = new SecurityDescriptor()
@@ -39,7 +42,8 @@ namespace UnitTests
                 Dacl = dacl
             };
 
-            sd.Eval<UIRight>();
+            //sd.Eval<UIRight>();
+            sd.Eval();
         }
     }
 }

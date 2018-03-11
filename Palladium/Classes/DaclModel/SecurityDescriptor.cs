@@ -13,7 +13,10 @@ namespace Palladium.Security.DaclModel
 
         public SecurityResults ResultantSecurity { get; internal set; } = new SecurityResults();
 
-
+        public void Eval()
+        {
+            Dacl.Eval( ResultantSecurity );
+        }
         public void Eval<T>() where T : struct, IConvertible
         {
             Dacl.Eval<T>( ResultantSecurity );

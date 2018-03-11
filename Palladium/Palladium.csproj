@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="Classes\DaclModel\Interfaces\IAccessControlList.cs" />
     <Compile Include="Classes\Principal\Abstract\SecurityPrinicpalBase.cs" />
-    <Compile Include="Classes\DaclModel\AccessControlList.cs" />
+    <Compile Include="Classes\DaclModel\DiscretionaryAccessControlList.cs" />
     <Compile Include="Classes\DaclModel\Enums\AuditType.cs" />
     <Compile Include="Classes\DaclModel\Enums\AuditCategory.cs" />
     <Compile Include="Classes\DaclModel\Utilities\EnumExtensions.cs" />

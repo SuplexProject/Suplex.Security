@@ -24,7 +24,7 @@ namespace Palladium.Security.DaclModel
             this[rt] = new Dictionary<int, SecurityResult>();
 
             foreach( int right in rightType.GetRightTypeValues() )
-                this[rt].Add( right, new SecurityResult() { RightType = typeof( T ), RightValue = right } );
+                this[rt].Add( right, new SecurityResult() { RightType = rightType, RightValue = right } );
         }
 
 

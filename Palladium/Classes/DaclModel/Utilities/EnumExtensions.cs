@@ -26,7 +26,7 @@ namespace Palladium.Security.DaclModel
         /// <returns></returns>
         public static string GetRightTypeName(this Type rightType)
         {
-            return rightType.GetType().Name.Replace( "Right", string.Empty );
+            return rightType.Name.Replace( "Right", string.Empty );
         }
 
 
