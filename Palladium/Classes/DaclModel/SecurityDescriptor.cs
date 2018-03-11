@@ -17,6 +17,10 @@ namespace Palladium.Security.DaclModel
         {
             Dacl.Eval( ResultantSecurity );
         }
+        public void Eval(Type rightType)
+        {
+            Dacl.Eval( rightType, ResultantSecurity );
+        }
         public void Eval<T>() where T : struct, IConvertible
         {
             Dacl.Eval<T>( ResultantSecurity );

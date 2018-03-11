@@ -29,15 +29,6 @@ namespace Palladium.Security.DaclModel
         public void Eval<T>(SecurityResults securityResults) where T : struct, IConvertible
         {
             Eval( typeof( T ), securityResults );
-
-            //securityResults.InitResult( typeof( T ) );
-
-            //string rtn = typeof( T ).GetRightTypeName();
-            //IEnumerable<IAccessControlEntry> found = from ace in this
-            //                                         where ace.RightTypeName.Equals( rtn )
-            //                                         select ace;
-            //List<IAccessControlEntry> aces = new List<IAccessControlEntry>( found );
-            //EvalAceList( typeof( T ), aces, securityResults );
         }
         public void Eval(Type rightType, SecurityResults securityResults)
         {

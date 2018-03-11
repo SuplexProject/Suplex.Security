@@ -26,6 +26,8 @@ namespace Palladium.Security.DaclModel
         /// <returns></returns>
         public static string GetRightTypeName(this Type rightType)
         {
+            rightType.ValidateIsEnum();
+
             return rightType.Name.Replace( "Right", string.Empty );
         }
 
@@ -49,6 +51,8 @@ namespace Palladium.Security.DaclModel
         /// <returns></returns>
         public static int[] GetRightTypeValues(this Type rightType)
         {
+            rightType.ValidateIsEnum();
+
             Array values = Enum.GetValues( rightType );
 
             int i = 0;
@@ -57,6 +61,12 @@ namespace Palladium.Security.DaclModel
                 iv[i++] = value;
 
             return iv;
+        }
+
+        public static void ValidateIsEnum(this Type rightType)
+        {
+            if( rightType.BaseType != typeof( Enum ) )
+                throw new ArgumentException( $"{nameof( rightType )} must be Enum." );
         }
     }
 }
