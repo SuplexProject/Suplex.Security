@@ -23,7 +23,7 @@ namespace Palladium.Security.DaclModel
             bool found = false;
 
             foreach( IAccessControlEntry ace in acl )
-                if( ace.RightType.Equals( rt ) )
+                if( ace.RightTypeName.Equals( rt ) )
                 {
                     found = true;
                     break;

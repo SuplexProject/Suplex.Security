@@ -13,7 +13,12 @@ namespace Palladium.Security.DaclModel
             return ContainsKey( rightType.GetRightTypeName() );
         }
 
+
         public void InitResult<T>(T rightType) where T : struct, IConvertible
+        {
+            InitResult( rightType.GetType() );
+        }
+        public void InitResult(Type rightType)
         {
             string rt = rightType.GetRightTypeName();
             this[rt] = new Dictionary<int, SecurityResult>();
@@ -22,12 +27,21 @@ namespace Palladium.Security.DaclModel
                 this[rt].Add( right, new SecurityResult() { RightType = typeof( T ), RightValue = right } );
         }
 
+
         public SecurityResult GetByTypeRight<T>(T rightType, int right) where T : struct, IConvertible
+        {
+            return this[rightType.GetRightTypeName()][right];
+        }
+        public SecurityResult GetByTypeRight(Type rightType, int right)
         {
             return this[rightType.GetRightTypeName()][right];
         }
 
         public void SetByTypeRight<T>(T rightType, int right, SecurityResult value) where T : struct, IConvertible
+        {
+            this[rightType.GetRightTypeName()][right] = value;
+        }
+        public void SetByTypeRight(Type rightType, int right, SecurityResult value)
         {
             this[rightType.GetRightTypeName()][right] = value;
         }

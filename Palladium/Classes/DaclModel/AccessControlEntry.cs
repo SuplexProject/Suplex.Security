@@ -14,7 +14,8 @@ namespace Palladium.Security.DaclModel
         public virtual bool Inherit { get; set; } = true;  //default Aces are inheritable
         public virtual Guid? InheritedFrom { get; set; }
 
-        public string RightType { get { return Right.GetRightTypeName(); } }
+        public string RightTypeName { get { return Right.GetRightTypeName(); } }
+        public Type RightType { get { return Right.GetType(); } }
         public int RightValue { get { return (int)Enum.Parse( Right.GetType(), Right.ToString() ); } }
 
 
@@ -29,7 +30,7 @@ namespace Palladium.Security.DaclModel
             if( this is IAccessControlEntryAudit )
                 aa = $"Audit->Success: {Allowed}/Failure: {((IAccessControlEntryAudit)this).Denied}";
 
-            return $"{RightType}/{Right}: {aa}, Inherit: {Inherit}, InheritedFrom: {InheritedFrom}";
+            return $"{RightTypeName}/{Right}: {aa}, Inherit: {Inherit}, InheritedFrom: {InheritedFrom}";
         }
     }
 
