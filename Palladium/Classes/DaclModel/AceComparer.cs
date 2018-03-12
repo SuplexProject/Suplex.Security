@@ -22,8 +22,8 @@ namespace Palladium.Security.DaclModel
             //bool:	-1:this=false && obj=true, 0:this=obj, 1:this=true && obj=false
             //int:	-1:a<b, 0:a=b, 1:a>b
 
-            int xv = Convert.ToInt32( x.Allowed ) * 100000 - ((int)x.RightValue);
-            int yv = Convert.ToInt32( y.Allowed ) * 100000 - ((int)y.RightValue);
+            int xv = Convert.ToInt32( x.Allowed ) * 100000 - x.RightValue;
+            int yv = Convert.ToInt32( y.Allowed ) * 100000 - y.RightValue;
 
             string xx = string.Format( "{0}{1}", x.RightTypeName, Math.Abs( xv ).ToString().PadLeft( 8, '0' ) );
             string yy = string.Format( "{0}{1}", y.RightTypeName, Math.Abs( yv ).ToString().PadLeft( 8, '0' ) );

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Palladium.Security.DaclModel
 {
@@ -45,7 +42,8 @@ namespace Palladium.Security.DaclModel
 
         void EvalAceList(Type rightType, List<IAccessControlEntry> aces, SecurityResults securityResults)
         {
-            securityResults.InitResult( rightType );
+            if( !securityResults.ContainsRightType( rightType ) )
+                securityResults.InitResult( rightType );
 
             if( aces.Count > 0 )
             {

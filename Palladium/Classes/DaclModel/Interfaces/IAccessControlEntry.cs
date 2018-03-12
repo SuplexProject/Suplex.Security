@@ -24,7 +24,7 @@ namespace Palladium.Security.DaclModel
     }
 
 
-    public interface IAccessControlEntryAudit
+    public interface IAccessControlEntryAudit : IAccessControlEntry
     {
         bool Denied { get; set; }
     }

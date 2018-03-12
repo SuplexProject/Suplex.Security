@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\DaclModel\AccessControlEntryAudit.cs" />
     <Compile Include="Classes\DaclModel\AceComparer.cs" />
     <Compile Include="Classes\DaclModel\Interfaces\IAccessControlList.cs" />
     <Compile Include="Classes\DaclModel\SystemAccessControlList.cs" />

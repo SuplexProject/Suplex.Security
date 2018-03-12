@@ -31,15 +31,24 @@ namespace UnitTests
         {
             DiscretionaryAccessControlList dacl = new DiscretionaryAccessControlList
             {
-                new AccessControlEntry<FileSystemRight>(){Allowed = true, Right = FileSystemRight.FullControl },
+                new AccessControlEntry<FileSystemRight>() { Allowed = true, Right = FileSystemRight.FullControl },
                 new AccessControlEntry<UIRight>() { Allowed = true, Right = UIRight.FullControl },
                 new AccessControlEntry<UIRight>() { Allowed = false, Right = UIRight.Enabled },
-                new AccessControlEntry<FileSystemRight>(){Allowed = false, Right = FileSystemRight.Execute }
+                new AccessControlEntry<FileSystemRight>() { Allowed = false, Right = FileSystemRight.Execute }
+            };
+
+            SystemAccessControlList sacl = new SystemAccessControlList
+            {
+                new AccessControlEntryAudit<FileSystemRight>() { Allowed = true, Denied = false, Right = FileSystemRight.FullControl },
+                new AccessControlEntryAudit<UIRight>() { Allowed = true, Denied = true, Right = UIRight.FullControl },
+                new AccessControlEntryAudit<UIRight>() { Allowed = false, Denied = false, Right = UIRight.Enabled },
+                new AccessControlEntryAudit<FileSystemRight>() { Allowed = false, Denied = true, Right = FileSystemRight.Execute }
             };
 
             SecurityDescriptor sd = new SecurityDescriptor()
             {
-                Dacl = dacl
+                Dacl = dacl,
+                Sacl = sacl
             };
 
             //sd.Eval<UIRight>();

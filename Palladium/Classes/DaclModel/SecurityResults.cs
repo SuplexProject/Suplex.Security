@@ -12,6 +12,11 @@ namespace Palladium.Security.DaclModel
         {
             return ContainsKey( rightType.GetRightTypeName() );
         }
+        public bool ContainsRightType(Type rightType)
+        {
+            return ContainsKey( rightType.GetRightTypeName() );
+        }
+
 
 
         public void InitResult<T>(T rightType) where T : struct, IConvertible
