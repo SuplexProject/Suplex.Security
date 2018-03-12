@@ -95,5 +95,11 @@ namespace Palladium.Security.DaclModel
                     if( ace.Inheritable )
                         targetDacl.Add( ace.Clone() );
         }
+
+
+        public override string ToString()
+        {
+            return $"Dacl: {Count}";
+        }
     }
 }

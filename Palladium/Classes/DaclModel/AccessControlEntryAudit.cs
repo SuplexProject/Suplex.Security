@@ -8,7 +8,11 @@ namespace Palladium.Security.DaclModel
 
         new public virtual IAccessControlEntryAudit Clone(bool shallow = true)
         {
-            return (IAccessControlEntryAudit)MemberwiseClone();
+            IAccessControlEntryAudit ace = (IAccessControlEntryAudit)MemberwiseClone();
+            if( !ace.InheritedFrom.HasValue )
+                ace.InheritedFrom = UId;
+
+            return ace;
         }
     }
 }

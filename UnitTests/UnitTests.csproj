@@ -58,9 +58,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Palladium\Palladium.csproj">
+    <ProjectReference Include="..\FileSystemDal\Palladium.FileSystemDal.csproj">
+      <Project>{ec01c78d-c787-479d-85bf-e65d2424c681}</Project>
+      <Name>Palladium.FileSystemDal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Palladium\Palladium.Core.csproj">
       <Project>{2500b108-ff24-44b6-8beb-d0e37d0ed98e}</Project>
-      <Name>Palladium</Name>
+      <Name>Palladium.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

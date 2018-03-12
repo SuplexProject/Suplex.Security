@@ -85,5 +85,11 @@ namespace Palladium.Security.DaclModel
                     if( ace.Inheritable )
                         targetSacl.Add( (IAccessControlEntryAudit)ace.Clone() );
         }
+
+
+        public override string ToString()
+        {
+            return $"Sacl: {Count}";
+        }
     }
 }

@@ -56,6 +56,12 @@ namespace Palladium.Security.DaclModel
         {
             this[rightType.GetRightTypeName()][right] = value;
         }
+
+
+        public override string ToString()
+        {
+            return $"ResultantSecurity: {Count}";
+        }
     }
 
 

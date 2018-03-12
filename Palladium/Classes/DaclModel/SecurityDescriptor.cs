@@ -35,5 +35,11 @@ namespace Palladium.Security.DaclModel
             Dacl.CopyTo( targetSecurityDescriptor.Dacl );
             Sacl.CopyTo( targetSecurityDescriptor.Sacl );
         }
+
+
+        public override string ToString()
+        {
+            return $"{Dacl}, {Sacl}, {ResultantSecurity}";
+        }
     }
 }

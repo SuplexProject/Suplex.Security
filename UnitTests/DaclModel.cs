@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
-
+using Palladium.DataAccess;
 using Palladium.Security.DaclModel;
 
 namespace UnitTests
@@ -62,6 +63,7 @@ namespace UnitTests
             SecureContainer top = new SecureContainer() { UniqueName = "top" };
             SecureContainer ch00 = new SecureContainer() { UniqueName = "ch00" };
             SecureContainer ch01 = new SecureContainer() { UniqueName = "ch01" };
+            SecureContainer ch02 = new SecureContainer() { UniqueName = "ch02" };
             SecureContainer ch10 = new SecureContainer() { UniqueName = "ch10" };
 
             DiscretionaryAccessControlList topdacl = new DiscretionaryAccessControlList
@@ -80,10 +82,18 @@ namespace UnitTests
             ch01.Security.Dacl.AllowInherit = false;
 
             ch00.Children.Add( ch01 );
+            ch00.Children.Add( ch02 );
             top.Children.Add( ch00 );
             top.Children.Add( ch10 );
 
             top.EvalSecurity();
+
+            FileStore store = new FileStore()
+            {
+                SecureObjects = new List<ISecureObject>() { top }
+            };
+
+            string x = store.ToYaml();
         }
     }
 }

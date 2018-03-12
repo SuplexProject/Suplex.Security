@@ -4,5 +4,10 @@
     {
         public string UniqueName { get; set; }
         public SecurityDescriptor Security { get; set; } = new SecurityDescriptor();
+
+        public override string ToString()
+        {
+            return UniqueName;
+        }
     }
 }

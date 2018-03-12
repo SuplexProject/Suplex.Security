@@ -8,11 +8,12 @@ namespace Palladium.Security.DaclModel
 {
     public class AccessControlEntry<T> : IAccessControlEntry<T> where T : struct, IConvertible
     {
-        public virtual Guid? UId { get; set; }
+        public virtual Guid? UId { get; set; } = Guid.NewGuid();
         public virtual T Right { get; set; }
         public virtual bool Allowed { get; set; }
         public virtual bool Inheritable { get; set; } = true;  //default Aces are inheritable
         public virtual Guid? InheritedFrom { get; set; }
+        public virtual Guid? SecurityPrincipalUId { get; set; }
 
         public string RightTypeName { get { return Right.GetRightTypeName(); } }
         public Type RightType { get { return Right.GetType(); } }
@@ -26,7 +27,11 @@ namespace Palladium.Security.DaclModel
 
         public virtual IAccessControlEntry Clone(bool shallow = true)
         {
-            return (IAccessControlEntry)MemberwiseClone();
+            IAccessControlEntry ace = (IAccessControlEntry)MemberwiseClone();
+            if( !ace.InheritedFrom.HasValue )
+                ace.InheritedFrom = UId;
+
+            return ace;
         }
 
 
@@ -36,7 +41,9 @@ namespace Palladium.Security.DaclModel
             if( this is IAccessControlEntryAudit )
                 aa = $"Audit->Success: {Allowed}/Failure: {((IAccessControlEntryAudit)this).Denied}";
 
-            return $"{RightTypeName}/{Right}: {aa}, Inherit: {Inheritable}, InheritedFrom: {InheritedFrom}";
+            string inheritedFrom = InheritedFrom.HasValue ? InheritedFrom.Value.ToString() : "{null}";
+
+            return $"{RightTypeName}/{Right}: {aa}, Inherit: {Inheritable}, InheritedFrom: {inheritedFrom}";
         }
     }
 }
