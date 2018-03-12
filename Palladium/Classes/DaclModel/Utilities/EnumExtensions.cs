@@ -65,7 +65,7 @@ namespace Palladium.Security.DaclModel
 
         public static void ValidateIsEnum(this Type rightType)
         {
-            if( rightType.BaseType != typeof( Enum ) )
+            if( !rightType.IsEnum )
                 throw new ArgumentException( $"{nameof( rightType )} must be Enum." );
         }
     }

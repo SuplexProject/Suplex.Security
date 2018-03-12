@@ -35,10 +35,16 @@ namespace Palladium.Security.DaclModel
 
         public SecurityResult GetByTypeRight<T>(T rightType, int right) where T : struct, IConvertible
         {
+            if( !ContainsRightType( rightType ) )
+                InitResult( rightType );
+
             return this[rightType.GetRightTypeName()][right];
         }
         public SecurityResult GetByTypeRight(Type rightType, int right)
         {
+            if( !ContainsRightType( rightType ) )
+                InitResult( rightType );
+
             return this[rightType.GetRightTypeName()][right];
         }
 

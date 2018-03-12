@@ -54,5 +54,36 @@ namespace UnitTests
             //sd.Eval<UIRight>();
             sd.Eval();
         }
+
+        [Test]
+        [Category( "Secureobject" )]
+        public void SecureObject()
+        {
+            SecureContainer top = new SecureContainer() { UniqueName = "top" };
+            SecureContainer ch00 = new SecureContainer() { UniqueName = "ch00" };
+            SecureContainer ch01 = new SecureContainer() { UniqueName = "ch01" };
+            SecureContainer ch10 = new SecureContainer() { UniqueName = "ch10" };
+
+            DiscretionaryAccessControlList topdacl = new DiscretionaryAccessControlList
+            {
+                new AccessControlEntry<FileSystemRight>() { Allowed = true, Right = FileSystemRight.FullControl },
+                new AccessControlEntry<FileSystemRight>() { Allowed = false, Right = FileSystemRight.Execute, Inheritable = false }
+            };
+            DiscretionaryAccessControlList ch00dacl = new DiscretionaryAccessControlList
+            {
+                new AccessControlEntry<UIRight>() { Allowed = true, Right = UIRight.FullControl },
+                new AccessControlEntry<UIRight>() { Allowed = false, Right = UIRight.Enabled }
+            };
+
+            top.Security.Dacl = topdacl;
+            ch00.Security.Dacl = ch00dacl;
+            ch01.Security.Dacl.AllowInherit = false;
+
+            ch00.Children.Add( ch01 );
+            top.Children.Add( ch00 );
+            top.Children.Add( ch10 );
+
+            top.EvalSecurity();
+        }
     }
 }

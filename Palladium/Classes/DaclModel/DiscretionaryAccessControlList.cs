@@ -86,5 +86,14 @@ namespace Palladium.Security.DaclModel
                     (summaryMask & (int)SynchronizationRight.Download) == (int)SynchronizationRight.Download;
             }
         }
+
+
+        public void CopyTo(DiscretionaryAccessControlList targetDacl)
+        {
+            if( targetDacl.AllowInherit )
+                foreach( IAccessControlEntry ace in this )
+                    if( ace.Inheritable )
+                        targetDacl.Add( ace.Clone() );
+        }
     }
 }

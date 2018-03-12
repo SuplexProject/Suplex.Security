@@ -77,5 +77,13 @@ namespace Palladium.Security.DaclModel
                 }
             }
         }
+
+        public void CopyTo(SystemAccessControlList targetSacl)
+        {
+            if( targetSacl.AllowInherit )
+                foreach( IAccessControlEntryAudit ace in this )
+                    if( ace.Inheritable )
+                        targetSacl.Add( (IAccessControlEntryAudit)ace.Clone() );
+        }
     }
 }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Palladium.Security.DaclModel
 {
-    public interface IAccessControlEntry
+    public interface IAccessControlEntry : ICloneable<IAccessControlEntry>
     {
         Guid? UId { get; set; }
         bool Allowed { get; set; }
-        bool Inherit { get; set; }
+        bool Inheritable { get; set; }
         Guid? InheritedFrom { get; set; }
 
         string RightTypeName { get; }
@@ -18,13 +18,13 @@ namespace Palladium.Security.DaclModel
         int RightValue { get; }
     }
 
-    public interface IAccessControlEntry<T> : IAccessControlEntry, ICloneable where T : struct, IConvertible
+    public interface IAccessControlEntry<T> : IAccessControlEntry where T : struct, IConvertible
     {
         T Right { get; set; }
     }
 
 
-    public interface IAccessControlEntryAudit : IAccessControlEntry
+    public interface IAccessControlEntryAudit : IAccessControlEntry //, ICloneable<IAccessControlEntryAudit>
     {
         bool Denied { get; set; }
     }

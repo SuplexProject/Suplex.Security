@@ -11,7 +11,7 @@ namespace Palladium.Security.DaclModel
         public virtual Guid? UId { get; set; }
         public virtual T Right { get; set; }
         public virtual bool Allowed { get; set; }
-        public virtual bool Inherit { get; set; } = true;  //default Aces are inheritable
+        public virtual bool Inheritable { get; set; } = true;  //default Aces are inheritable
         public virtual Guid? InheritedFrom { get; set; }
 
         public string RightTypeName { get { return Right.GetRightTypeName(); } }
@@ -19,10 +19,16 @@ namespace Palladium.Security.DaclModel
         public int RightValue { get { return (int)Enum.Parse( Right.GetType(), Right.ToString() ); } }
 
 
-        public object Clone()
+        object ICloneable.Clone()
         {
-            return MemberwiseClone();
+            return Clone( true );
         }
+
+        public virtual IAccessControlEntry Clone(bool shallow = true)
+        {
+            return (IAccessControlEntry)MemberwiseClone();
+        }
+
 
         public override string ToString()
         {
@@ -30,7 +36,7 @@ namespace Palladium.Security.DaclModel
             if( this is IAccessControlEntryAudit )
                 aa = $"Audit->Success: {Allowed}/Failure: {((IAccessControlEntryAudit)this).Denied}";
 
-            return $"{RightTypeName}/{Right}: {aa}, Inherit: {Inherit}, InheritedFrom: {InheritedFrom}";
+            return $"{RightTypeName}/{Right}: {aa}, Inherit: {Inheritable}, InheritedFrom: {InheritedFrom}";
         }
     }
 }

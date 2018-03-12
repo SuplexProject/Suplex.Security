@@ -43,6 +43,12 @@
     <Compile Include="Classes\DaclModel\AccessControlEntryAudit.cs" />
     <Compile Include="Classes\DaclModel\AceComparer.cs" />
     <Compile Include="Classes\DaclModel\Interfaces\IAccessControlList.cs" />
+    <Compile Include="Classes\DaclModel\Interfaces\ICloneable.cs" />
+    <Compile Include="Classes\DaclModel\Interfaces\ISecureContainer.cs" />
+    <Compile Include="Classes\DaclModel\Interfaces\ISecureObject.cs" />
+    <Compile Include="Classes\DaclModel\SecureContainer.cs" />
+    <Compile Include="Classes\DaclModel\SecureObject.cs" />
+    <Compile Include="Classes\DaclModel\Utilities\SecurityPropagationExtensions.cs" />
     <Compile Include="Classes\DaclModel\SystemAccessControlList.cs" />
     <Compile Include="Classes\Principal\Abstract\SecurityPrinicpalBase.cs" />
     <Compile Include="Classes\DaclModel\DiscretionaryAccessControlList.cs" />
@@ -64,8 +70,6 @@
     <Compile Include="Classes\DaclModel\Utilities\UtilityExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Runtime\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
