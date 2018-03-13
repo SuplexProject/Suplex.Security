@@ -88,6 +88,8 @@ namespace UnitTests
 
             top.EvalSecurity();
 
+            bool hasExecute = top.Security.ResultantSecurity["FileSystem"][(int)FileSystemRight.Execute].AccessAllowed;
+
             SecureContainer xx = new SecureContainer
             {
                 UniqueName = "xx",
@@ -105,7 +107,7 @@ namespace UnitTests
                 SecureObjects = new List<ISecureObject>() { top }
             };
 
-            string x = store.ToYaml();
+            string x = store.ToYaml( emitDefaultValues: true );
         }
     }
 }

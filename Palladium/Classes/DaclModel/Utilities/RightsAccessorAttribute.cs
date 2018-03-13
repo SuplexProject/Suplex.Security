@@ -8,16 +8,14 @@ namespace Palladium.Security.DaclModel
 {
     public class RightsAccessorAttribute : Attribute
     {
-        int _rightsMask = 0;
-
         public RightsAccessorAttribute() { }
 
         public RightsAccessorAttribute(int rightsMask)
         {
-            _rightsMask = rightsMask;
+            RightsMask = rightsMask;
         }
 
-        public int RightsMask { get { return _rightsMask; } }
-        public bool HasMask { get { return _rightsMask > 0; } }
+        public int RightsMask { get; private set; }
+        public bool HasMask { get { return RightsMask > 0; } }
     }
 }

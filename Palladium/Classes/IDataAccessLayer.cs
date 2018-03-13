@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Palladium.Security.DaclModel;
 using Palladium.Security.Principal;
 
 namespace Palladium.DataAccess
@@ -23,6 +23,9 @@ namespace Palladium.DataAccess
         List<Group> GetGroupMembership(Guid principalUId);
         List<ISecurityPrinicpal> GetGroupMembers(Guid groupUId);
 
-
+        ISecureObject GetSecureObjectByUId(Guid secureObjectByUId, bool recursive);
+        ISecureObject GetSecureObjectByUniqueName(string uniqueName);
+        ISecureObject UpsertSecureObject(ISecureObject secureObject);
+        void DeleteSecureObject(Guid secureObjectUId);
     }
 }
