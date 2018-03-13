@@ -14,7 +14,7 @@ namespace Palladium.Security.DaclModel
         Guid? InheritedFrom { get; set; }
 
         string RightTypeName { get; }
-        Type RightType { get; }
+        Type GetRightType();
         int RightValue { get; }
     }
 

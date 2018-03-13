@@ -16,7 +16,7 @@ namespace Palladium.Security.DaclModel
         public virtual Guid? SecurityPrincipalUId { get; set; }
 
         public string RightTypeName { get { return Right.GetRightTypeName(); } }
-        public Type RightType { get { return Right.GetType(); } }
+        public Type GetRightType() { return Right.GetType(); }
         public int RightValue { get { return (int)Enum.Parse( Right.GetType(), Right.ToString() ); } }
 
 
@@ -28,6 +28,9 @@ namespace Palladium.Security.DaclModel
         public virtual IAccessControlEntry Clone(bool shallow = true)
         {
             IAccessControlEntry ace = (IAccessControlEntry)MemberwiseClone();
+
+            ace.UId = Guid.NewGuid();
+
             if( !ace.InheritedFrom.HasValue )
                 ace.InheritedFrom = UId;
 

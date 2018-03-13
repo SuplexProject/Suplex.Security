@@ -9,6 +9,9 @@ namespace Palladium.Security.DaclModel
         new public virtual IAccessControlEntryAudit Clone(bool shallow = true)
         {
             IAccessControlEntryAudit ace = (IAccessControlEntryAudit)MemberwiseClone();
+
+            ace.UId = Guid.NewGuid();
+
             if( !ace.InheritedFrom.HasValue )
                 ace.InheritedFrom = UId;
 

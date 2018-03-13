@@ -88,6 +88,18 @@ namespace UnitTests
 
             top.EvalSecurity();
 
+            SecureContainer xx = new SecureContainer
+            {
+                UniqueName = "xx",
+                Security= new SecurityDescriptor
+                {
+                    Dacl = new DiscretionaryAccessControlList
+                    {
+                        new AccessControlEntry<FileSystemRight>() { Allowed = true, Right = FileSystemRight.FullControl }
+                    }
+                }
+            };
+
             FileStore store = new FileStore()
             {
                 SecureObjects = new List<ISecureObject>() { top }

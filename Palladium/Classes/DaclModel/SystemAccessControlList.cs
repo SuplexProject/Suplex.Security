@@ -16,10 +16,10 @@ namespace Palladium.Security.DaclModel
             Dictionary<Type, List<IAccessControlEntryAudit>> aceLists = new Dictionary<Type, List<IAccessControlEntryAudit>>();
             foreach( IAccessControlEntryAudit ace in this )
             {
-                if( !aceLists.ContainsKey( ace.RightType ) )
-                    aceLists[ace.RightType] = new List<IAccessControlEntryAudit>();
+                if( !aceLists.ContainsKey( ace.GetRightType() ) )
+                    aceLists[ace.GetRightType()] = new List<IAccessControlEntryAudit>();
 
-                aceLists[ace.RightType].Add( ace );
+                aceLists[ace.GetRightType()].Add( ace );
             }
 
             foreach( Type rightType in aceLists.Keys )

@@ -71,11 +71,11 @@ namespace Palladium.Security.DaclModel
 
         public SecurityResult() { }
 
-        public Type RightType { get; set; }
-        public int RightValue
+        internal Type RightType { get; set; }
+        internal int RightValue
         {
             get { return _rightValue; }
-            internal set
+            set
             {
                 _rightValue = value;
                 RightName = Enum.Parse( RightType, RightValue.ToString() ).ToString();
