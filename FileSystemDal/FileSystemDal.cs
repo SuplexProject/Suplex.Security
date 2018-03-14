@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Palladium.DataAccess
 {
-    public partial class FileSystemDal : IDataAccessLayer
+    public partial class FileSystemDal //: IDataAccessLayer
     {
     }
 }

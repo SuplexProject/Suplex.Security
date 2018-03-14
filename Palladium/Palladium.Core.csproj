@@ -51,7 +51,8 @@
     <Compile Include="Classes\DaclModel\Utilities\AccessControlListExtensions.cs" />
     <Compile Include="Classes\DaclModel\Utilities\SecurityExtensions.cs" />
     <Compile Include="Classes\DaclModel\SystemAccessControlList.cs" />
-    <Compile Include="Classes\IDataAccessLayer.cs" />
+    <Compile Include="Classes\DataAccess\IDataAccessLayer.cs" />
+    <Compile Include="Classes\DataAccess\PalladiumStore.cs" />
     <Compile Include="Classes\Principal\Abstract\SecurityPrinicpalBase.cs" />
     <Compile Include="Classes\DaclModel\DiscretionaryAccessControlList.cs" />
     <Compile Include="Classes\DaclModel\Enums\AuditType.cs" />

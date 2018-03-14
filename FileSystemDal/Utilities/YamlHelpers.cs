@@ -11,7 +11,7 @@ namespace Palladium.DataAccess.Utilities
     public class YamlHelpers
     {
         #region Serialize/Deserialize
-        public static void Serialize(TextWriter tw, object data, bool serializeAsJson = false, bool emitDefaultValues = false)
+        public static void Serialize(TextWriter tw, object data, bool serializeAsJson = false, bool emitDefaultValues = false, IYamlTypeConverter converter = null)
         {
             Serializer serializer = null;
             SerializerBuilder builder = new SerializerBuilder();
@@ -22,19 +22,22 @@ namespace Palladium.DataAccess.Utilities
             if( emitDefaultValues )
                 builder.EmitDefaults();
 
+            if( converter != null )
+                builder.WithTypeConverter( converter );
+
             serializer = builder.Build();
 
             serializer.Serialize( tw, data );
         }
 
-        public static string Serialize(object data, bool serializeAsJson = false, bool formatJson = true, bool emitDefaultValues = false)
+        public static string Serialize(object data, bool serializeAsJson = false, bool formatJson = true, bool emitDefaultValues = false, IYamlTypeConverter converter = null)
         {
             string result = null;
 
             if( !string.IsNullOrWhiteSpace( data?.ToString() ) )
                 using( StringWriter writer = new StringWriter() )
                 {
-                    Serialize( writer, data, serializeAsJson, emitDefaultValues );
+                    Serialize( writer, data, serializeAsJson, emitDefaultValues, converter );
                     result = serializeAsJson && formatJson ? JsonHelpers.FormatJson( writer.ToString() ) : writer.ToString();
                 }
 
@@ -55,23 +58,33 @@ namespace Palladium.DataAccess.Utilities
             }
         }
 
-        public static T Deserialize<T>(string yaml, bool ignoreUnmatchedProperties = true)
+        public static T Deserialize<T>(string yaml, bool ignoreUnmatchedProperties = true, IYamlTypeConverter converter = null)
         {
             using( StringReader reader = new StringReader( yaml ) )
             {
                 DeserializerBuilder builder = new DeserializerBuilder();
+
                 if( ignoreUnmatchedProperties )
                     builder.IgnoreUnmatchedProperties();
+
+                if( converter != null )
+                    builder.WithTypeConverter( converter );
+
                 Deserializer deserializer = builder.Build();
                 return deserializer.Deserialize<T>( reader );
             }
         }
 
-        public static T Deserialize<T>(TextReader reader, bool ignoreUnmatchedProperties = true)
+        public static T Deserialize<T>(TextReader reader, bool ignoreUnmatchedProperties = true, IYamlTypeConverter converter = null)
         {
             DeserializerBuilder builder = new DeserializerBuilder();
+
             if( ignoreUnmatchedProperties )
                 builder.IgnoreUnmatchedProperties();
+
+            if( converter != null )
+                builder.WithTypeConverter( converter );
+
             Deserializer deserializer = builder.Build();
             return deserializer.Deserialize<T>( reader );
         }

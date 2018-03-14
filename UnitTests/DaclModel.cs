@@ -16,8 +16,8 @@ namespace UnitTests
         {
             DiscretionaryAccessControlList dacl = new DiscretionaryAccessControlList
             {
-                new AccessControlEntry<UIRight>() { Allowed = true, Right = UIRight.FullControl },
-                new AccessControlEntry<UIRight>() { Allowed = false, Right = UIRight.Enabled }
+                //new AccessControlEntry<UIRight>() { Allowed = true, Right = UIRight.FullControl },
+                //new AccessControlEntry<UIRight>() { Allowed = false, Right = UIRight.Enabled }
             };
 
             SecurityResults srs = new SecurityResults();
@@ -32,18 +32,18 @@ namespace UnitTests
         {
             DiscretionaryAccessControlList dacl = new DiscretionaryAccessControlList
             {
-                new AccessControlEntry<FileSystemRight>() { Allowed = true, Right = FileSystemRight.FullControl },
-                new AccessControlEntry<UIRight>() { Allowed = true, Right = UIRight.FullControl },
-                new AccessControlEntry<UIRight>() { Allowed = false, Right = UIRight.Enabled },
-                new AccessControlEntry<FileSystemRight>() { Allowed = false, Right = FileSystemRight.Execute }
+                //new AccessControlEntry<FileSystemRight>() { Allowed = true, Right = FileSystemRight.FullControl },
+                //new AccessControlEntry<UIRight>() { Allowed = true, Right = UIRight.FullControl },
+                //new AccessControlEntry<UIRight>() { Allowed = false, Right = UIRight.Enabled },
+                //new AccessControlEntry<FileSystemRight>() { Allowed = false, Right = FileSystemRight.Execute }
             };
 
             SystemAccessControlList sacl = new SystemAccessControlList
             {
-                new AccessControlEntryAudit<FileSystemRight>() { Allowed = true, Denied = false, Right = FileSystemRight.FullControl },
-                new AccessControlEntryAudit<UIRight>() { Allowed = true, Denied = true, Right = UIRight.FullControl },
-                new AccessControlEntryAudit<UIRight>() { Allowed = false, Denied = false, Right = UIRight.Enabled },
-                new AccessControlEntryAudit<FileSystemRight>() { Allowed = false, Denied = true, Right = FileSystemRight.Execute }
+                //new AccessControlEntryAudit<FileSystemRight>() { Allowed = true, Denied = false, Right = FileSystemRight.FullControl },
+                //new AccessControlEntryAudit<UIRight>() { Allowed = true, Denied = true, Right = UIRight.FullControl },
+                //new AccessControlEntryAudit<UIRight>() { Allowed = false, Denied = false, Right = UIRight.Enabled },
+                //new AccessControlEntryAudit<FileSystemRight>() { Allowed = false, Denied = true, Right = FileSystemRight.Execute }
             };
 
             SecurityDescriptor sd = new SecurityDescriptor()
@@ -78,36 +78,38 @@ namespace UnitTests
             };
 
             top.Security.Dacl = topdacl;
-            ch00.Security.Dacl = ch00dacl;
-            ch01.Security.Dacl.AllowInherit = false;
+            //ch00.Security.Dacl = ch00dacl;
+            //ch01.Security.Dacl.AllowInherit = false;
 
-            ch00.Children.Add( ch01 );
-            ch00.Children.Add( ch02 );
-            top.Children.Add( ch00 );
-            top.Children.Add( ch10 );
+            //ch00.Children.Add( ch01 );
+            //ch00.Children.Add( ch02 );
+            //top.Children.Add( ch00 );
+            //top.Children.Add( ch10 );
 
-            top.EvalSecurity();
+            //top.EvalSecurity();
 
-            bool hasExecute = top.Security.ResultantSecurity["FileSystem"][(int)FileSystemRight.Execute].AccessAllowed;
+            //bool hasExecute = top.Security.ResultantSecurity["FileSystem"][(int)FileSystemRight.Execute].AccessAllowed;
 
-            SecureContainer xx = new SecureContainer
-            {
-                UniqueName = "xx",
-                Security= new SecurityDescriptor
-                {
-                    Dacl = new DiscretionaryAccessControlList
-                    {
-                        new AccessControlEntry<FileSystemRight>() { Allowed = true, Right = FileSystemRight.FullControl }
-                    }
-                }
-            };
+            //SecureContainer xx = new SecureContainer
+            //{
+            //    UniqueName = "xx",
+            //    Security= new SecurityDescriptor
+            //    {
+            //        Dacl = new DiscretionaryAccessControlList
+            //        {
+            //            new AccessControlEntry<FileSystemRight>() { Allowed = true, Right = FileSystemRight.FullControl }
+            //        }
+            //    }
+            //};
 
             FileStore store = new FileStore()
             {
                 SecureObjects = new List<ISecureObject>() { top }
             };
 
-            string x = store.ToYaml( emitDefaultValues: true );
+            string x = store.ToYaml( emitDefaultValues: false );
+
+            FileStore fs = FileStore.FromYaml( @"C:\Users\Steve\Desktop\sr.yaml" );
         }
     }
 }

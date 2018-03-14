@@ -12,10 +12,13 @@ namespace Palladium.Security.DaclModel
         bool Allowed { get; set; }
         bool Inheritable { get; set; }
         Guid? InheritedFrom { get; set; }
+        Guid? SecurityPrincipalUId { get; set; }
 
         string RightTypeName { get; }
         Type GetRightType();
         int RightValue { get; }
+        string RightName { get; }
+        void SetRight(string value);
     }
 
     public interface IAccessControlEntry<T> : IAccessControlEntry where T : struct, IConvertible

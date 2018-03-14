@@ -18,6 +18,11 @@ namespace Palladium.Security.DaclModel
         public string RightTypeName { get { return Right.GetRightTypeName(); } }
         public Type GetRightType() { return Right.GetType(); }
         public int RightValue { get { return (int)Enum.Parse( Right.GetType(), Right.ToString() ); } }
+        public string RightName { get { return Right.ToString(); } }
+        public void SetRight(string value)
+        {
+            Right = (T)Enum.Parse( Right.GetType(), value );
+        }
 
 
         object ICloneable.Clone()
