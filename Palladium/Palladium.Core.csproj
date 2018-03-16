@@ -56,6 +56,7 @@
     <Compile Include="Classes\DaclModel\Utilities\SecurityExtensions.cs" />
     <Compile Include="Classes\DaclModel\SystemAcl.cs" />
     <Compile Include="Classes\DataAccess\IDataAccessLayer.cs" />
+    <Compile Include="Classes\DataAccess\MemoryDal.cs" />
     <Compile Include="Classes\DataAccess\PalladiumStore.cs" />
     <Compile Include="Classes\Principal\Abstract\SecurityPrinicpalBase.cs" />
     <Compile Include="Classes\DaclModel\DiscretionaryAcl.cs" />

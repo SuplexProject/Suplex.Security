@@ -4,9 +4,6 @@ namespace Palladium.Security.DaclModel
 {
     public class SecurityDescriptor
     {
-        public DiscretionaryAcl Dacl { get; set; } = new DiscretionaryAcl();
-        public SystemAcl Sacl { get; set; } = new SystemAcl();
-
         public bool DaclAllowInherit
         {
             get
@@ -41,6 +38,9 @@ namespace Palladium.Security.DaclModel
                 Sacl.AllowInherit = value;
             }
         }
+
+        public DiscretionaryAcl Dacl { get; set; } = new DiscretionaryAcl();
+        public SystemAcl Sacl { get; set; } = new SystemAcl();
 
         public SecurityResults Results { get; internal set; } = new SecurityResults();
 
