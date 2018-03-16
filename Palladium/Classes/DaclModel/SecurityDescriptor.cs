@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Palladium.Security.DaclModel
 {
@@ -11,22 +7,58 @@ namespace Palladium.Security.DaclModel
         public DiscretionaryAcl Dacl { get; set; } = new DiscretionaryAcl();
         public SystemAcl Sacl { get; set; } = new SystemAcl();
 
-        public SecurityResults ResultantSecurity { get; internal set; } = new SecurityResults();
+        public bool DaclAllowInherit
+        {
+            get
+            {
+                if( Dacl == null )
+                    Dacl = new DiscretionaryAcl();
+
+                return Dacl.AllowInherit;
+            }
+            set
+            {
+                if( Dacl == null )
+                    Dacl = new DiscretionaryAcl();
+
+                Dacl.AllowInherit = value;
+            }
+        }
+        public bool SaclAllowInherit
+        {
+            get
+            {
+                if( Sacl == null )
+                    Sacl = new SystemAcl();
+
+                return Sacl.AllowInherit;
+            }
+            set
+            {
+                if( Sacl == null )
+                    Sacl = new SystemAcl();
+
+                Sacl.AllowInherit = value;
+            }
+        }
+
+        public SecurityResults Results { get; internal set; } = new SecurityResults();
+
 
         public void Eval()
         {
-            Dacl.Eval( ResultantSecurity );
-            Sacl.Eval( ResultantSecurity );
+            Dacl.Eval( Results );
+            Sacl.Eval( Results );
         }
         public void Eval(Type rightType)
         {
-            Dacl.Eval( rightType, ResultantSecurity );
-            Sacl.Eval( rightType, ResultantSecurity );
+            Dacl.Eval( rightType, Results );
+            Sacl.Eval( rightType, Results );
         }
         public void Eval<T>() where T : struct, IConvertible
         {
-            Dacl.Eval<T>( ResultantSecurity );
-            Sacl.Eval<T>( ResultantSecurity );
+            Dacl.Eval<T>( Results );
+            Sacl.Eval<T>( Results );
         }
 
 
@@ -36,10 +68,9 @@ namespace Palladium.Security.DaclModel
             Sacl.CopyTo( targetSecurityDescriptor.Sacl );
         }
 
-
         public override string ToString()
         {
-            return $"{Dacl}, {Sacl}, {ResultantSecurity}";
+            return $"{Dacl}, {Sacl}, {Results}";
         }
     }
 }

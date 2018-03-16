@@ -107,7 +107,7 @@ namespace UnitTests
                 //SecureObjects = new List<ISecureObject>() { top }
             };
 
-            string x = store.ToYaml( emitDefaultValues: false );
+            string x = store.ToYaml( serializeAsJson: false );
 
             FileStore fs = FileStore.FromYaml( @"C:\Users\Steve\Desktop\sr.yaml" );
         }

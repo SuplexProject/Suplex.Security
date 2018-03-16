@@ -5,16 +5,18 @@ namespace Palladium.Security.DaclModel
 {
     public static class AccessControlEntryUtilities
     {
-        public static IAccessControlEntry MakeAceFromType(string rightTypeName, Dictionary<string, string> props = null)
+        public static IAccessControlEntry MakeAceFromRightType(string rightTypeName, Dictionary<string, string> props = null)
         {
             Type rightType = Type.GetType( rightTypeName );
-            return MakeAceFromType( rightType, props );
+            return MakeGenericAceFromType( rightType, props );
         }
-        public static IAccessControlEntry MakeAceFromType(Type rightType, Dictionary<string, string> props = null)
+        public static IAccessControlEntry MakeGenericAceFromType(Type rightType, Dictionary<string, string> props = null, bool isAuditAce = false)
         {
+            rightType.ValidateIsEnum();
+
             IAccessControlEntry ace = null;
 
-            Type objectType = typeof( AccessControlEntry<> );
+            Type objectType = isAuditAce ? typeof( AccessControlEntryAudit<> ) : typeof( AccessControlEntry<> );
             Type genericType = objectType.MakeGenericType( rightType );
             object instance = Activator.CreateInstance( genericType );
             ace = (IAccessControlEntry)instance;
