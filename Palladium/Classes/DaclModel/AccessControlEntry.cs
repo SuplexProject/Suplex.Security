@@ -8,17 +8,26 @@ namespace Palladium.Security.DaclModel
 {
     public class AccessControlEntry<T> : IAccessControlEntry<T> where T : struct, IConvertible
     {
+        T _right;
+        private IRightInfo _rightData;
+
         public virtual Guid? UId { get; set; } = Guid.NewGuid();
-        public virtual T Right { get; set; }
+        public virtual T Right
+        {
+            get => _right;
+            set
+            {
+                _right = value;
+                _rightData = new RightInfo<T> { Right = value };
+            }
+        }
         public virtual bool Allowed { get; set; }
         public virtual bool Inheritable { get; set; } = true;  //default Aces are inheritable
         public virtual Guid? InheritedFrom { get; set; }
         public virtual Guid? SecurityPrincipalUId { get; set; }
 
-        public string RightTypeName { get { return Right.GetRightTypeName(); } }
-        public Type GetRightType() { return Right.GetType(); }
-        public int RightValue { get { return (int)Enum.Parse( Right.GetType(), Right.ToString() ); } }
-        public string RightName { get { return Right.ToString(); } }
+
+        public IRightInfo RightData => _rightData;
         public void SetRight(string value)
         {
             Right = (T)Enum.Parse( Right.GetType(), value );
@@ -51,7 +60,7 @@ namespace Palladium.Security.DaclModel
 
             string inheritedFrom = InheritedFrom.HasValue ? InheritedFrom.Value.ToString() : "{null}";
 
-            return $"{RightTypeName}/{Right}: {aa}, Inherit: {Inheritable}, InheritedFrom: {inheritedFrom}";
+            return $"{RightData.FriendlyTypeName}/{Right}: {aa}, Inherit: {Inheritable}, InheritedFrom: {inheritedFrom}";
         }
     }
 }

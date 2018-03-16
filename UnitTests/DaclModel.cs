@@ -14,7 +14,7 @@ namespace UnitTests
         [Category( "EvalDacl" )]
         public void EvalDacl()
         {
-            DiscretionaryAccessControlList dacl = new DiscretionaryAccessControlList
+            DiscretionaryAcl dacl = new DiscretionaryAcl
             {
                 //new AccessControlEntry<UIRight>() { Allowed = true, Right = UIRight.FullControl },
                 //new AccessControlEntry<UIRight>() { Allowed = false, Right = UIRight.Enabled }
@@ -30,7 +30,7 @@ namespace UnitTests
         [Category( "SecurityDescriptor" )]
         public void SecurityDescriptor()
         {
-            DiscretionaryAccessControlList dacl = new DiscretionaryAccessControlList
+            DiscretionaryAcl dacl = new DiscretionaryAcl
             {
                 //new AccessControlEntry<FileSystemRight>() { Allowed = true, Right = FileSystemRight.FullControl },
                 //new AccessControlEntry<UIRight>() { Allowed = true, Right = UIRight.FullControl },
@@ -38,7 +38,7 @@ namespace UnitTests
                 //new AccessControlEntry<FileSystemRight>() { Allowed = false, Right = FileSystemRight.Execute }
             };
 
-            SystemAccessControlList sacl = new SystemAccessControlList
+            SystemAcl sacl = new SystemAcl
             {
                 //new AccessControlEntryAudit<FileSystemRight>() { Allowed = true, Denied = false, Right = FileSystemRight.FullControl },
                 //new AccessControlEntryAudit<UIRight>() { Allowed = true, Denied = true, Right = UIRight.FullControl },
@@ -66,12 +66,12 @@ namespace UnitTests
             SecureContainer ch02 = new SecureContainer() { UniqueName = "ch02" };
             SecureContainer ch10 = new SecureContainer() { UniqueName = "ch10" };
 
-            DiscretionaryAccessControlList topdacl = new DiscretionaryAccessControlList
+            DiscretionaryAcl topdacl = new DiscretionaryAcl
             {
                 new AccessControlEntry<FileSystemRight>() { Allowed = true, Right = FileSystemRight.FullControl },
                 new AccessControlEntry<FileSystemRight>() { Allowed = false, Right = FileSystemRight.Execute, Inheritable = false }
             };
-            DiscretionaryAccessControlList ch00dacl = new DiscretionaryAccessControlList
+            DiscretionaryAcl ch00dacl = new DiscretionaryAcl
             {
                 new AccessControlEntry<UIRight>() { Allowed = true, Right = UIRight.FullControl },
                 new AccessControlEntry<UIRight>() { Allowed = false, Right = UIRight.Enabled }
@@ -104,7 +104,7 @@ namespace UnitTests
 
             FileStore store = new FileStore()
             {
-                SecureObjects = new List<ISecureObject>() { top }
+                //SecureObjects = new List<ISecureObject>() { top }
             };
 
             string x = store.ToYaml( emitDefaultValues: false );

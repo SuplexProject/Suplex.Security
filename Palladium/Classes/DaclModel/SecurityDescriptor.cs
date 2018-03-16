@@ -8,8 +8,8 @@ namespace Palladium.Security.DaclModel
 {
     public class SecurityDescriptor
     {
-        public DiscretionaryAccessControlList Dacl { get; set; } = new DiscretionaryAccessControlList();
-        public SystemAccessControlList Sacl { get; set; } = new SystemAccessControlList();
+        public DiscretionaryAcl Dacl { get; set; } = new DiscretionaryAcl();
+        public SystemAcl Sacl { get; set; } = new SystemAcl();
 
         public SecurityResults ResultantSecurity { get; internal set; } = new SecurityResults();
 

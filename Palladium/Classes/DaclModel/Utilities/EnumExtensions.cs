@@ -14,9 +14,9 @@ namespace Palladium.Security.DaclModel
         /// <typeparam name="T">The enum type.</typeparam>
         /// <param name="rightType">The enum type.</param>
         /// <returns></returns>
-        public static string GetRightTypeName<T>(this T rightType) where T : struct, IConvertible
+        public static string GetFriendlyRightTypeName<T>(this T rightType) where T : struct, IConvertible
         {
-            return GetRightTypeName( rightType.GetType() );
+            return GetFriendlyRightTypeName( rightType.GetType() );
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Palladium.Security.DaclModel
         /// </summary>
         /// <param name="rightType">The enum type.</param>
         /// <returns></returns>
-        public static string GetRightTypeName(this Type rightType)
+        public static string GetFriendlyRightTypeName(this Type rightType)
         {
             rightType.ValidateIsEnum();
 

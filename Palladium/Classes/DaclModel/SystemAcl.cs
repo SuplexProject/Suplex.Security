@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Palladium.Security.DaclModel
 {
-    public class SystemAccessControlList : List<IAccessControlEntryAudit>, IAccessControlList
+    public class SystemAcl : List<IAccessControlEntryAudit>, IAccessControlList
     {
         public bool AllowInherit { get; set; } = true;  //default ACLs allow inheritance
 
@@ -16,10 +16,10 @@ namespace Palladium.Security.DaclModel
             Dictionary<Type, List<IAccessControlEntryAudit>> aceLists = new Dictionary<Type, List<IAccessControlEntryAudit>>();
             foreach( IAccessControlEntryAudit ace in this )
             {
-                if( !aceLists.ContainsKey( ace.GetRightType() ) )
-                    aceLists[ace.GetRightType()] = new List<IAccessControlEntryAudit>();
+                if( !aceLists.ContainsKey( ace.RightData.RightType ) )
+                    aceLists[ace.RightData.RightType] = new List<IAccessControlEntryAudit>();
 
-                aceLists[ace.GetRightType()].Add( ace );
+                aceLists[ace.RightData.RightType].Add( ace );
             }
 
             foreach( Type rightType in aceLists.Keys )
@@ -34,9 +34,9 @@ namespace Palladium.Security.DaclModel
         {
             securityResults.InitResult( rightType );
 
-            string rtn = rightType.GetRightTypeName();
+            string rtn = rightType.GetFriendlyRightTypeName();
             IEnumerable<IAccessControlEntryAudit> found = from ace in this
-                                                          where ace.RightTypeName.Equals( rtn )
+                                                          where ace.RightData.FriendlyTypeName.Equals( rtn )
                                                           select ace;
             List<IAccessControlEntryAudit> aces = new List<IAccessControlEntryAudit>( found );
             EvalAceList( rightType, aces, securityResults );
@@ -61,9 +61,9 @@ namespace Palladium.Security.DaclModel
                 foreach( IAccessControlEntryAudit ace in this )
                 {
                     if( ace.Allowed )
-                        allowedMask |= ace.RightValue;
+                        allowedMask |= ace.RightData.Value;
                     if( ace.Denied )
-                        deniedMask |= ace.RightValue;
+                        deniedMask |= ace.RightData.Value;
                 }
 
                 //For each right of the given acetype, perform a bitwise-AND to see if the right is specified in the mask.
@@ -78,7 +78,7 @@ namespace Palladium.Security.DaclModel
             }
         }
 
-        public void CopyTo(SystemAccessControlList targetSacl)
+        public void CopyTo(SystemAcl targetSacl)
         {
             if( targetSacl.AllowInherit )
                 foreach( IAccessControlEntryAudit ace in this )

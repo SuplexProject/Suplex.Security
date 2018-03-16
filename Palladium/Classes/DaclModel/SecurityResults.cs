@@ -10,11 +10,11 @@ namespace Palladium.Security.DaclModel
     {
         public bool ContainsRightType<T>(T rightType) where T : struct, IConvertible
         {
-            return ContainsKey( rightType.GetRightTypeName() );
+            return ContainsKey( rightType.GetFriendlyRightTypeName() );
         }
         public bool ContainsRightType(Type rightType)
         {
-            return ContainsKey( rightType.GetRightTypeName() );
+            return ContainsKey( rightType.GetFriendlyRightTypeName() );
         }
 
 
@@ -25,7 +25,7 @@ namespace Palladium.Security.DaclModel
         }
         public void InitResult(Type rightType)
         {
-            string rt = rightType.GetRightTypeName();
+            string rt = rightType.GetFriendlyRightTypeName();
             this[rt] = new Dictionary<int, SecurityResult>();
 
             foreach( int right in rightType.GetRightTypeValues() )
@@ -38,23 +38,23 @@ namespace Palladium.Security.DaclModel
             if( !ContainsRightType( rightType ) )
                 InitResult( rightType );
 
-            return this[rightType.GetRightTypeName()][right];
+            return this[rightType.GetFriendlyRightTypeName()][right];
         }
         public SecurityResult GetByTypeRight(Type rightType, int right)
         {
             if( !ContainsRightType( rightType ) )
                 InitResult( rightType );
 
-            return this[rightType.GetRightTypeName()][right];
+            return this[rightType.GetFriendlyRightTypeName()][right];
         }
 
         public void SetByTypeRight<T>(T rightType, int right, SecurityResult value) where T : struct, IConvertible
         {
-            this[rightType.GetRightTypeName()][right] = value;
+            this[rightType.GetFriendlyRightTypeName()][right] = value;
         }
         public void SetByTypeRight(Type rightType, int right, SecurityResult value)
         {
-            this[rightType.GetRightTypeName()][right] = value;
+            this[rightType.GetFriendlyRightTypeName()][right] = value;
         }
 
 
