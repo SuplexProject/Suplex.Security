@@ -34,9 +34,8 @@ namespace Palladium.DataAccess
                 }
                 parser.MoveNext();
 
-                string rtKey = RightFields.RightType;
-                if( props.ContainsKey( rtKey ) )
-                    ace = AccessControlEntryUtilities.MakeAceFromRightType( props[rtKey], props );
+                if( props.ContainsKey( RightFields.RightType ) )
+                    ace = AccessControlEntryUtilities.MakeAceFromRightType( props[RightFields.RightType], props );
             }
 
             return ace;
