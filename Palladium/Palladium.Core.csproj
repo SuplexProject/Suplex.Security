@@ -47,6 +47,7 @@
     <Compile Include="Classes\DaclModel\Interfaces\IRightInfo.cs" />
     <Compile Include="Classes\DaclModel\Interfaces\ISecureContainer.cs" />
     <Compile Include="Classes\DaclModel\Interfaces\ISecureObject.cs" />
+    <Compile Include="Classes\DaclModel\Utilities\AccessControlEntryUtilities.cs" />
     <Compile Include="Classes\DaclModel\Utilities\RightFields.cs" />
     <Compile Include="Classes\DaclModel\RightInfo.cs" />
     <Compile Include="Classes\DaclModel\SecureContainer.cs" />

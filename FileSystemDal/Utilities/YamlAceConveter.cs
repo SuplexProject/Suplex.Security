@@ -28,39 +28,15 @@ namespace Palladium.DataAccess
                     string prop = ((Scalar)parser.Current).Value;
                     parser.MoveNext();
                     string value = ((Scalar)parser.Current).Value;
+                    parser.MoveNext();
 
                     props[prop] = value;
-
-                    parser.MoveNext();
                 }
                 parser.MoveNext();
 
                 string rtKey = RightFields.RightType;
                 if( props.ContainsKey( rtKey ) )
-                {
-                    Type rightType = Type.GetType( props[rtKey] );
-                    Type objectType = typeof( AccessControlEntry<> );
-                    Type genericType = objectType.MakeGenericType( rightType );
-                    object instance = Activator.CreateInstance( genericType );
-                    ace = (IAccessControlEntry)instance;
-
-                    props.Remove( rtKey );
-                    foreach( string prop in props.Keys )
-                    {
-                        if( prop.Equals( nameof( ace.UId ) ) )
-                            ace.UId = Guid.Parse( props[prop] );
-                        else if( prop.Equals( RightFields.Right ) )
-                            ace.SetRight( props[prop] );
-                        else if( prop.Equals( nameof( ace.Allowed ) ) )
-                            ace.Allowed = bool.Parse( props[prop] );
-                        else if( prop.Equals( nameof( ace.Inheritable ) ) )
-                            ace.Inheritable = bool.Parse( props[prop] );
-                        else if( prop.Equals( nameof( ace.InheritedFrom ) ) )
-                            ace.InheritedFrom = Guid.Parse( props[prop] );
-                        else if( prop.Equals( nameof( ace.SecurityPrincipalUId ) ) )
-                            ace.SecurityPrincipalUId = Guid.Parse( props[prop] );
-                    }
-                }
+                    ace = AccessControlEntryUtilities.MakeAceFromType( props[rtKey], props );
             }
 
             return ace;
