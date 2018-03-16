@@ -8,7 +8,7 @@ namespace Palladium.Security.Principal
 {
     public abstract class SecurityPrinicpalBase : ISecurityPrinicpal
     {
-        public virtual Guid? UId { get; set; }
+        public virtual Guid? UId { get; set; } = new Guid();
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
         public virtual string Description { get; set; }

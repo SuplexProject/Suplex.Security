@@ -21,8 +21,8 @@ namespace Palladium.Security.DaclModel
                 _rightData = new RightInfo<T> { Right = value };
             }
         }
-        public virtual bool Allowed { get; set; }
-        public virtual bool Inheritable { get; set; } = true;  //default Aces are inheritable
+        public virtual bool Allowed { get; set; } = true;       //default Aces are Allowed (most common usage)
+        public virtual bool Inheritable { get; set; } = true;   //default Aces are inheritable
         public virtual Guid? InheritedFrom { get; set; }
         public virtual Guid? SecurityPrincipalUId { get; set; }
 

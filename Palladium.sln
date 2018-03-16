@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Palladium.Core", "Palladium\Palladium.Core.csproj", "{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{5F184BE8-D7BF-4F12-A292-B9983737045D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.Core", "UnitTests\UnitTests.Core.csproj", "{5F184BE8-D7BF-4F12-A292-B9983737045D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Palladium.FileSystemDal", "FileSystemDal\Palladium.FileSystemDal.csproj", "{EC01C78D-C787-479D-85BF-E65D2424C681}"
 EndProject
