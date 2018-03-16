@@ -44,16 +44,16 @@ namespace Palladium.DataAccess.Utilities
             return result;
         }
 
-        public static void SerializeFile(string path, object data, bool serializeAsJson = false, bool formatJson = true, bool emitDefaultValues = false)
+        public static void SerializeFile(string path, object data, bool serializeAsJson = false, bool formatJson = true, bool emitDefaultValues = false, IYamlTypeConverter converter = null)
         {
             if( !serializeAsJson )
             {
                 using( StreamWriter writer = new StreamWriter( path ) )
-                    Serialize( writer, data, serializeAsJson, emitDefaultValues );
+                    Serialize( writer, data, serializeAsJson, emitDefaultValues, converter );
             }
             else //gets formatted json
             {
-                string result = Serialize( data, serializeAsJson, formatJson, emitDefaultValues );
+                string result = Serialize( data, serializeAsJson, formatJson, emitDefaultValues, converter );
                 File.WriteAllText( path, result );
             }
         }
@@ -89,14 +89,19 @@ namespace Palladium.DataAccess.Utilities
             return deserializer.Deserialize<T>( reader );
         }
 
-        public static T DeserializeFile<T>(string path, bool ignoreUnmatchedProperties = true) where T : class
+        public static T DeserializeFile<T>(string path, bool ignoreUnmatchedProperties = true, IYamlTypeConverter converter = null) where T : class
         {
             T ssc = null;
             using( StreamReader reader = new StreamReader( path ) )
             {
                 DeserializerBuilder builder = new DeserializerBuilder();
+
                 if( ignoreUnmatchedProperties )
                     builder.IgnoreUnmatchedProperties();
+
+                if( converter != null )
+                    builder.WithTypeConverter( converter );
+
                 Deserializer deserializer = builder.Build();
                 ssc = deserializer.Deserialize<T>( reader );
             }

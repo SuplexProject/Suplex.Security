@@ -36,7 +36,7 @@ namespace Palladium.DataAccess
 
                 string rtKey = RightFields.RightType;
                 if( props.ContainsKey( rtKey ) )
-                    ace = AccessControlEntryUtilities.MakeAceFromType( props[rtKey], props );
+                    ace = AccessControlEntryUtilities.MakeAceFromRightType( props[rtKey], props );
             }
 
             return ace;
@@ -55,13 +55,19 @@ namespace Palladium.DataAccess
                     emitter.Emit( new Scalar( null, ace.UId.ToString() ) );
                 }
 
-                emitter.Emit( new Scalar( null, nameof( ace.RightData.RightType ) ) );
+                emitter.Emit( new Scalar( null, RightFields.RightType ) );
                 emitter.Emit( new Scalar( null, ace.RightData.RightType.AssemblyQualifiedName ) );
                 emitter.Emit( new Scalar( null, RightFields.Right ) );
                 emitter.Emit( new Scalar( null, ace.RightData.Name ) );
 
                 emitter.Emit( new Scalar( null, nameof( ace.Allowed ) ) );
                 emitter.Emit( new Scalar( null, ace.Allowed.ToString() ) );
+
+                if( ace is IAccessControlEntryAudit auditace )
+                {
+                    emitter.Emit( new Scalar( null, nameof( auditace.Denied ) ) );
+                    emitter.Emit( new Scalar( null, auditace.Denied.ToString() ) );
+                }
 
                 emitter.Emit( new Scalar( null, nameof( ace.Inheritable ) ) );
                 emitter.Emit( new Scalar( null, ace.Inheritable.ToString() ) );
