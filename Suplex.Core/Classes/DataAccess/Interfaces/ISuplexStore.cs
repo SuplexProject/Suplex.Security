@@ -8,10 +8,10 @@ namespace Suplex.DataAccess
 {
     public interface ISuplexStore
     {
+        List<SecureObject> SecureObjects { get; set; }
+
         List<User> Users { get; set; }
         List<Group> Groups { get; set; }
         Dictionary<Guid, Guid> GroupMembership { get; set; }
-
-        List<SecureObject> SecureObjects { get; set; }
     }
 }

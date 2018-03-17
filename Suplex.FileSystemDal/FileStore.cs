@@ -1,6 +1,8 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using Suplex.DataAccess.Utilities;
+using Suplex.Security.AclModel;
+using YamlDotNet.Serialization;
 
 
 namespace Suplex.DataAccess
@@ -8,6 +10,7 @@ namespace Suplex.DataAccess
     public class FileStore : SuplexStore
     {
         MemoryDal _dal = null;
+        [YamlIgnore]
         public MemoryDal Dal
         {
             get
@@ -19,7 +22,10 @@ namespace Suplex.DataAccess
             }
         }
 
+        [YamlIgnore]
         public string CurrentPath { get; internal set; }
+
+        //new public List<SecureObjectLocal> SecureObjects { get; set; } = new List<SecureObjectLocal>();
 
 
 
@@ -55,4 +61,17 @@ namespace Suplex.DataAccess
             return store;
         }
     }
+
+    //public class SecureObjectLocal : SecureObject
+    //{
+    //    [YamlIgnore]
+    //    public override SecureObject Parent { get => base.Parent; set => base.Parent = value; }
+
+    //    new public List<SecureObjectLocal> Children { get; set; } = new List<SecureObjectLocal>();
+    //    //List<ISecureObject> ISecureObject.Children
+    //    //{
+    //    //    get => new List<ISecureObject>( Children.OfType<SecureObjectLocal>() );
+    //    //    set => Children = value == null ? null : new List<SecureObject>( value?.OfType<SecureObjectLocal>() );
+    //    //}
+    //}
 }

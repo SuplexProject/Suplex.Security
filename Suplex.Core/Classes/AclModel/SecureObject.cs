@@ -9,6 +9,8 @@ namespace Suplex.Security.AclModel
         public virtual Guid? UId { get; set; } = Guid.NewGuid();
         public virtual string UniqueName { get; set; }
         public virtual Guid? ParentUId { get; set; }
+        public virtual SecurityDescriptor Security { get; set; } = new SecurityDescriptor();
+
 
         public virtual SecureObject Parent { get; set; }
         ISecureObject ISecureObject.Parent { get => Parent; set => Parent = value as SecureObject; }
@@ -20,8 +22,6 @@ namespace Suplex.Security.AclModel
             get => new List<ISecureObject>( Children.OfType<SecureObject>() );
             set => Children = value == null ? null : new List<SecureObject>( value?.OfType<SecureObject>() );
         }
-
-        public virtual SecurityDescriptor Security { get; set; } = new SecurityDescriptor();
 
         public override string ToString()
         {
