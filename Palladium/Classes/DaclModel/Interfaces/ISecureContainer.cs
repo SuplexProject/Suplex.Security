@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Palladium.Security.DaclModel
 {
-    public interface ISecureContainer : ISecureObject, IHierarchicalObject<SecureObject>
+    public interface ISecureContainer : ISecureObject, IHierarchicalObject<ISecureObject>
     {
     }
 }

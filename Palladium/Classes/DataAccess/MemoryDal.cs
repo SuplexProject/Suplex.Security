@@ -124,7 +124,7 @@ namespace Palladium.DataAccess
             {
                 SecureObject found = Store.SecureObjects.FindRecursive( o => o.ParentUId == secureObject.ParentUId );
                 if( found is ISecureContainer container )
-                    list = container.Children;
+                    list = new List<SecureObject>( container.Children.OfType<SecureObject>() );
                 else
                     throw new KeyNotFoundException( $"Could not find SecureContainer with ParentId: {secureObject.ParentUId}" );
             }
