@@ -99,7 +99,7 @@ namespace Palladium.DataAccess
 
 
         #region secure objects
-        public ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren)
+        public ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren = false)
         {
             ISecureObject found = Store.SecureObjects.FindRecursive( o => o.UId == secureObjectUId );
             if( found is ISecureContainer container && !includeChildren )
@@ -108,7 +108,7 @@ namespace Palladium.DataAccess
             return found;
         }
 
-        public ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren)
+        public ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren = true)
         {
             ISecureObject found = Store.SecureObjects.FindRecursive( o => o.UniqueName.Equals( uniqueName, StringComparison.OrdinalIgnoreCase ) );
             if( found is ISecureContainer container && !includeChildren )

@@ -4,21 +4,21 @@ using System.Collections.Generic;
 
 namespace Palladium.Security.DaclModel
 {
-    public interface IHierarchicalObject
+    public interface IObject
     {
         Guid? UId { get; set; }
         Guid? ParentUId { get; set; }
-        IHierarchicalObject Parent { get; set; }
+        IObject Parent { get; set; }
     }
 
-    public interface IHierarchicalObject<T> : IHierarchicalObject
+    public interface IContainer<IObject>
     {
-        List<T> Children { get; set; }
+        List<IObject> Children { get; set; }
     }
 
     public static class HierarchicalObjectExtensions
     {
-        public static T FindRecursive<T>(this IEnumerable<T> source, Predicate<T> match, T parent = null) where T : class, IHierarchicalObject
+        public static T FindRecursive<T>(this IEnumerable<T> source, Predicate<T> match, T parent = null) where T : class, IObject
         {
             T found = null;
 
@@ -29,7 +29,7 @@ namespace Palladium.Security.DaclModel
 
                 if( match( item ) )
                     found = item;
-                else if( item is IHierarchicalObject<T> hierObj )
+                else if( item is IContainer<T> hierObj )
                     found = hierObj.Children.FindRecursive( match, item );
 
                 if( found != null )

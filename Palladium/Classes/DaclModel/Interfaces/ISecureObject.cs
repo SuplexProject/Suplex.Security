@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Palladium.Security.DaclModel
 {
-    public interface ISecureObject : IHierarchicalObject
+    public interface ISecureObject : IObject
     {
         string UniqueName { get; set; }
 

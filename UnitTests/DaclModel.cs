@@ -86,26 +86,28 @@ namespace UnitTests
             top.Children.Add( ch00 );
             top.Children.Add( ch10 );
 
-            top.EvalSecurity();
+            //top.EvalSecurity();
 
-            bool hasExecute = top.Security.Results["FileSystem"][(int)FileSystemRight.Execute].AccessAllowed;
+            ////bool hasExecute = top.Security.Results["FileSystem"][(int)FileSystemRight.Execute].AccessAllowed;
 
-            SecureContainer xx = new SecureContainer
-            {
-                UniqueName = "xx",
-                Security = new SecurityDescriptor
-                {
-                    Dacl = new DiscretionaryAcl
-                    {
-                        new AccessControlEntry<FileSystemRight>() { Allowed = true, Right = FileSystemRight.FullControl }
-                    }
-                }
-            };
+            ////SecureContainer xx = new SecureContainer
+            ////{
+            ////    UniqueName = "xx",
+            ////    Security = new SecurityDescriptor
+            ////    {
+            ////        Dacl = new DiscretionaryAcl
+            ////        {
+            ////            new AccessControlEntry<FileSystemRight>() { Allowed = true, Right = FileSystemRight.FullControl }
+            ////        }
+            ////    }
+            ////};
 
             FileStore store = new FileStore()
             {
                 SecureObjects = new List<SecureObject>() { top }
             };
+
+            ISecureObject found = store.Dal.GetSecureObjectByUId( ch02.UId.Value );
 
             string x = store.ToYaml( serializeAsJson: false );
             FileStore f = FileStore.FromYaml( x );
