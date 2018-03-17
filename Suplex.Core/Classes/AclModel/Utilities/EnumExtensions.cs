@@ -65,8 +65,8 @@ namespace Suplex.Security.AclModel
 
         public static void ValidateIsEnum(this Type rightType)
         {
-            if( !rightType.IsEnum )
-                throw new ArgumentException( $"{nameof( rightType )} must be Enum." );
+            if( rightType == null || !rightType.IsEnum )
+                throw new ArgumentException( $"{nameof( rightType )} is required and must be of type Enum." );
         }
     }
 }
