@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 using Suplex.DataAccess;
 using Suplex.DataAccess.Utilities;
-using Suplex.Security.DaclModel;
+using Suplex.Security.AclModel;
 using Suplex.Security.Principal;
 
 namespace Tester

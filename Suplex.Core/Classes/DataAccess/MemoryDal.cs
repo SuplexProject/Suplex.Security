@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Suplex.Security.DaclModel;
+using Suplex.Security.AclModel;
 using Suplex.Security.Principal;
 
 

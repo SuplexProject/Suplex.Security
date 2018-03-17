@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Suplex.Security.DaclModel;
+using Suplex.Security.AclModel;
 
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
