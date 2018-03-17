@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 
-using Palladium.DataAccess;
-using Palladium.DataAccess.Utilities;
-using Palladium.Security.DaclModel;
-using Palladium.Security.Principal;
+using Suplex.DataAccess;
+using Suplex.DataAccess.Utilities;
+using Suplex.Security.DaclModel;
+using Suplex.Security.Principal;
 
 namespace Tester
 {
@@ -51,17 +51,17 @@ SecureObjects:
     SaclAllowInherit: true
     Dacl:
     - UId: b19753f5-2ce6-4463-af39-0e7625b2acf6
-      RightType: Palladium.Security.DaclModel.FileSystemRight, Palladium.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+      RightType: Suplex.Security.DaclModel.FileSystemRight, Suplex.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
       Right: FullControl
       Allowed: True
       Inheritable: True
     - UId: aae5dd74-0610-49c8-8fa4-7e80cb2c78bd
-      RightType: Palladium.Security.DaclModel.FileSystemRight, Palladium.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+      RightType: Suplex.Security.DaclModel.FileSystemRight, Suplex.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
       Right: List, Execute
       Allowed: False
       Inheritable: False
     - UId: d6fc728e-8c57-4900-a57d-ae5328dc5877
-      RightType: Palladium.Security.DaclModel.UIRight, Palladium.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+      RightType: Suplex.Security.DaclModel.UIRight, Suplex.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
       Right: Visible, Operate
       Allowed: True
       Inheritable: True
