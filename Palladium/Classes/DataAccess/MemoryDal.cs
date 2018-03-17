@@ -140,7 +140,14 @@ namespace Palladium.DataAccess
 
         public void DeleteSecureObject(Guid secureObjectUId)
         {
-            throw new NotImplementedException();
+            ISecureObject found = Store.SecureObjects.FindRecursive( o => o.UId == secureObjectUId );
+            if( found != null )
+            {
+                if( found.Parent is ISecureContainer container )
+                    container.Children.Remove( found );
+                else
+                    Store.SecureObjects.Remove( (SecureObject)found );
+            }
         }
         #endregion
     }
