@@ -1,4 +1,8 @@
-﻿namespace Suplex.Security.AclModel
+﻿using System;
+using System.Collections.Generic;
+
+
+namespace Suplex.Security.AclModel
 {
     public static class SecureObjectExtensions
     {
@@ -6,12 +10,33 @@
         {
             secureObject.Security.Eval();
 
-            if( secureObject is ISecureContainer sc )
-                foreach( ISecureObject child in sc.Children )
+            if( secureObject.Children != null && secureObject.Children.Count > 0 )
+                foreach( ISecureObject child in secureObject.Children )
                 {
-                    sc.Security.CopyTo( child.Security );
+                    secureObject.Security.CopyTo( child.Security );
                     EvalSecurity( child );
                 }
+        }
+
+        public static T FindRecursive<T>(this IEnumerable<ISecureObject> source, Predicate<ISecureObject> match, ISecureObject parent = null) where T : ISecureObject
+        {
+            ISecureObject found = null;
+
+            foreach( ISecureObject item in source )
+            {
+                item.ParentUId = parent?.UId;
+                item.Parent = parent;
+
+                if( match( item ) )
+                    found = item;
+                else
+                    found = item.Children.FindRecursive<T>( match, item );
+
+                if( found != null )
+                    break;
+            }
+
+            return (T)found;
         }
     }
 }

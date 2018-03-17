@@ -14,7 +14,7 @@ namespace Tester
     {
         static void Main(string[] args)
         {
-            SecureContainer top = new SecureContainer() { UniqueName = "top" };
+            SecureObject top = new SecureObject() { UniqueName = "top" };
             DiscretionaryAcl topdacl = new DiscretionaryAcl
             {
                 new AccessControlEntry<FileSystemRight> { Allowed = true, Right = FileSystemRight.FullControl },

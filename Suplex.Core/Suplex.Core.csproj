@@ -44,14 +44,11 @@
     <Compile Include="Classes\AclModel\AceComparer.cs" />
     <Compile Include="Classes\AclModel\Interfaces\IAccessControlList.cs" />
     <Compile Include="Classes\AclModel\Interfaces\ICloneable.cs" />
-    <Compile Include="Classes\AclModel\Interfaces\IHierarchicalObject.cs" />
     <Compile Include="Classes\AclModel\Interfaces\IRightInfo.cs" />
-    <Compile Include="Classes\AclModel\Interfaces\ISecureContainer.cs" />
     <Compile Include="Classes\AclModel\Interfaces\ISecureObject.cs" />
     <Compile Include="Classes\AclModel\Utilities\AccessControlEntryUtilities.cs" />
     <Compile Include="Classes\AclModel\Utilities\RightFields.cs" />
     <Compile Include="Classes\AclModel\RightInfo.cs" />
-    <Compile Include="Classes\AclModel\SecureContainer.cs" />
     <Compile Include="Classes\AclModel\SecureObject.cs" />
     <Compile Include="Classes\AclModel\Utilities\AccessControlListExtensions.cs" />
     <Compile Include="Classes\AclModel\Utilities\SecureObjectExtensions.cs" />

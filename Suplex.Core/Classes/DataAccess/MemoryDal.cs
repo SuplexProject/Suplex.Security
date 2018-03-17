@@ -101,18 +101,18 @@ namespace Suplex.DataAccess
         #region secure objects
         public ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren = false)
         {
-            ISecureObject found = Store.SecureObjects.FindRecursive( o => o.UId == secureObjectUId );
-            if( found is ISecureContainer container && !includeChildren )
-                container.Children = null;
+            SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UId == secureObjectUId );
+            if( found != null && !includeChildren )
+                found.Children = null;
 
             return found;
         }
 
         public ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren = true)
         {
-            ISecureObject found = Store.SecureObjects.FindRecursive( o => o.UniqueName.Equals( uniqueName, StringComparison.OrdinalIgnoreCase ) );
-            if( found is ISecureContainer container && !includeChildren )
-                container.Children = null;
+            SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UniqueName.Equals( uniqueName, StringComparison.OrdinalIgnoreCase ) );
+            if( found != null && !includeChildren )
+                found.Children = null;
 
             return found;
         }
@@ -122,9 +122,9 @@ namespace Suplex.DataAccess
 
             if( secureObject.ParentUId.HasValue )
             {
-                SecureObject found = Store.SecureObjects.FindRecursive( o => o.ParentUId == secureObject.ParentUId );
-                if( found is ISecureContainer container )
-                    list = new List<SecureObject>( container.Children.OfType<SecureObject>() );
+                SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.ParentUId == secureObject.ParentUId );
+                if( found != null )
+                    list = found.Children;
                 else
                     throw new KeyNotFoundException( $"Could not find SecureContainer with ParentId: {secureObject.ParentUId}" );
             }
@@ -140,13 +140,17 @@ namespace Suplex.DataAccess
 
         public void DeleteSecureObject(Guid secureObjectUId)
         {
-            ISecureObject found = Store.SecureObjects.FindRecursive( o => o.UId == secureObjectUId );
+            List<SecureObject> list = Store.SecureObjects;
+
+            SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UId == secureObjectUId );
             if( found != null )
             {
-                if( found.Parent is ISecureContainer container )
-                    container.Children.Remove( found );
-                else
-                    Store.SecureObjects.Remove( (SecureObject)found );
+                if( found.Parent != null )
+                    list = found.Parent.Children;
+
+                int index = list.FindIndex( o => o.UId == secureObjectUId );
+                if( index >= 0 )
+                    list.RemoveAt( index );
             }
         }
         #endregion

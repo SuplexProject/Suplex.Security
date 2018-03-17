@@ -61,11 +61,11 @@ namespace UnitTests
         [Category( "Secureobject" )]
         public void SecureObject()
         {
-            SecureContainer top = new SecureContainer() { UniqueName = "top" };
-            SecureContainer ch00 = new SecureContainer() { UniqueName = "ch00" };
-            SecureContainer ch01 = new SecureContainer() { UniqueName = "ch01" };
-            SecureContainer ch02 = new SecureContainer() { UniqueName = "ch02" };
-            SecureContainer ch10 = new SecureContainer() { UniqueName = "ch10" };
+            SecureObject top = new SecureObject() { UniqueName = "top" };
+            SecureObject ch00 = new SecureObject() { UniqueName = "ch00" };
+            SecureObject ch01 = new SecureObject() { UniqueName = "ch01" };
+            SecureObject ch02 = new SecureObject() { UniqueName = "ch02" };
+            SecureObject ch10 = new SecureObject() { UniqueName = "ch10" };
 
             DiscretionaryAcl topdacl = new DiscretionaryAcl
             {
@@ -91,7 +91,7 @@ namespace UnitTests
 
             ////bool hasExecute = top.Security.Results["FileSystem"][(int)FileSystemRight.Execute].AccessAllowed;
 
-            ////SecureContainer xx = new SecureContainer
+            ////SecureObject xx = new SecureObject
             ////{
             ////    UniqueName = "xx",
             ////    Security = new SecurityDescriptor
