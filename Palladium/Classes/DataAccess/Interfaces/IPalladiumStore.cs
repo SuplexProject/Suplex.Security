@@ -12,6 +12,6 @@ namespace Palladium.DataAccess
         List<Group> Groups { get; set; }
         Dictionary<Guid, Guid> GroupMembership { get; set; }
 
-        List<ISecureObject> SecureObjects { get; set; }
+        List<SecureObject> SecureObjects { get; set; }
     }
 }

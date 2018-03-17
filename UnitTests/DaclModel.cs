@@ -78,38 +78,37 @@ namespace UnitTests
             };
 
             top.Security.Dacl = topdacl;
-            //ch00.Security.Dacl = ch00dacl;
-            //ch01.Security.Dacl.AllowInherit = false;
+            ch00.Security.Dacl = ch00dacl;
+            ch01.Security.Dacl.AllowInherit = false;
 
-            //ch00.Children.Add( ch01 );
-            //ch00.Children.Add( ch02 );
-            //top.Children.Add( ch00 );
-            //top.Children.Add( ch10 );
+            ch00.Children.Add( ch01 );
+            ch00.Children.Add( ch02 );
+            top.Children.Add( ch00 );
+            top.Children.Add( ch10 );
 
-            //top.EvalSecurity();
+            top.EvalSecurity();
 
-            //bool hasExecute = top.Security.ResultantSecurity["FileSystem"][(int)FileSystemRight.Execute].AccessAllowed;
+            bool hasExecute = top.Security.Results["FileSystem"][(int)FileSystemRight.Execute].AccessAllowed;
 
-            //SecureContainer xx = new SecureContainer
-            //{
-            //    UniqueName = "xx",
-            //    Security= new SecurityDescriptor
-            //    {
-            //        Dacl = new DiscretionaryAccessControlList
-            //        {
-            //            new AccessControlEntry<FileSystemRight>() { Allowed = true, Right = FileSystemRight.FullControl }
-            //        }
-            //    }
-            //};
+            SecureContainer xx = new SecureContainer
+            {
+                UniqueName = "xx",
+                Security = new SecurityDescriptor
+                {
+                    Dacl = new DiscretionaryAcl
+                    {
+                        new AccessControlEntry<FileSystemRight>() { Allowed = true, Right = FileSystemRight.FullControl }
+                    }
+                }
+            };
 
             FileStore store = new FileStore()
             {
-                //SecureObjects = new List<ISecureObject>() { top }
+                SecureObjects = new List<SecureObject>() { top }
             };
 
             string x = store.ToYaml( serializeAsJson: false );
-
-            FileStore fs = FileStore.FromYaml( @"C:\Users\Steve\Desktop\sr.yaml" );
+            FileStore f = FileStore.FromYaml( x );
         }
     }
 }

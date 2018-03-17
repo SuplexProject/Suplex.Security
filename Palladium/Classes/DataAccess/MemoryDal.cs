@@ -118,11 +118,11 @@ namespace Palladium.DataAccess
         }
         public ISecureObject UpsertSecureObject(ISecureObject secureObject)
         {
-            List<ISecureObject> list = Store.SecureObjects;
+            List<SecureObject> list = Store.SecureObjects;
 
             if( secureObject.ParentUId.HasValue )
             {
-                ISecureObject found = Store.SecureObjects.FindRecursive( o => o.ParentUId == secureObject.ParentUId );
+                SecureObject found = Store.SecureObjects.FindRecursive( o => o.ParentUId == secureObject.ParentUId );
                 if( found is ISecureContainer container )
                     list = container.Children;
                 else
@@ -131,9 +131,9 @@ namespace Palladium.DataAccess
 
             int index = list.FindIndex( o => o.UId == secureObject.UId );
             if( index >= 0 )
-                list[index] = secureObject;
+                list[index] = (SecureObject)secureObject;
             else
-                list.Add( secureObject );
+                list.Add( (SecureObject)secureObject );
 
             return secureObject;
         }
