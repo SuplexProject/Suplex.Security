@@ -72,7 +72,7 @@ SecureObjects:
 
             FileStore store = new FileStore()
             {
-                SecureObjects = new List<SecureObject>() { top },
+                SecureObjects = new List<ISecureObject>() { top },
                 Users = users
             };
             string x = store.ToYaml();

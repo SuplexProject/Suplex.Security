@@ -6,12 +6,12 @@ using Palladium.Security.Principal;
 
 namespace Palladium.DataAccess
 {
-    public class PalladiumStore
+    public class PalladiumStore : IPalladiumStore
     {
-        public List<User> Users { get; set; }
-        public List<Group> Groups { get; set; }
-        public Dictionary<Guid, Guid> GroupMembership { get; set; }
+        public virtual List<User> Users { get; set; }
+        public virtual List<Group> Groups { get; set; }
+        public virtual Dictionary<Guid, Guid> GroupMembership { get; set; }
 
-        public List<SecureObject> SecureObjects { get; set; }
+        public virtual List<ISecureObject> SecureObjects { get; set; }
     }
 }

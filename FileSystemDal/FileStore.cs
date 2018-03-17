@@ -26,13 +26,21 @@ namespace Palladium.DataAccess
         public string ToYaml(bool serializeAsJson = false)
         {
             return YamlHelpers.Serialize( this,
-                serializeAsJson: serializeAsJson, formatJson: serializeAsJson, converter: new YamlAceConveter() ); ;
+                serializeAsJson: serializeAsJson, formatJson: serializeAsJson, converter: new YamlAceConveter() );
         }
 
-        public void ToYamlFile(string path, bool serializeAsJson = false)
+        public void ToYamlFile(string path = null, bool serializeAsJson = false)
         {
+            if( string.IsNullOrWhiteSpace( path ) && !string.IsNullOrWhiteSpace( CurrentPath ) )
+                path = CurrentPath;
+
+            if( string.IsNullOrWhiteSpace( path ) )
+                throw new ArgumentException( "path or CurrentPath must not be null." );
+
             YamlHelpers.SerializeFile( path, this,
-                serializeAsJson: serializeAsJson, formatJson: serializeAsJson, converter: new YamlAceConveter() ); ;
+                serializeAsJson: serializeAsJson, formatJson: serializeAsJson, converter: new YamlAceConveter() );
+
+            CurrentPath = path;
         }
 
         public static FileStore FromYaml(string yaml)
@@ -42,7 +50,9 @@ namespace Palladium.DataAccess
 
         public static FileStore FromYamlFile(string path)
         {
-            return YamlHelpers.DeserializeFile<FileStore>( path, converter: new YamlAceConveter() );
+            FileStore store = YamlHelpers.DeserializeFile<FileStore>( path, converter: new YamlAceConveter() );
+            store.CurrentPath = path;
+            return store;
         }
     }
 }

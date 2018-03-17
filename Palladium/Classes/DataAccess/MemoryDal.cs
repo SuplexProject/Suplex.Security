@@ -8,15 +8,17 @@ using Palladium.Security.Principal;
 
 namespace Palladium.DataAccess
 {
-    public class MemoryDal
+    public class MemoryDal : IDataAccessLayer
     {
+        #region ctor
         public MemoryDal() { }
-        public MemoryDal(PalladiumStore palladiumStore)
+        public MemoryDal(IPalladiumStore palladiumStore)
         {
             Store = palladiumStore;
         }
 
-        public PalladiumStore Store { get; set; }
+        public IPalladiumStore Store { get; set; }
+        #endregion
 
 
         #region users
@@ -97,18 +99,43 @@ namespace Palladium.DataAccess
 
 
         #region secure objects
-        public ISecureObject GetSecureObjectByUId(Guid secureObjectByUId, bool recursive)
+        public ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren)
         {
-            throw new NotImplementedException();
+            ISecureObject found = Store.SecureObjects.FindRecursive( o => o.UId == secureObjectUId );
+            if( found is ISecureContainer container && !includeChildren )
+                container.Children = null;
+
+            return found;
         }
 
-        public ISecureObject GetSecureObjectByUniqueName(string uniqueName)
+        public ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren)
         {
-            throw new NotImplementedException();
+            ISecureObject found = Store.SecureObjects.FindRecursive( o => o.UniqueName.Equals( uniqueName, StringComparison.OrdinalIgnoreCase ) );
+            if( found is ISecureContainer container && !includeChildren )
+                container.Children = null;
+
+            return found;
         }
         public ISecureObject UpsertSecureObject(ISecureObject secureObject)
         {
-            throw new NotImplementedException();
+            List<ISecureObject> list = Store.SecureObjects;
+
+            if( secureObject.ParentUId.HasValue )
+            {
+                ISecureObject found = Store.SecureObjects.FindRecursive( o => o.ParentUId == secureObject.ParentUId );
+                if( found is ISecureContainer container )
+                    list = container.Children;
+                else
+                    throw new KeyNotFoundException( $"Could not find SecureContainer with ParentId: {secureObject.ParentUId}" );
+            }
+
+            int index = list.FindIndex( o => o.UId == secureObject.UId );
+            if( index >= 0 )
+                list[index] = secureObject;
+            else
+                list.Add( secureObject );
+
+            return secureObject;
         }
 
         public void DeleteSecureObject(Guid secureObjectUId)

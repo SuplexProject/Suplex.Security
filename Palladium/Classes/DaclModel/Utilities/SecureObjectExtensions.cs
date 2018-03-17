@@ -1,6 +1,6 @@
 ﻿namespace Palladium.Security.DaclModel
 {
-    public static class SecurityExtensions
+    public static class SecureObjectExtensions
     {
         public static void EvalSecurity(this ISecureObject secureObject)
         {

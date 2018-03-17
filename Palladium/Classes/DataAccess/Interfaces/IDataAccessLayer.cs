@@ -23,8 +23,8 @@ namespace Palladium.DataAccess
         List<Group> GetGroupMembership(Guid principalUId);
         List<ISecurityPrinicpal> GetGroupMembers(Guid groupUId);
 
-        ISecureObject GetSecureObjectByUId(Guid secureObjectByUId, bool recursive);
-        ISecureObject GetSecureObjectByUniqueName(string uniqueName);
+        ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren);
+        ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren);
         ISecureObject UpsertSecureObject(ISecureObject secureObject);
         void DeleteSecureObject(Guid secureObjectUId);
     }
