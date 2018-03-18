@@ -4,6 +4,7 @@ namespace Suplex.Security.AclModel
 {
     public class SecurityDescriptor
     {
+        #region mirrored props
         public bool DaclAllowInherit
         {
             get
@@ -38,6 +39,25 @@ namespace Suplex.Security.AclModel
                 Sacl.AllowInherit = value;
             }
         }
+        public AuditType SaclAuditTypeFilter
+        {
+            get
+            {
+                if( Sacl == null )
+                    Sacl = new SystemAcl();
+
+                return Sacl.AuditTypeFilter;
+            }
+            set
+            {
+                if( Sacl == null )
+                    Sacl = new SystemAcl();
+
+                Sacl.AuditTypeFilter = value;
+            }
+        }
+        #endregion
+
 
         public DiscretionaryAcl Dacl { get; set; } = new DiscretionaryAcl();
         public SystemAcl Sacl { get; set; } = new SystemAcl();

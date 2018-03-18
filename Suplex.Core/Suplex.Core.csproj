@@ -73,6 +73,7 @@
     <Compile Include="Classes\AclModel\Enums\UiRight.cs" />
     <Compile Include="Classes\Principal\Interfaces\ISecurityPrinicpal.cs" />
     <Compile Include="Classes\Principal\Group.cs" />
+    <Compile Include="Classes\Principal\Utilities\SecurityPrincipalUtilities.cs" />
     <Compile Include="Classes\Principal\User.cs" />
     <Compile Include="Classes\AclModel\Utilities\UtilityExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

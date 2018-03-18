@@ -75,6 +75,10 @@ SecureObjects:
                 SecureObjects = new List<SecureObject>() { top },
                 Users = users
             };
+
+            User ux = store.Users.GetByName<User>( "x" );
+
+
             string x = store.ToYaml();
             FileStore f = FileStore.FromYaml( x );
 
