@@ -27,8 +27,6 @@ namespace Suplex.DataAccess
         [YamlIgnore]
         public string CurrentPath { get; internal set; }
 
-        //new public List<SecureObjectLocal> SecureObjects { get; set; } = new List<SecureObjectLocal>();
-
 
 
         public string ToYaml(bool serializeAsJson = false)
@@ -39,7 +37,7 @@ namespace Suplex.DataAccess
                 Groups = Groups,
                 GroupMembership = GroupMembership
             };
-            ShallowCloneTo( SecureObjects, clone.SecureObjects );
+            SecureObjects.ShallowCloneTo( clone.SecureObjects );
 
             return YamlHelpers.Serialize( clone,
                 serializeAsJson: serializeAsJson, formatJson: serializeAsJson, converter: new YamlAceConveter() );
@@ -53,7 +51,15 @@ namespace Suplex.DataAccess
             if( string.IsNullOrWhiteSpace( path ) )
                 throw new ArgumentException( "path or CurrentPath must not be null." );
 
-            YamlHelpers.SerializeFile( path, this,
+            FileStore clone = new FileStore
+            {
+                Users = Users,
+                Groups = Groups,
+                GroupMembership = GroupMembership
+            };
+            SecureObjects.ShallowCloneTo( clone.SecureObjects );
+
+            YamlHelpers.SerializeFile( path, clone,
                 serializeAsJson: serializeAsJson, formatJson: serializeAsJson, converter: new YamlAceConveter() );
 
             CurrentPath = path;
@@ -82,17 +88,4 @@ namespace Suplex.DataAccess
             }
         }
     }
-
-    //public class SecureObjectLocal : SecureObject
-    //{
-    //    [YamlIgnore]
-    //    public override SecureObject Parent { get => base.Parent; set => base.Parent = value; }
-
-    //    new public List<SecureObjectLocal> Children { get; set; } = new List<SecureObjectLocal>();
-    //    //List<ISecureObject> ISecureObject.Children
-    //    //{
-    //    //    get => new List<ISecureObject>( Children.OfType<SecureObjectLocal>() );
-    //    //    set => Children = value == null ? null : new List<SecureObject>( value?.OfType<SecureObjectLocal>() );
-    //    //}
-    //}
 }

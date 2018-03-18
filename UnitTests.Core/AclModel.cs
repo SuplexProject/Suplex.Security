@@ -9,7 +9,7 @@ using Suplex.Security.AclModel;
 namespace UnitTests
 {
     [TestFixture]
-    public class DaclModel
+    public class AclModel
     {
         [Test]
         [Category( "EvalDacl" )]

@@ -25,7 +25,7 @@ namespace Suplex.Security.AclModel
 
         #region Clone
         object ICloneable.Clone() { return Clone( true ); }
-        ISecureObject ICloneable<ISecureObject>.Clone(bool shallow) { return Clone( true ); }
+        ISecureObject ICloneable<ISecureObject>.Clone(bool shallow) { return Clone( shallow ); }
         public SecureObject Clone(bool shallow = true)
         {
             return new SecureObject
