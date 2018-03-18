@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Suplex.DataAccess.Utilities;
 using Suplex.Security.AclModel;
+
 using YamlDotNet.Serialization;
 
 
@@ -31,7 +33,15 @@ namespace Suplex.DataAccess
 
         public string ToYaml(bool serializeAsJson = false)
         {
-            return YamlHelpers.Serialize( this,
+            FileStore clone = new FileStore
+            {
+                Users = Users,
+                Groups = Groups,
+                GroupMembership = GroupMembership
+            };
+            ShallowCloneTo( SecureObjects, clone.SecureObjects );
+
+            return YamlHelpers.Serialize( clone,
                 serializeAsJson: serializeAsJson, formatJson: serializeAsJson, converter: new YamlAceConveter() );
         }
 
@@ -59,6 +69,17 @@ namespace Suplex.DataAccess
             FileStore store = YamlHelpers.DeserializeFile<FileStore>( path, converter: new YamlAceConveter() );
             store.CurrentPath = path;
             return store;
+        }
+
+        void ShallowCloneTo(List<SecureObject> source, List<SecureObject> destination)
+        {
+            foreach( SecureObject item in source )
+            {
+                SecureObject clone = item.Clone();
+                destination.Add( clone );
+                if( item.Children != null && item.Children.Count > 0 )
+                    ShallowCloneTo( item.Children, clone.Children );
+            }
         }
     }
 

@@ -38,5 +38,16 @@ namespace Suplex.Security.AclModel
 
             return (T)found;
         }
+
+        public static void ShallowCloneTo(this IEnumerable<ISecureObject> source, System.Collections.IList destination)
+        {
+            foreach( ISecureObject item in source )
+            {
+                ISecureObject clone = item.Clone();
+                destination.Add( clone );
+                if( item.Children != null && item.Children.Count > 0 )
+                    item.Children.ShallowCloneTo( clone.Children );
+            }
+        }
     }
 }

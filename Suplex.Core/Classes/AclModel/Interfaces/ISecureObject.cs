@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Suplex.Security.AclModel
 {
-    public interface ISecureObject
+    public interface ISecureObject : ICloneable<ISecureObject>
     {
         Guid? UId { get; set; }
         string UniqueName { get; set; }
