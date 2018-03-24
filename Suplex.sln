@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suplex.Core", "Suplex.Core\Suplex.Core.csproj", "{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suplex.FileSystemDal", "Suplex.FileSystemDal\Suplex.FileSystemDal.csproj", "{EC01C78D-C787-479D-85BF-E65D2424C681}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.Core", "UnitTests.Core\UnitTests.Core.csproj", "{5F184BE8-D7BF-4F12-A292-B9983737045D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{484F4C94-2B8A-4F4C-8907-EE07318A5F57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suplex.Security.FileSystemDal", "Suplex.Security.FileSystemDal\Suplex.Security.FileSystemDal.csproj", "{EC01C78D-C787-479D-85BF-E65D2424C681}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suplex.Data.SqlDataAccessor", "Suplex.Data.SqlDataAccessor\Suplex.Data.SqlDataAccessor.csproj", "{45ABE782-4C51-41EC-A17C-06F90271A32B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suplex.Security.Core", "Suplex.Security.Core\Suplex.Security.Core.csproj", "{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,14 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC01C78D-C787-479D-85BF-E65D2424C681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC01C78D-C787-479D-85BF-E65D2424C681}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC01C78D-C787-479D-85BF-E65D2424C681}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC01C78D-C787-479D-85BF-E65D2424C681}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5F184BE8-D7BF-4F12-A292-B9983737045D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F184BE8-D7BF-4F12-A292-B9983737045D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F184BE8-D7BF-4F12-A292-B9983737045D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +27,18 @@ Global
 		{484F4C94-2B8A-4F4C-8907-EE07318A5F57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{484F4C94-2B8A-4F4C-8907-EE07318A5F57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{484F4C94-2B8A-4F4C-8907-EE07318A5F57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC01C78D-C787-479D-85BF-E65D2424C681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC01C78D-C787-479D-85BF-E65D2424C681}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC01C78D-C787-479D-85BF-E65D2424C681}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC01C78D-C787-479D-85BF-E65D2424C681}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45ABE782-4C51-41EC-A17C-06F90271A32B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45ABE782-4C51-41EC-A17C-06F90271A32B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45ABE782-4C51-41EC-A17C-06F90271A32B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45ABE782-4C51-41EC-A17C-06F90271A32B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

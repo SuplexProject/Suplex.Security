@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Suplex.DataAccess.Utilities;
-using Suplex.Security.AclModel;
+using Suplex.Security.AclModel.DataAccess.Utilities;
 
 using YamlDotNet.Serialization;
 
 
-namespace Suplex.DataAccess
+namespace Suplex.Security.AclModel.DataAccess
 {
     public class FileStore : SuplexStore
     {

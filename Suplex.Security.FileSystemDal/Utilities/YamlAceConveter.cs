@@ -6,7 +6,7 @@ using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 
-namespace Suplex.DataAccess
+namespace Suplex.Security.AclModel.DataAccess.Utilities
 {
     public class YamlAceConveter : IYamlTypeConverter
     {

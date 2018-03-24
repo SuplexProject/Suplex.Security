@@ -6,7 +6,7 @@ using Suplex.Security.AclModel;
 using Suplex.Security.Principal;
 
 
-namespace Suplex.DataAccess
+namespace Suplex.Security.AclModel.DataAccess
 {
     public class MemoryDal : IDataAccessLayer
     {

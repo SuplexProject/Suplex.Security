@@ -50,13 +50,13 @@
     <Compile Include="Utilities\YamlHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Suplex.Core\Suplex.Core.csproj">
-      <Project>{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}</Project>
-      <Name>Suplex.Core</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\Suplex.Security.Core\Suplex.Security.Core.csproj">
+      <Project>{2500b108-ff24-44b6-8beb-d0e37d0ed98e}</Project>
+      <Name>Suplex.Security.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,8 +7,8 @@
     <ProjectGuid>{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Suplex</RootNamespace>
-    <AssemblyName>Suplex.Core</AssemblyName>
+    <RootNamespace>Suplex.Security</RootNamespace>
+    <AssemblyName>Suplex.Security.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
