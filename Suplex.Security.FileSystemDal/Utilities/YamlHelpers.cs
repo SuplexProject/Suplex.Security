@@ -4,7 +4,7 @@ using System.IO;
 
 using YamlDotNet.Serialization;
 
-namespace Suplex.Security.AclModel.DataAccess.Utilities
+namespace Suplex.Utilities.Serialization
 {
     public class YamlHelpers
     {

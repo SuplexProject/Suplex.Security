@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using Suplex.Security.AclModel.DataAccess.Utilities;
+using Suplex.Utilities.Serialization;
 
 using YamlDotNet.Serialization;
 

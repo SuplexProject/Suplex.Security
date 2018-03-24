@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Suplex.Security.AclModel.DataAccess.Utilities
+namespace Suplex.Utilities.Serialization
 {
     public class JsonHelpers
     {
