@@ -9,7 +9,6 @@ namespace Suplex.Security.Principal
     public abstract class SecurityPrincipalBase : ISecurityPrincipal
     {
         public virtual Guid? UId { get; set; } = Guid.NewGuid();
-        //public virtual int Id { get; set; }
         public virtual string Name { get; set; }
         public virtual string Description { get; set; }
         public virtual bool IsLocal { get; set; }
