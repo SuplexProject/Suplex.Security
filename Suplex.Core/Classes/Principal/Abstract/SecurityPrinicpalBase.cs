@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Suplex.Security.Principal
 {
-    public abstract class SecurityPrinicpalBase : ISecurityPrinicpal
+    public abstract class SecurityPrincipalBase : ISecurityPrincipal
     {
         public virtual Guid? UId { get; set; } = Guid.NewGuid();
         public virtual int Id { get; set; }

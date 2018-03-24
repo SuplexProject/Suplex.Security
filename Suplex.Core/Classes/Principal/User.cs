@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Suplex.Security.Principal
 {
-    public class User : SecurityPrinicpalBase
+    public class User : SecurityPrincipalBase
     {
         public bool IsAnonymous { get; set; }
 

@@ -19,7 +19,7 @@ namespace Suplex.DataAccess
         void DeleteGroup(Guid groupUId);
 
         List<Group> GetGroupMembership(Guid principalUId);
-        List<ISecurityPrinicpal> GetGroupMembers(Guid groupUId);
+        List<ISecurityPrincipal> GetGroupMembers(Guid groupUId);
 
         ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren);
         ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren);

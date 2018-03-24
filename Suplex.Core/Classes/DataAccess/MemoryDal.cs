@@ -86,7 +86,7 @@ namespace Suplex.DataAccess
 
 
         #region group membership
-        public List<ISecurityPrinicpal> GetGroupMembers(Guid groupUId)
+        public List<ISecurityPrincipal> GetGroupMembers(Guid groupUId)
         {
             throw new NotImplementedException();
         }

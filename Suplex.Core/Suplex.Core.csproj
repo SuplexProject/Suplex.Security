@@ -71,8 +71,9 @@
     <Compile Include="Classes\AclModel\Enums\FileSystemRight.cs" />
     <Compile Include="Classes\AclModel\Enums\RecordRight.cs" />
     <Compile Include="Classes\AclModel\Enums\UiRight.cs" />
-    <Compile Include="Classes\Principal\Interfaces\ISecurityPrinicpal.cs" />
+    <Compile Include="Classes\Principal\Interfaces\ISecurityPrincipal.cs" />
     <Compile Include="Classes\Principal\Group.cs" />
+    <Compile Include="Classes\Principal\GroupMembershipItem.cs" />
     <Compile Include="Classes\Principal\Utilities\SecurityPrincipalUtilities.cs" />
     <Compile Include="Classes\Principal\User.cs" />
     <Compile Include="Classes\AclModel\Utilities\UtilityExtensions.cs" />
