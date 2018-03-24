@@ -13,6 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suplex.Data.SqlDataAccessor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suplex.Security.Core", "Suplex.Security.Core\Suplex.Security.Core.csproj", "{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{D5F7B63E-3446-4044-B8D5-27B31D7DE9F9}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\AssemblyInfo.xml = scripts\AssemblyInfo.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
