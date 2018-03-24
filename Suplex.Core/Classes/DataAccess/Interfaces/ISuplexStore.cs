@@ -12,6 +12,6 @@ namespace Suplex.DataAccess
 
         List<User> Users { get; set; }
         List<Group> Groups { get; set; }
-        Dictionary<Guid, Guid> GroupMembership { get; set; }
+        Dictionary<Guid, GroupMembershipItem> GroupMembership { get; set; }
     }
 }

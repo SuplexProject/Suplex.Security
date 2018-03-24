@@ -99,7 +99,7 @@ namespace Suplex.Security.Principal
             return membership;
         }
 
-        public static MembershipList<Group> GetMemberOf(this IEnumerable<GroupMembershipItem> groupMembershipItems, SecurityPrincipalBase member, List<Group> allGroups)
+        public static MembershipList<Group> GetMemberOf(this IEnumerable<GroupMembershipItem> groupMembershipItems, SecurityPrincipalBase member, List<Group> allGroups = null)
         {
             MembershipList<Group> membership = new MembershipList<Group>();
 
@@ -107,28 +107,27 @@ namespace Suplex.Security.Principal
                 if( item.Member.UId == member.UId )
                     membership.MemberList.Add( item.Group );
 
-            membership.NonMemberList = new List<Group>();
-            IEnumerator<Group> nonMembers = allGroups.Except( membership.MemberList ).GetEnumerator();
-            while( nonMembers.MoveNext() )
-                if( nonMembers.Current.IsLocal && nonMembers.Current.UId != member.UId )
-                    membership.NonMemberList.Add( nonMembers.Current );
-
-            if( member is Group group )
+            if( allGroups != null )
             {
-                //Group thisGroup = membership.NonMemberList.FirstOrDefault( group => group.UId == member.UId );
-                //membership.NonMemberList.Remove( thisGroup );
-                IEnumerable<GroupMembershipItem> members = groupMembershipItems.GetByGroup( group );
-                foreach( GroupMembershipItem gmi in members )
-                {
-                    if( gmi.IsMemberUser )
-                    {
-                        membership.NonMemberList.Remove( (Group)gmi.Member );
-                    }
-                }
+                membership.NonMemberList = new List<Group>();
+                IEnumerator<Group> nonMembers = allGroups.Except( membership.MemberList ).GetEnumerator();
+                while( nonMembers.MoveNext() )
+                    if( nonMembers.Current.IsLocal && nonMembers.Current.UId != member.UId )
+                        membership.NonMemberList.Add( nonMembers.Current );
 
-                List<Group> nonMembs = membership.NonMemberList;
-                List<Group> nestedMembs = membership.NestedMemberList;
-                RecurseIneligibleNonMembers( groupMembershipItems, group, ref nonMembs, ref nestedMembs );
+                if( member is Group group )
+                {
+                    //Group thisGroup = membership.NonMemberList.FirstOrDefault( group => group.UId == member.UId );
+                    //membership.NonMemberList.Remove( thisGroup );
+                    IEnumerable<GroupMembershipItem> members = groupMembershipItems.GetByGroup( group );
+                    foreach( GroupMembershipItem gmi in members )
+                        if( gmi.IsMemberUser )
+                            membership.NonMemberList.Remove( (Group)gmi.Member );
+
+                    List<Group> nonMembs = membership.NonMemberList;
+                    List<Group> nestedMembs = membership.NestedMemberList;
+                    RecurseIneligibleNonMembers( groupMembershipItems, group, ref nonMembs, ref nestedMembs );
+                }
             }
 
             return membership;
@@ -141,11 +140,11 @@ namespace Suplex.Security.Principal
             GroupEqualityComparer comparer = new GroupEqualityComparer();
 
             Stack<GroupMembershipItem> parentItems = new Stack<GroupMembershipItem>();
+
             IEnumerable<GroupMembershipItem> parents = groupMembershipItems.Where( sp => sp.MemberUId == g.UId );
             foreach( GroupMembershipItem gmi in parents )
-            {
                 parentItems.Push( gmi );
-            }
+
             if( parentItems.Count > 0 )
             {
                 while( parentItems.Count > 0 )
@@ -177,8 +176,7 @@ namespace Suplex.Security.Principal
             while( parentGroups.Count > 0 )
             {
                 Group p = parentGroups.Pop();
-                IEnumerable<GroupMembershipItem> descendants =
-                    groupMembershipItems.Where( gmi => gmi.GroupUId == p.UId && !gmi.IsMemberUser );
+                IEnumerable<GroupMembershipItem> descendants = groupMembershipItems.Where( gmi => gmi.GroupUId == p.UId && !gmi.IsMemberUser );
                 foreach( GroupMembershipItem chi in descendants )
                 {
                     Group ch = chi.Member as Group;
