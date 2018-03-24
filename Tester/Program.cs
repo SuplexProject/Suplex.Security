@@ -14,6 +14,68 @@ namespace Tester
     {
         static void Main(string[] args)
         {
+            #region foo
+            string foo = @"---
+SecureObjects:
+- UId: e724bfde-c3d5-424f-a0c6-9497958167f0
+  UniqueName: top
+  Security:
+    DaclAllowInherit: true
+    SaclAllowInherit: true
+    SaclAuditTypeFilter: SuccessAudit, FailureAudit, Information, Warning, Error
+    Dacl:
+    - UId: a86dac02-cad3-4a51-9b16-1a3b20dbab37
+      RightType: Suplex.Security.AclModel.FileSystemRight, Suplex.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+      Right: FullControl
+      Allowed: True
+      Inheritable: True
+    - UId: 7fb267d9-b4ce-4d56-a052-02aa9e9855d5
+      RightType: Suplex.Security.AclModel.FileSystemRight, Suplex.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+      Right: List, Execute
+      Allowed: False
+      Inheritable: False
+    - UId: e7ea73a3-a5ec-4f63-8461-66feec42bb12
+      RightType: Suplex.Security.AclModel.UIRight, Suplex.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+      Right: Visible, Operate
+      Allowed: True
+      Inheritable: True
+    Sacl: []
+    Results: {}
+  Children: []
+Users:
+- UId: 0bdfe71c-5663-4f7f-be8b-3884373f97be
+  Name: x
+  IsLocal: true
+  IsBuiltIn: true
+  IsEnabled: true
+- UId: 1bda1876-3281-4a67-b5de-198e9e72ad53
+  Name: y
+  IsEnabled: true
+- UId: 20d134e9-a5ac-46ef-bc7e-fa6dc210e1f9
+  Name: z
+  IsLocal: true
+  IsBuiltIn: true
+Groups:
+- UId: ff8abe51-116b-4d42-b01a-48f167f71dc7
+  Name: gx
+  IsEnabled: true
+- UId: c05c6deb-6a01-459b-9c87-916003f44429
+  Name: gy
+  IsEnabled: true
+- UId: 66f89524-cc5d-4938-9cd3-b2ce6ec6d75b
+  Name: gz
+  IsEnabled: true
+GroupMembership:
+- GroupUId: ff8abe51-116b-4d42-b01a-48f167f71dc7
+  MemberUId: 0bdfe71c-5663-4f7f-be8b-3884373f97be
+  IsMemberUser: true
+- GroupUId: ff8abe51-116b-4d42-b01a-48f167f71dc7
+  MemberUId: 1bda1876-3281-4a67-b5de-198e9e72ad53
+  IsMemberUser: true
+- GroupUId: ff8abe51-116b-4d42-b01a-48f167f71dc7
+  MemberUId: c05c6deb-6a01-459b-9c87-916003f44429";
+            #endregion
+
             SecureObject top = new SecureObject() { UniqueName = "top" };
             DiscretionaryAcl topdacl = new DiscretionaryAcl
             {
@@ -26,54 +88,48 @@ namespace Tester
             List<User> users = new List<User>
             {
                 new User{ Name = "x", IsBuiltIn = true, IsEnabled = true, IsLocal = true },
-                new User{ Name = "y", IsBuiltIn = false, IsEnabled = false, IsLocal = false },
+                new User{ Name = "y", IsBuiltIn = false, IsEnabled = true, IsLocal = false },
                 new User{ Name = "z", IsBuiltIn = true, IsEnabled = false, IsLocal = true }
             };
 
-            string foo = @"---
-Users:
-- UId: afcc9d02-0b81-463c-b4f8-782340f5b9fd
-  Name: x
-  IsLocal: true
-  IsBuiltIn: true
-  IsEnabled: true
-- UId: 946ebca3-6a65-4422-aebd-aaa38107aaef
-  Name: y
-- UId: 120f901b-1957-4fd3-bee5-68aa2c7ab40d
-  Name: z
-  IsLocal: true
-  IsBuiltIn: true
-SecureObjects:
-- Children: []
-  UniqueName: top
-  Security:
-    DaclAllowInherit: true
-    SaclAllowInherit: true
-    Dacl:
-    - UId: b19753f5-2ce6-4463-af39-0e7625b2acf6
-      RightType: Suplex.Security.AclModel.FileSystemRight, Suplex.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-      Right: FullControl
-      Allowed: True
-      Inheritable: True
-    - UId: aae5dd74-0610-49c8-8fa4-7e80cb2c78bd
-      RightType: Suplex.Security.AclModel.FileSystemRight, Suplex.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-      Right: List, Execute
-      Allowed: False
-      Inheritable: False
-    - UId: d6fc728e-8c57-4900-a57d-ae5328dc5877
-      RightType: Suplex.Security.AclModel.UIRight, Suplex.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-      Right: Visible, Operate
-      Allowed: True
-      Inheritable: True
-    Sacl: []
-    Results: {}";
+            List<Group> groups = new List<Group>
+            {
+                new Group{ Name = "gx", IsEnabled = true, IsLocal = false },
+                new Group{ Name = "gy", IsEnabled = true, IsLocal = false },
+                new Group{ Name = "gz", IsEnabled = true, IsLocal = false }
+            };
+
+            GroupMembershipItem mx = new GroupMembershipItem
+            {
+                GroupUId = groups[0].UId.Value,
+                MemberUId = users[0].UId.Value,
+                IsMemberUser = true
+            };
+            GroupMembershipItem my = new GroupMembershipItem
+            {
+                GroupUId = groups[0].UId.Value,
+                MemberUId = users[1].UId.Value,
+                IsMemberUser = true
+            };
+            GroupMembershipItem mz = new GroupMembershipItem
+            {
+                GroupUId = groups[0].UId.Value,
+                MemberUId = groups[1].UId.Value,
+                IsMemberUser = false
+            };
+            List<GroupMembershipItem> gm = new List<GroupMembershipItem>
+            {
+                mx, my, mz
+            };
 
 
 
             FileStore store = new FileStore()
             {
                 SecureObjects = new List<SecureObject>() { top },
-                Users = users
+                Users = users,
+                Groups = groups,
+                GroupMembership = gm
             };
 
             User ux = store.Users.GetByName<User>( "x" );
@@ -81,6 +137,10 @@ SecureObjects:
 
             string x = store.ToYaml();
             FileStore f = FileStore.FromYaml( x );
+
+            bool contains = f.GroupMembership.ContainsItem( mx );
+
+            bool ok = f.GroupMembership.Resolve( f.Groups, f.Users );
 
             f = FileStore.FromYaml( foo );
 

@@ -49,15 +49,22 @@ namespace Suplex.Security.Principal
         public Guid MemberUId { get; set; }
         public bool IsMemberUser { get; set; }
 
-        public bool Resolve(List<Group> groups, List<User> users)
+        public bool Resolve(List<Group> groups, List<User> users, bool force = false)
         {
-            try
+            if( Group == null || Member == null || force )
             {
-                Group = groups.GetByUId<Group>( GroupUId );
-                Member = IsMemberUser ? users.GetByUId<SecurityPrincipalBase>( MemberUId ) : groups.GetByUId<SecurityPrincipalBase>( MemberUId );
-                return true;
+                try
+                {
+                    if( Group == null || force )
+                        Group = groups.GetByUId<Group>( GroupUId );
+                    if( Member == null || force )
+                        Member = IsMemberUser ? users.GetByUId<SecurityPrincipalBase>( MemberUId ) : groups.GetByUId<SecurityPrincipalBase>( MemberUId );
+                    return true;
+                }
+                catch { return false; }
             }
-            catch { return false; }
+            else
+                return true;
         }
 
         public string ToMembershipKey()

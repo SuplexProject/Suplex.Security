@@ -7,12 +7,21 @@ namespace Suplex.Security.Principal
 {
     public static class GroupMembershipUtilities
     {
-        public static bool Contains(this IEnumerable<GroupMembershipItem> groupMembershipItems, GroupMembershipItem item)
+        public static bool Resolve(this IEnumerable<GroupMembershipItem> groupMembershipItems, List<Group> groups, List<User> users, bool force = false)
+        {
+            bool ok = true;
+            foreach( GroupMembershipItem item in groupMembershipItems )
+                ok &= item.Resolve( groups, users, force );
+
+            return ok;
+        }
+
+        public static bool ContainsItem(this IEnumerable<GroupMembershipItem> groupMembershipItems, GroupMembershipItem item)
         {
             return groupMembershipItems.Contains( item, new GroupMembershipEqualityComparer() );
         }
 
-        public static bool Contains(this IEnumerable<GroupMembershipItem> groupMembershipItems, Guid groupUId, Guid memberUId, bool isMemberUser)
+        public static bool ContainsItem(this IEnumerable<GroupMembershipItem> groupMembershipItems, Guid groupUId, Guid memberUId, bool isMemberUser)
         {
             return groupMembershipItems.Contains( new GroupMembershipItem( groupUId, memberUId, isMemberUser ), new GroupMembershipEqualityComparer() );
         }
