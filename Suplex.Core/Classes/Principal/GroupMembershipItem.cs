@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Suplex.Security.Principal
 {
@@ -12,6 +13,8 @@ namespace Suplex.Security.Principal
             Member = member;
             MemberUId = member.UId.Value;
             IsMemberUser = member is User;
+
+            Validate();
         }
 
         internal GroupMembershipItem(Guid groupUId, SecurityPrincipalBase member)
@@ -20,30 +23,55 @@ namespace Suplex.Security.Principal
             Member = member;
             MemberUId = member.UId.Value;
             IsMemberUser = member is User;
+
+            Validate();
         }
         internal GroupMembershipItem(Guid groupUId, Guid memberUId, bool isUser)
         {
             GroupUId = groupUId;
             MemberUId = memberUId;
             IsMemberUser = isUser;
+
+            Validate();
+        }
+
+        internal void Validate()
+        {
+            if( GroupUId == MemberUId )
+                throw new Exception( $"Group and Member cannot be the same: {ToString()}." );
         }
 
 
-        public Group Group { get; set; }
-        public SecurityPrincipalBase Member { get; set; }
+        public Group Group;
+        public SecurityPrincipalBase Member;
 
-        internal Guid GroupUId { get; set; }
-        internal Guid MemberUId { get; set; }
-        internal bool IsMemberUser { get; set; }
+        public Guid GroupUId { get; set; }
+        public Guid MemberUId { get; set; }
+        public bool IsMemberUser { get; set; }
 
-        public override string ToString()
+        public bool Resolve(List<Group> groups, List<User> users)
         {
-            return string.Format( "{0}/{1}", Group.Name, Member.Name );
+            try
+            {
+                Group = groups.GetByUId<Group>( GroupUId );
+                Member = IsMemberUser ? users.GetByUId<SecurityPrincipalBase>( MemberUId ) : groups.GetByUId<SecurityPrincipalBase>( MemberUId );
+                return true;
+            }
+            catch { return false; }
         }
 
         public string ToMembershipKey()
         {
-            return string.Format( "{0}_{1}", Group.UId, Member.UId );
+            return $"{GroupUId}_{MemberUId}";
+        }
+
+
+        public override string ToString()
+        {
+            if( Group != null && Member != null )
+                return $"Group: {Group.UId}/{Group.Name}, Member: {Member.UId}/{Member.Name}";
+            else
+                return ToMembershipKey();
         }
     }
 }

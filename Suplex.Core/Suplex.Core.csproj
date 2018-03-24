@@ -76,6 +76,8 @@
     <Compile Include="Classes\Principal\Group.cs" />
     <Compile Include="Classes\Principal\GroupMembershipItem.cs" />
     <Compile Include="Classes\Principal\MembershipList.cs" />
+    <Compile Include="Classes\Principal\Utilities\GroupMembershipEqualityComparer.cs" />
+    <Compile Include="Classes\Principal\Utilities\GroupMembershipUtilities.cs" />
     <Compile Include="Classes\Principal\Utilities\SecurityPrincipalUtilities.cs" />
     <Compile Include="Classes\Principal\User.cs" />
     <Compile Include="Classes\AclModel\Utilities\UtilityExtensions.cs" />
