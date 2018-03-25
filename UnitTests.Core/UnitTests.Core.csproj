@@ -67,10 +67,6 @@
       <Project>{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}</Project>
       <Name>Suplex.Security.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Suplex.Security.FileSystemDal\Suplex.Security.FileSystemDal.csproj">
-      <Project>{ec01c78d-c787-479d-85bf-e65d2424c681}</Project>
-      <Name>Suplex.Security.FileSystemDal</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

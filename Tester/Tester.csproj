@@ -58,10 +58,6 @@
       <Project>{2500b108-ff24-44b6-8beb-d0e37d0ed98e}</Project>
       <Name>Suplex.Security.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Suplex.Security.FileSystemDal\Suplex.Security.FileSystemDal.csproj">
-      <Project>{ec01c78d-c787-479d-85bf-e65d2424c681}</Project>
-      <Name>Suplex.Security.FileSystemDal</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
