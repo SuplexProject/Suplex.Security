@@ -4,7 +4,7 @@ using System.Collections.Generic;
 //using Newtonsoft.Json;
 
 using Suplex.Security.AclModel.DataAccess;
-using Suplex.Security.AclModel.DataAccess.Utilities;
+//using Suplex.Security.AclModel.DataAccess.Utilities;
 using Suplex.Security.AclModel;
 using Suplex.Security.Principal;
 
@@ -124,31 +124,31 @@ GroupMembership:
 
 
 
-            FileStore store = new FileStore()
-            {
-                SecureObjects = new List<SecureObject>() { top },
-                Users = users,
-                Groups = groups,
-                GroupMembership = gm
-            };
+            ////FileStore store = new FileStore()
+            ////{
+            ////    SecureObjects = new List<SecureObject>() { top },
+            ////    Users = users,
+            ////    Groups = groups,
+            ////    GroupMembership = gm
+            ////};
 
-            User ux = store.Users.GetByName<User>( "x" );
+            ////User ux = store.Users.GetByName<User>( "x" );
 
 
-            string x = store.ToYaml();
-            FileStore f = FileStore.FromYaml( x );
+            ////string x = store.ToYaml();
+            ////FileStore f = FileStore.FromYaml( x );
 
-            bool contains = f.GroupMembership.ContainsItem( mx );
+            ////bool contains = f.GroupMembership.ContainsItem( mx );
 
-            bool ok = f.GroupMembership.Resolve( f.Groups, f.Users );
+            ////bool ok = f.GroupMembership.Resolve( f.Groups, f.Users );
 
-            f = FileStore.FromYaml( foo );
+            ////f = FileStore.FromYaml( foo );
 
-            User u0 = new User { Name = "g" };
-            User u1 = new User { Name = "f", UId = u0.UId };
+            ////User u0 = new User { Name = "g" };
+            ////User u1 = new User { Name = "f", UId = u0.UId };
 
-            f.Dal.UpsertUser( u0 );
-            f.Dal.UpsertUser( u1 );
+            ////f.Dal.UpsertUser( u0 );
+            ////f.Dal.UpsertUser( u1 );
         }
     }
 }

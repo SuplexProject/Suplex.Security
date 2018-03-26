@@ -103,15 +103,15 @@ namespace UnitTests
             ////    }
             ////};
 
-            FileStore store = new FileStore()
-            {
-                SecureObjects = new List<SecureObject>() { top }
-            };
+            ////FileStore store = new FileStore()
+            ////{
+            ////    SecureObjects = new List<SecureObject>() { top }
+            ////};
 
-            ISecureObject found = store.Dal.GetSecureObjectByUId( ch02.UId.Value );
+            ////ISecureObject found = store.Dal.GetSecureObjectByUId( ch02.UId.Value );
 
-            string x = store.ToYaml( serializeAsJson: false );
-            FileStore f = FileStore.FromYaml( x );
+            ////string x = store.ToYaml( serializeAsJson: false );
+            ////FileStore f = FileStore.FromYaml( x );
         }
     }
 }

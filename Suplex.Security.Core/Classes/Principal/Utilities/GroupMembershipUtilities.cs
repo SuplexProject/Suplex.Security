@@ -41,6 +41,18 @@ namespace Suplex.Security.Principal
             return groupMembershipItems.Where( item => item.GroupUId == member.UId || item.Member.UId == member.UId );
         }
 
+        public static GroupMembershipItem GetByGroupAndMember(this IEnumerable<GroupMembershipItem> groupMembershipItems, GroupMembershipItem groupMembershipItem)
+        {
+            return groupMembershipItems.Single(
+                gmi => gmi.GroupUId == groupMembershipItem.GroupUId && gmi.MemberUId == groupMembershipItem.MemberUId );
+        }
+
+        public static GroupMembershipItem GetByGroupAndMemberOrDefault(this IEnumerable<GroupMembershipItem> groupMembershipItems, GroupMembershipItem groupMembershipItem)
+        {
+            return groupMembershipItems.SingleOrDefault(
+                gmi => gmi.GroupUId == groupMembershipItem.GroupUId && gmi.MemberUId == groupMembershipItem.MemberUId );
+        }
+
         public static MembershipList<SecurityPrincipalBase> GetGroupMembers(this IEnumerable<GroupMembershipItem> groupMembershipItems, Group group, List<SecurityPrincipalBase> allPrincipals = null)
         {
             MembershipList<SecurityPrincipalBase> membership = new MembershipList<SecurityPrincipalBase>();

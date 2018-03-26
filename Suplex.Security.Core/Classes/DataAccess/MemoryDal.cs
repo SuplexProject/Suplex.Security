@@ -95,6 +95,15 @@ namespace Suplex.Security.AclModel.DataAccess
         {
             throw new NotImplementedException();
         }
+
+        public GroupMembershipItem UpsertGroupMembership(GroupMembershipItem groupMembershipItem)
+        {
+            GroupMembershipItem found = Store.GroupMembership.GetByGroupAndMemberOrDefault( groupMembershipItem );
+            //if(found.GroupUId)
+        }
+
+        public void DeleteGroupMembership(GroupMembershipItem groupMembershipItem)
+        { }
         #endregion
 
 

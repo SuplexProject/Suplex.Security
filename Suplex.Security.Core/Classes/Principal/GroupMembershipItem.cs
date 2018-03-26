@@ -5,6 +5,7 @@ namespace Suplex.Security.Principal
 {
     public class GroupMembershipItem
     {
+        #region ctor
         public GroupMembershipItem() { }
         public GroupMembershipItem(Group group, SecurityPrincipalBase member)
         {
@@ -40,8 +41,9 @@ namespace Suplex.Security.Principal
             if( GroupUId == MemberUId )
                 throw new Exception( $"Group and Member cannot be the same: {ToString()}." );
         }
+        #endregion
 
-
+        //fields don't serialize
         public Group Group;
         public SecurityPrincipalBase Member;
 

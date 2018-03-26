@@ -20,6 +20,8 @@ namespace Suplex.Security.AclModel.DataAccess
 
         List<Group> GetGroupMembership(Guid principalUId);
         List<ISecurityPrincipal> GetGroupMembers(Guid groupUId);
+        GroupMembershipItem UpsertGroupMembership(GroupMembershipItem groupMembershipItem);
+        void DeleteGroupMembership(GroupMembershipItem groupMembershipItem);
 
         ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren);
         ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren);
