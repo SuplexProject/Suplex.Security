@@ -86,24 +86,33 @@ namespace Suplex.Security.AclModel.DataAccess
 
 
         #region group membership
-        public List<ISecurityPrincipal> GetGroupMembers(Guid groupUId)
+        public IEnumerable<GroupMembershipItem> GetGroupMembers(Guid groupUId)
         {
-            throw new NotImplementedException();
+            return Store.GroupMembership.GetByGroup( groupUId );
         }
 
-        public List<Group> GetGroupMembership(Guid principalUId)
+        public IEnumerable<GroupMembershipItem> GetGroupMembership(Guid memberUId)
         {
-            throw new NotImplementedException();
+            return Store.GroupMembership.GetByMember( memberUId );
         }
 
         public GroupMembershipItem UpsertGroupMembership(GroupMembershipItem groupMembershipItem)
         {
-            GroupMembershipItem found = Store.GroupMembership.GetByGroupAndMemberOrDefault( groupMembershipItem );
-            //if(found.GroupUId)
+            if( !Store.GroupMembership.ContainsItem( groupMembershipItem ) )
+                Store.GroupMembership.Add( groupMembershipItem );
+            //else //else is undefined: there's no such thing as a gm update
+
+            return groupMembershipItem;
         }
 
         public void DeleteGroupMembership(GroupMembershipItem groupMembershipItem)
-        { }
+        {
+
+            int index = Store.GroupMembership.FindIndex(
+                gmi => gmi.GroupUId == groupMembershipItem.GroupUId && gmi.MemberUId == groupMembershipItem.MemberUId );
+            if( index >= 0 )
+                Store.GroupMembership.RemoveAt( index );
+        }
         #endregion
 
 

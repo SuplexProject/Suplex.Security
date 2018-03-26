@@ -18,8 +18,8 @@ namespace Suplex.Security.AclModel.DataAccess
         Group UpsertGroup(Group group);
         void DeleteGroup(Guid groupUId);
 
-        List<Group> GetGroupMembership(Guid principalUId);
-        List<ISecurityPrincipal> GetGroupMembers(Guid groupUId);
+        IEnumerable<GroupMembershipItem> GetGroupMembers(Guid groupUId);
+        IEnumerable<GroupMembershipItem> GetGroupMembership(Guid memberUId);
         GroupMembershipItem UpsertGroupMembership(GroupMembershipItem groupMembershipItem);
         void DeleteGroupMembership(GroupMembershipItem groupMembershipItem);
 
