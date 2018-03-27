@@ -103,7 +103,7 @@ namespace Suplex.Security.AclModel.DataAccess
 
         public IEnumerable<GroupMembershipItem> GetGroupMembership(Guid memberUId)
         {
-            return Store.GroupMembership.GetGroupMembershipHierarchy( memberUId );
+            return Store.GroupMembership.GetGroupMembershipHierarchy( memberUId, Store.Groups, Store.Users );
         }
 
         public GroupMembershipItem UpsertGroupMembership(GroupMembershipItem groupMembershipItem)

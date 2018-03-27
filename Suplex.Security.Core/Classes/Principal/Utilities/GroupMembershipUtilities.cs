@@ -57,31 +57,45 @@ namespace Suplex.Security.Principal
         {
             IEnumerable<GroupMembershipItem> membership = groupMembershipItems.Where( item => item.MemberUId == memberUId );
             List<GroupMembershipItem> result = new List<GroupMembershipItem>();
+            List<GroupMembershipItem> list = new List<GroupMembershipItem>();
             foreach( GroupMembershipItem m in membership )
             {
                 m.Resolve( groups, users );
                 if( m.Group.IsEnabled )
+                {
                     result.Add( m );
+                    list.Add( m );
+                }
             }
 
-            foreach( GroupMembershipItem m in result )
+            foreach( GroupMembershipItem item in list )
             {
                 Stack<GroupMembershipItem> parentItems = new Stack<GroupMembershipItem>();
 
-                IEnumerable<GroupMembershipItem> parents = groupMembershipItems.Where( sp => sp.MemberUId == m.GroupUId );
-                result.AddRange( parents );
-
-                foreach( GroupMembershipItem gmi in parents )
-                    parentItems.Push( gmi );
+                IEnumerable<GroupMembershipItem> parents = groupMembershipItems.Where( sp => sp.MemberUId == item.GroupUId );
+                foreach( GroupMembershipItem m in parents )
+                {
+                    if( m.Resolve( groups, users ) )
+                        if( m.Group.IsEnabled )
+                        {
+                            result.Add( m );
+                            parentItems.Push( m );
+                        }
+                }
 
                 while( parentItems.Count > 0 )
                 {
                     GroupMembershipItem p = parentItems.Pop();
                     IEnumerable<GroupMembershipItem> ascendants = groupMembershipItems.Where( sp => sp.MemberUId == p.GroupUId );
-                    result.AddRange( ascendants );
-
-                    foreach( GroupMembershipItem gmi in ascendants )
-                        parentItems.Push( gmi );
+                    foreach( GroupMembershipItem m in ascendants )
+                    {
+                        if( m.Resolve( groups, users ) )
+                            if( m.Group.IsEnabled )
+                            {
+                                result.Add( m );
+                                parentItems.Push( m );
+                            }
+                    }
                 }
             }
 
