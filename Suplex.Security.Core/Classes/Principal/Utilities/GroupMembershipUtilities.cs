@@ -52,12 +52,19 @@ namespace Suplex.Security.Principal
             return list;
         }
 
-        public static IEnumerable<GroupMembershipItem> GetGroupMembershipHierarchy(this IEnumerable<GroupMembershipItem> groupMembershipItems, Guid memberUId)
+        public static IEnumerable<GroupMembershipItem> GetGroupMembershipHierarchy(this IEnumerable<GroupMembershipItem> groupMembershipItems,
+            Guid memberUId, List<Group> groups, List<User> users, bool force = false)
         {
             IEnumerable<GroupMembershipItem> membership = groupMembershipItems.Where( item => item.MemberUId == memberUId );
-            List<GroupMembershipItem> result = new List<GroupMembershipItem>( membership );
-
+            List<GroupMembershipItem> result = new List<GroupMembershipItem>();
             foreach( GroupMembershipItem m in membership )
+            {
+                m.Resolve( groups, users );
+                if( m.Group.IsEnabled )
+                    result.Add( m );
+            }
+
+            foreach( GroupMembershipItem m in result )
             {
                 Stack<GroupMembershipItem> parentItems = new Stack<GroupMembershipItem>();
 

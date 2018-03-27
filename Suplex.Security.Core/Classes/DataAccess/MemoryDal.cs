@@ -88,7 +88,7 @@ namespace Suplex.Security.AclModel.DataAccess
         #region group membership
         public IEnumerable<GroupMembershipItem> GetGroupMembers(Group group)
         {
-            return Store.GroupMembership.GetByGroup( group.UId.Value );
+            return GetGroupMembers( group.UId.Value );
         }
 
         public IEnumerable<GroupMembershipItem> GetGroupMembers(Guid groupUId)
@@ -98,12 +98,12 @@ namespace Suplex.Security.AclModel.DataAccess
 
         public IEnumerable<GroupMembershipItem> GetGroupMembership(SecurityPrincipalBase member)
         {
-            return Store.GroupMembership.GetGroupMembershipHierarchy( member.UId.Value );
+            return GetGroupMembership( member.UId.Value );
         }
 
         public IEnumerable<GroupMembershipItem> GetGroupMembership(Guid memberUId)
         {
-            return Store.GroupMembership.GetByMember( memberUId );
+            return Store.GroupMembership.GetGroupMembershipHierarchy( memberUId );
         }
 
         public GroupMembershipItem UpsertGroupMembership(GroupMembershipItem groupMembershipItem)
