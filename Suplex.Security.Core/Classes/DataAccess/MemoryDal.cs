@@ -98,7 +98,7 @@ namespace Suplex.Security.AclModel.DataAccess
 
         public IEnumerable<GroupMembershipItem> GetGroupMembership(SecurityPrincipalBase member)
         {
-            return Store.GroupMembership.GetByMember( member.UId.Value );
+            return Store.GroupMembership.GetGroupMembershipHierarchy( member.UId.Value );
         }
 
         public IEnumerable<GroupMembershipItem> GetGroupMembership(Guid memberUId)

@@ -46,11 +46,41 @@ namespace Suplex.Security.Principal
             List<GroupMembershipItem> list = groupMembershipItems.Where( item => item.MemberUId == memberUId ).ToList();
             foreach( GroupMembershipItem gmi in list )
             {
-                //List<Group> hier = new List<GroupMembershipItem> { new GroupMembershipItem {  } }
+                List<Group> hier = groupMembershipItems.GetGroupHierarchy( new Group { UId = gmi.GroupUId } );
             }
 
             return list;
         }
+
+        public static IEnumerable<GroupMembershipItem> GetGroupMembershipHierarchy(this IEnumerable<GroupMembershipItem> groupMembershipItems, Guid memberUId)
+        {
+            IEnumerable<GroupMembershipItem> membership = groupMembershipItems.Where( item => item.MemberUId == memberUId );
+            List<GroupMembershipItem> result = new List<GroupMembershipItem>( membership );
+
+            foreach( GroupMembershipItem m in membership )
+            {
+                Stack<GroupMembershipItem> parentItems = new Stack<GroupMembershipItem>();
+
+                IEnumerable<GroupMembershipItem> parents = groupMembershipItems.Where( sp => sp.MemberUId == m.GroupUId );
+                result.AddRange( parents );
+
+                foreach( GroupMembershipItem gmi in parents )
+                    parentItems.Push( gmi );
+
+                while( parentItems.Count > 0 )
+                {
+                    GroupMembershipItem p = parentItems.Pop();
+                    IEnumerable<GroupMembershipItem> ascendants = groupMembershipItems.Where( sp => sp.MemberUId == p.GroupUId );
+                    result.AddRange( ascendants );
+
+                    foreach( GroupMembershipItem gmi in ascendants )
+                        parentItems.Push( gmi );
+                }
+            }
+
+            return result;
+        }
+
 
         public static IEnumerable<GroupMembershipItem> GetByGroupOrMember(this IEnumerable<GroupMembershipItem> groupMembershipItems, SecurityPrincipalBase member)
         {
