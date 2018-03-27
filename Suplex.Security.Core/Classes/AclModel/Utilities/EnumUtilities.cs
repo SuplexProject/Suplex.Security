@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Suplex.Security.AclModel
 {
-    public static class EnumExtensions
+    public static class EnumUtilities
     {
         /// <summary>
         /// Gets the simple Tppe Name sans "Right". Ex: "Suplex.Security.RecordRight" -> "Record"

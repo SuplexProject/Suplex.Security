@@ -12,6 +12,6 @@ namespace Suplex.Security.AclModel.DataAccess
 
         public virtual List<User> Users { get; set; } = new List<User>();
         public virtual List<Group> Groups { get; set; } = new List<Group>();
-        public virtual List<GroupMembershipItem> GroupMembership { get; set; }
+        public virtual List<GroupMembershipItem> GroupMembership { get; set; } = new List<GroupMembershipItem>();
     }
 }

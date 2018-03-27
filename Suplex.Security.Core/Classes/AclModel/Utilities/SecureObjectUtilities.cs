@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Suplex.Security.AclModel
 {
-    public static class SecureObjectExtensions
+    public static class SecureObjectUtilities
     {
         public static void EvalSecurity(this ISecureObject secureObject)
         {

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Suplex.Security.Principal
 {
@@ -16,9 +12,11 @@ namespace Suplex.Security.Principal
         public virtual bool IsEnabled { get; set; } = true;     //default to true, most common use
         public virtual bool IsValid { get; set; }
 
+        public abstract bool IsUser { get; set; } //friendly prop just for databinding and such
+
         public override string ToString()
         {
-            return $"[{Name}]-[{UId}]";
+            return $"{UId}/{Name}/IsUser: {IsUser}";
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Suplex.Security.AclModel
         bool Allowed { get; set; }
         bool Inheritable { get; set; }
         Guid? InheritedFrom { get; set; }
-        Guid? SecurityPrincipalUId { get; set; }
+        Guid? TrusteeUId { get; set; }
 
         IRightInfo RightData { get; }
         void SetRight(string value);

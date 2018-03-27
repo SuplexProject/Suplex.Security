@@ -11,5 +11,6 @@ namespace Suplex.Security.Principal
         bool IsBuiltIn { get; }
         bool IsEnabled { get; set; }
         bool IsValid { get; }
+        bool IsUser { get; }
     }
 }

@@ -35,8 +35,8 @@ namespace Suplex.Security.AclModel
                         ace.Inheritable = bool.Parse( props[prop] );
                     else if( prop.Equals( nameof( ace.InheritedFrom ) ) )
                         ace.InheritedFrom = Guid.Parse( props[prop] );
-                    else if( prop.Equals( nameof( ace.SecurityPrincipalUId ) ) )
-                        ace.SecurityPrincipalUId = Guid.Parse( props[prop] );
+                    else if( prop.Equals( nameof( ace.TrusteeUId ) ) )
+                        ace.TrusteeUId = Guid.Parse( props[prop] );
                 }
             }
 

@@ -51,8 +51,8 @@
     <Compile Include="Classes\AclModel\Utilities\RightFields.cs" />
     <Compile Include="Classes\AclModel\RightInfo.cs" />
     <Compile Include="Classes\AclModel\SecureObject.cs" />
-    <Compile Include="Classes\AclModel\Utilities\AccessControlListExtensions.cs" />
-    <Compile Include="Classes\AclModel\Utilities\SecureObjectExtensions.cs" />
+    <Compile Include="Classes\AclModel\Utilities\AccessControlListUtilities.cs" />
+    <Compile Include="Classes\AclModel\Utilities\SecureObjectUtilities.cs" />
     <Compile Include="Classes\AclModel\SystemAcl.cs" />
     <Compile Include="Classes\DataAccess\Interfaces\IDataAccessLayer.cs" />
     <Compile Include="Classes\DataAccess\Interfaces\ISuplexStore.cs" />
@@ -62,7 +62,7 @@
     <Compile Include="Classes\AclModel\DiscretionaryAcl.cs" />
     <Compile Include="Classes\AclModel\Enums\AuditType.cs" />
     <Compile Include="Classes\AclModel\Enums\AuditCategory.cs" />
-    <Compile Include="Classes\AclModel\Utilities\EnumExtensions.cs" />
+    <Compile Include="Classes\AclModel\Utilities\EnumUtilities.cs" />
     <Compile Include="Classes\AclModel\AccessControlEntry.cs" />
     <Compile Include="Classes\AclModel\Interfaces\IAccessControlEntry.cs" />
     <Compile Include="Classes\AclModel\SecurityDescriptor.cs" />
@@ -79,9 +79,11 @@
     <Compile Include="Classes\Principal\MembershipList.cs" />
     <Compile Include="Classes\Principal\Utilities\GroupMembershipEqualityComparer.cs" />
     <Compile Include="Classes\Principal\Utilities\GroupMembershipUtilities.cs" />
+    <Compile Include="Classes\Principal\Utilities\SecurityPrincipalEqualityComparer.cs" />
     <Compile Include="Classes\Principal\Utilities\SecurityPrincipalUtilities.cs" />
     <Compile Include="Classes\Principal\User.cs" />
     <Compile Include="Classes\AclModel\Utilities\UtilityExtensions.cs" />
+    <Compile Include="Classes\Principal\Utilities\UserEqualityComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

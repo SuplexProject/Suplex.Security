@@ -38,17 +38,23 @@ namespace Suplex.Security.Principal
 
         public static IEnumerable<GroupMembershipItem> GetByMember(this IEnumerable<GroupMembershipItem> groupMembershipItems, SecurityPrincipalBase member)
         {
-            return groupMembershipItems.Where( item => item.Member.UId == member.UId );
+            return groupMembershipItems.Where( item => item.MemberUId == member.UId );
         }
 
         public static IEnumerable<GroupMembershipItem> GetByMember(this IEnumerable<GroupMembershipItem> groupMembershipItems, Guid memberUId)
         {
-            return groupMembershipItems.Where( item => item.Member.UId == memberUId );
+            List<GroupMembershipItem> list = groupMembershipItems.Where( item => item.MemberUId == memberUId ).ToList();
+            foreach( GroupMembershipItem gmi in list )
+            {
+                //List<Group> hier = new List<GroupMembershipItem> { new GroupMembershipItem {  } }
+            }
+
+            return list;
         }
 
         public static IEnumerable<GroupMembershipItem> GetByGroupOrMember(this IEnumerable<GroupMembershipItem> groupMembershipItems, SecurityPrincipalBase member)
         {
-            return groupMembershipItems.Where( item => item.GroupUId == member.UId || item.Member.UId == member.UId );
+            return groupMembershipItems.Where( item => item.GroupUId == member.UId || item.MemberUId == member.UId );
         }
 
         public static GroupMembershipItem GetByGroupAndMember(this IEnumerable<GroupMembershipItem> groupMembershipItems, GroupMembershipItem groupMembershipItem)

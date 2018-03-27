@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Suplex.Security.Principal
 {
     public class GroupEqualityComparer : IEqualityComparer<Group>
     {
-        #region IEqualityComparer<Group> Members
-
         public bool Equals(Group x, Group y)
         {
             return x.UId == y.UId;
@@ -15,7 +14,5 @@ namespace Suplex.Security.Principal
         {
             return obj.GetHashCode();
         }
-
-        #endregion
     }
 }

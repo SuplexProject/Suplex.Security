@@ -2,7 +2,7 @@
 
 namespace Suplex.Security.AclModel
 {
-    public static class AccessControlListExtensions
+    public static class AccessControlListUtilities
     {
         public static bool ContainsRightType<T>(this IAccessControlList acl, T rightType) where T : struct, IConvertible
         {

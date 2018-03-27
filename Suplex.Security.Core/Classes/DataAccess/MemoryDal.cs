@@ -86,9 +86,19 @@ namespace Suplex.Security.AclModel.DataAccess
 
 
         #region group membership
+        public IEnumerable<GroupMembershipItem> GetGroupMembers(Group group)
+        {
+            return Store.GroupMembership.GetByGroup( group.UId.Value );
+        }
+
         public IEnumerable<GroupMembershipItem> GetGroupMembers(Guid groupUId)
         {
             return Store.GroupMembership.GetByGroup( groupUId );
+        }
+
+        public IEnumerable<GroupMembershipItem> GetGroupMembership(SecurityPrincipalBase member)
+        {
+            return Store.GroupMembership.GetByMember( member.UId.Value );
         }
 
         public IEnumerable<GroupMembershipItem> GetGroupMembership(Guid memberUId)
@@ -100,7 +110,7 @@ namespace Suplex.Security.AclModel.DataAccess
         {
             if( !Store.GroupMembership.ContainsItem( groupMembershipItem ) )
                 Store.GroupMembership.Add( groupMembershipItem );
-            //else //else is undefined: there's no such thing as a gm update
+            //else [undefined: there's no such thing as a gm update]
 
             return groupMembershipItem;
         }
