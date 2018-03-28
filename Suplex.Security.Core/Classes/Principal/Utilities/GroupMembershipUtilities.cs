@@ -26,61 +26,94 @@ namespace Suplex.Security.Principal
             return groupMembershipItems.Contains( new GroupMembershipItem( groupUId, memberUId, isMemberUser ), new GroupMembershipEqualityComparer() );
         }
 
-        public static IEnumerable<GroupMembershipItem> GetByGroup(this IEnumerable<GroupMembershipItem> groupMembershipItems, Group group)
+        public static IEnumerable<GroupMembershipItem> GetByGroup(this IEnumerable<GroupMembershipItem> groupMembershipItems, Group group,
+            bool includeDisabledMembers, List<Group> groups, List<User> users, bool forceResolution = false)
         {
-            return groupMembershipItems.Where( item => item.GroupUId == group.UId );
+            return groupMembershipItems.GetByGroup( group.UId.Value, includeDisabledMembers, groups, users,forceResolution); ;
         }
 
-        public static IEnumerable<GroupMembershipItem> GetByGroup(this IEnumerable<GroupMembershipItem> groupMembershipItems, Guid groupUId)
+        public static IEnumerable<GroupMembershipItem> GetByGroup(this IEnumerable<GroupMembershipItem> groupMembershipItems, Guid groupUId,
+            bool includeDisabledMembers, List<Group> groups, List<User> users, bool forceResolution = false)
         {
-            return groupMembershipItems.Where( item => item.GroupUId == groupUId );
-        }
-
-        public static IEnumerable<GroupMembershipItem> GetByMember(this IEnumerable<GroupMembershipItem> groupMembershipItems, SecurityPrincipalBase member)
-        {
-            return groupMembershipItems.Where( item => item.MemberUId == member.UId );
-        }
-
-        public static IEnumerable<GroupMembershipItem> GetByMember(this IEnumerable<GroupMembershipItem> groupMembershipItems, Guid memberUId)
-        {
-            List<GroupMembershipItem> list = groupMembershipItems.Where( item => item.MemberUId == memberUId ).ToList();
-            foreach( GroupMembershipItem gmi in list )
+            if( includeDisabledMembers )
+                return groupMembershipItems.Where( item => item.GroupUId == groupUId );
+            else
             {
-                List<Group> hier = groupMembershipItems.GetGroupHierarchy( new Group { UId = gmi.GroupUId } );
-            }
+                List<GroupMembershipItem> result = new List<GroupMembershipItem>();
 
-            return list;
+                foreach( GroupMembershipItem item in groupMembershipItems )
+                    if( item.Resolve( groups, users, forceResolution ) )
+                        if( item.GroupUId == groupUId && item.Member.IsEnabled )
+                            result.Add( item );
+
+                return result;
+            }
+        }
+
+        public static IEnumerable<GroupMembershipItem> GetByMember(this IEnumerable<GroupMembershipItem> groupMembershipItems, SecurityPrincipalBase member,
+            bool includeDisabledMembers, List<Group> groups, List<User> users, bool forceResolution = false)
+        {
+            return groupMembershipItems.GetByMember( member.UId.Value, includeDisabledMembers, groups, users, forceResolution );
+        }
+
+        public static IEnumerable<GroupMembershipItem> GetByMember(this IEnumerable<GroupMembershipItem> groupMembershipItems, Guid memberUId,
+            bool includeDisabledMembers, List<Group> groups, List<User> users, bool forceResolution = false)
+        {
+            if( includeDisabledMembers )
+                return groupMembershipItems.Where( item => item.MemberUId == memberUId );
+            else
+            {
+                List<GroupMembershipItem> result = new List<GroupMembershipItem>();
+
+                foreach( GroupMembershipItem item in groupMembershipItems )
+                    if( item.Resolve( groups, users, forceResolution ) )
+                        if( item.MemberUId == memberUId && item.Group.IsEnabled )
+                            result.Add( item );
+
+                return result;
+            }
         }
 
         public static IEnumerable<GroupMembershipItem> GetGroupMembershipHierarchy(this IEnumerable<GroupMembershipItem> groupMembershipItems,
-            Guid memberUId, List<Group> groups, List<User> users, bool force = false)
+            Guid memberUId, bool includeDisabledMembership, List<Group> groups, List<User> users, bool forceResolution = false)
         {
-            IEnumerable<GroupMembershipItem> membership = groupMembershipItems.Where( item => item.MemberUId == memberUId );
             List<GroupMembershipItem> result = new List<GroupMembershipItem>();
-            List<GroupMembershipItem> list = new List<GroupMembershipItem>();
+
+            IEnumerable<GroupMembershipItem> membership = groupMembershipItems.Where( item => item.MemberUId == memberUId );
+            List<GroupMembershipItem> items = new List<GroupMembershipItem>();
             foreach( GroupMembershipItem m in membership )
             {
-                m.Resolve( groups, users );
-                if( m.Group.IsEnabled )
+                bool ok = includeDisabledMembership;
+
+                if( !ok )
+                    if( m.Resolve( groups, users, forceResolution ) )
+                        ok = m.Group.IsEnabled;
+
+                if( ok )
                 {
                     result.Add( m );
-                    list.Add( m );
+                    items.Add( m );
                 }
             }
 
-            foreach( GroupMembershipItem item in list )
+            foreach( GroupMembershipItem item in items )
             {
                 Stack<GroupMembershipItem> parentItems = new Stack<GroupMembershipItem>();
 
                 IEnumerable<GroupMembershipItem> parents = groupMembershipItems.Where( sp => sp.MemberUId == item.GroupUId );
                 foreach( GroupMembershipItem m in parents )
                 {
-                    if( m.Resolve( groups, users ) )
-                        if( m.Group.IsEnabled )
-                        {
-                            result.Add( m );
-                            parentItems.Push( m );
-                        }
+                    bool ok = includeDisabledMembership;
+
+                    if( !ok )
+                        if( m.Resolve( groups, users, forceResolution ) )
+                            ok = m.Group.IsEnabled;
+
+                    if( ok )
+                    {
+                        result.Add( m );
+                        parentItems.Push( m );
+                    }
                 }
 
                 while( parentItems.Count > 0 )
@@ -89,12 +122,17 @@ namespace Suplex.Security.Principal
                     IEnumerable<GroupMembershipItem> ascendants = groupMembershipItems.Where( sp => sp.MemberUId == p.GroupUId );
                     foreach( GroupMembershipItem m in ascendants )
                     {
-                        if( m.Resolve( groups, users ) )
-                            if( m.Group.IsEnabled )
-                            {
-                                result.Add( m );
-                                parentItems.Push( m );
-                            }
+                        bool ok = includeDisabledMembership;
+
+                        if( !ok )
+                            if( m.Resolve( groups, users, forceResolution ) )
+                                ok = m.Group.IsEnabled;
+
+                        if( ok )
+                        {
+                            result.Add( m );
+                            parentItems.Push( m );
+                        }
                     }
                 }
             }
@@ -164,7 +202,7 @@ namespace Suplex.Security.Principal
                 {
                     //Group thisGroup = membership.NonMemberList.FirstOrDefault( group => group.UId == member.UId );
                     //membership.NonMemberList.Remove( thisGroup );
-                    IEnumerable<GroupMembershipItem> members = groupMembershipItems.GetByGroup( group );
+                    IEnumerable<GroupMembershipItem> members = groupMembershipItems.GetByGroup( group, includeDisabledMembers: true, groups: null, users: null );
                     foreach( GroupMembershipItem gmi in members )
                         if( gmi.IsMemberUser )
                             membership.NonMemberList.Remove( (Group)gmi.Member );

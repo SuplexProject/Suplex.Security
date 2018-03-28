@@ -49,6 +49,10 @@ namespace Suplex.Security.AclModel.DataAccess
             int index = Store.Users.FindIndex( u => u.UId == userUId );
             if( index >= 0 )
                 Store.Users.RemoveAt( index );
+
+            for( int i = Store.GroupMembership.Count - 1; i >= 0; i-- )
+                if( Store.GroupMembership[i].IsMemberUser && Store.GroupMembership[i].MemberUId == userUId )
+                    Store.GroupMembership.RemoveAt( i );
         }
         #endregion
 
@@ -81,29 +85,34 @@ namespace Suplex.Security.AclModel.DataAccess
             int index = Store.Groups.FindIndex( g => g.UId == groupUId );
             if( index >= 0 )
                 Store.Groups.RemoveAt( index );
+
+            for( int i = Store.GroupMembership.Count - 1; i >= 0; i-- )
+                if( (!Store.GroupMembership[i].IsMemberUser && Store.GroupMembership[i].MemberUId == groupUId) ||
+                    Store.GroupMembership[i].GroupUId == groupUId )
+                    Store.GroupMembership.RemoveAt( i );
         }
         #endregion
 
 
         #region group membership
-        public IEnumerable<GroupMembershipItem> GetGroupMembers(Group group)
+        public IEnumerable<GroupMembershipItem> GetGroupMembers(Group group, bool includeDisabledMembers = false)
         {
-            return GetGroupMembers( group.UId.Value );
+            return GetGroupMembers( group.UId.Value, includeDisabledMembers );
         }
 
-        public IEnumerable<GroupMembershipItem> GetGroupMembers(Guid groupUId)
+        public IEnumerable<GroupMembershipItem> GetGroupMembers(Guid groupUId, bool includeDisabledMembers = false)
         {
-            return Store.GroupMembership.GetByGroup( groupUId );
+            return Store.GroupMembership.GetByGroup( groupUId, includeDisabledMembers, Store.Groups, Store.Users );
         }
 
-        public IEnumerable<GroupMembershipItem> GetGroupMembership(SecurityPrincipalBase member)
+        public IEnumerable<GroupMembershipItem> GetGroupMembership(SecurityPrincipalBase member, bool includeDisabledMembership = false)
         {
-            return GetGroupMembership( member.UId.Value );
+            return GetGroupMembership( member.UId.Value, includeDisabledMembership );
         }
 
-        public IEnumerable<GroupMembershipItem> GetGroupMembership(Guid memberUId)
+        public IEnumerable<GroupMembershipItem> GetGroupMembership(Guid memberUId, bool includeDisabledMembership = false)
         {
-            return Store.GroupMembership.GetGroupMembershipHierarchy( memberUId, Store.Groups, Store.Users );
+            return Store.GroupMembership.GetGroupMembershipHierarchy( memberUId, includeDisabledMembership, Store.Groups, Store.Users );
         }
 
         public GroupMembershipItem UpsertGroupMembership(GroupMembershipItem groupMembershipItem)
@@ -117,9 +126,8 @@ namespace Suplex.Security.AclModel.DataAccess
 
         public void DeleteGroupMembership(GroupMembershipItem groupMembershipItem)
         {
-
-            int index = Store.GroupMembership.FindIndex(
-                gmi => gmi.GroupUId == groupMembershipItem.GroupUId && gmi.MemberUId == groupMembershipItem.MemberUId );
+            int index = Store.GroupMembership.FindIndex( gmi =>
+                gmi.GroupUId == groupMembershipItem.GroupUId && gmi.MemberUId == groupMembershipItem.MemberUId );
             if( index >= 0 )
                 Store.GroupMembership.RemoveAt( index );
         }
