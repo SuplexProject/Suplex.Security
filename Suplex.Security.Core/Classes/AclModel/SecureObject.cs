@@ -1,23 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Suplex.Security.AclModel
 {
-    public class SecureObject : ISecureObject, ICloneable<SecureObject>
+    public class SecureObject : ISecureObject, ICloneable<SecureObject>, INotifyPropertyChanged
     {
-        public virtual Guid? UId { get; set; } = Guid.NewGuid();
-        public virtual string UniqueName { get; set; }
-        public virtual Guid? ParentUId { get; set; }
-        public virtual SecurityDescriptor Security { get; set; } = new SecurityDescriptor();
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        Guid? _uId = Guid.NewGuid();
+        string _uniqueName;
+        Guid? _parentUId;
+
+        public virtual Guid? UId { get => _uId; set => _uId = value; }
+        public virtual string UniqueName { get => _uniqueName; set => _uniqueName = value; }
+        public virtual Guid? ParentUId { get => _parentUId; set => _parentUId = value; }
+        public virtual ISecurityDescriptor Security { get; set; } = new SecurityDescriptor();
 
 
         public virtual SecureObject Parent { get; set; }
         ISecureObject ISecureObject.Parent { get => Parent; set => Parent = value as SecureObject; }
 
 
-        public List<SecureObject> Children { get; set; } = new List<SecureObject>();
-        List<ISecureObject> ISecureObject.Children
+        public virtual List<SecureObject> Children { get; set; } = new List<SecureObject>();
+        IList<ISecureObject> ISecureObject.Children
         {
             get => Children == null ? new List<ISecureObject>() : new List<ISecureObject>( Children.OfType<SecureObject>() );
             set => Children = value == null ? null : new List<SecureObject>( value?.OfType<SecureObject>() );

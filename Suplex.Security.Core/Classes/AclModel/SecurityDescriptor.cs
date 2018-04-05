@@ -2,10 +2,10 @@
 
 namespace Suplex.Security.AclModel
 {
-    public class SecurityDescriptor
+    public class SecurityDescriptor : ISecurityDescriptor
     {
         #region mirrored props
-        public bool DaclAllowInherit
+        public virtual bool DaclAllowInherit
         {
             get
             {
@@ -22,7 +22,7 @@ namespace Suplex.Security.AclModel
                 Dacl.AllowInherit = value;
             }
         }
-        public bool SaclAllowInherit
+        public virtual bool SaclAllowInherit
         {
             get
             {
@@ -39,7 +39,7 @@ namespace Suplex.Security.AclModel
                 Sacl.AllowInherit = value;
             }
         }
-        public AuditType SaclAuditTypeFilter
+        public virtual AuditType SaclAuditTypeFilter
         {
             get
             {
@@ -59,34 +59,12 @@ namespace Suplex.Security.AclModel
         #endregion
 
 
-        public DiscretionaryAcl Dacl { get; set; } = new DiscretionaryAcl();
-        public SystemAcl Sacl { get; set; } = new SystemAcl();
+        public virtual IDiscretionaryAcl Dacl { get; set; } = new DiscretionaryAcl();
+        public virtual ISystemAcl Sacl { get; set; } = new SystemAcl();
 
-        public SecurityResults Results { get; internal set; } = new SecurityResults();
-
-
-        public void Eval()
-        {
-            Dacl.Eval( Results );
-            Sacl.Eval( Results );
-        }
-        public void Eval(Type rightType)
-        {
-            Dacl.Eval( rightType, Results );
-            Sacl.Eval( rightType, Results );
-        }
-        public void Eval<T>() where T : struct, IConvertible
-        {
-            Dacl.Eval<T>( Results );
-            Sacl.Eval<T>( Results );
-        }
+        public virtual SecurityResults Results { get; internal set; } = new SecurityResults();
 
 
-        public void CopyTo(SecurityDescriptor targetSecurityDescriptor)
-        {
-            Dacl.CopyTo( targetSecurityDescriptor.Dacl );
-            Sacl.CopyTo( targetSecurityDescriptor.Sacl );
-        }
 
         public override string ToString()
         {

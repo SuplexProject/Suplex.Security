@@ -1,10 +1,25 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Suplex.Security.AclModel
 {
     public class AccessControlEntryAudit<T> : AccessControlEntry<T>, IAccessControlEntryAudit where T : struct, IConvertible
     {
-        public virtual bool Denied { get; set; }
+        new public event PropertyChangedEventHandler PropertyChanged;
+
+        bool _denied;
+        public virtual bool Denied
+        {
+            get => _denied;
+            set
+            {
+                if( value != _denied )
+                {
+                    _denied = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( Denied ) ) );
+                }
+            }
+        }
 
         new public virtual IAccessControlEntryAudit Clone(bool shallow = true)
         {

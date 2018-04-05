@@ -87,9 +87,19 @@ namespace UnitTests
             top.Children.Add( ch00 );
             top.Children.Add( ch10 );
 
-            //top.EvalSecurity();
+            top.Security.DaclAllowInherit = false;
 
-            ////bool hasExecute = top.Security.Results["FileSystem"][(int)FileSystemRight.Execute].AccessAllowed;
+            ////MemoryDal dal = new MemoryDal();
+            ////SecureObject foo = (SecureObject)dal.GetSecureObjectByUniqueName( "top", true );
+            ////top.EvalSecurity();
+
+            ////myMvvm.Prop = top.Security.Results["FileSystem"][(int)FileSystemRight.Execute].AccessAllowed;
+
+            ////class MyFormRights
+            ////{
+            ////bool ShowForm;
+            ////bool ShowOkBtn;
+            ////}
 
             ////SecureObject xx = new SecureObject
             ////{

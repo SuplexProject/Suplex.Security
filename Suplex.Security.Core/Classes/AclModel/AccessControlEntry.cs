@@ -1,26 +1,93 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Suplex.Security.AclModel
 {
-    public class AccessControlEntry<T> : IAccessControlEntry<T> where T : struct, IConvertible
+    public class AccessControlEntry<T> : INotifyPropertyChanged, IAccessControlEntry<T> where T : struct, IConvertible
     {
-        T _right;
-        private IRightInfo _rightData;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public virtual Guid? UId { get; set; } = Guid.NewGuid();
+
+        Guid? _uId = Guid.NewGuid();
+        public virtual Guid? UId
+        {
+            get => _uId;
+            set
+            {
+                if( value != _uId )
+                {
+                    _uId = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( UId ) ) );
+                }
+            }
+        }
+        T _right;
+        IRightInfo _rightData;
         public virtual T Right
         {
             get => _right;
             set
             {
-                _right = value;
-                _rightData = new RightInfo<T> { Right = value };
+                if( !value.Equals( _right ) )
+                {
+                    _right = value;
+                    _rightData = new RightInfo<T> { Right = value };
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( Right ) ) );
+                }
             }
         }
-        public virtual bool Allowed { get; set; } = true;       //default Aces are Allowed (most common usage)
-        public virtual bool Inheritable { get; set; } = true;   //default Aces are inheritable
-        public virtual Guid? InheritedFrom { get; set; }
-        public virtual Guid? TrusteeUId { get; set; }
+        bool _allowed = true;
+        public virtual bool Allowed
+        {
+            get => _allowed;
+            set
+            {
+                if( value != _allowed )
+                {
+                    _allowed = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( Allowed ) ) );
+                }
+            }
+        }
+        bool _inheritable = true;
+        public virtual bool Inheritable
+        {
+            get => _inheritable;
+            set
+            {
+                if( value != _inheritable )
+                {
+                    _inheritable = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( Inheritable ) ) );
+                }
+            }
+        }
+        Guid? _inheritedFrom;
+        public virtual Guid? InheritedFrom
+        {
+            get => _inheritedFrom;
+            set
+            {
+                if( value != _inheritedFrom )
+                {
+                    _inheritedFrom = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( InheritedFrom ) ) );
+                }
+            }
+        }
+        Guid? _trusteeUId;
+        public virtual Guid? TrusteeUId
+        {
+            get => _trusteeUId;
+            set
+            {
+                if( value != _trusteeUId )
+                {
+                    _trusteeUId = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( TrusteeUId ) ) );
+                }
+            }
+        }
 
 
         public IRightInfo RightData => _rightData;
