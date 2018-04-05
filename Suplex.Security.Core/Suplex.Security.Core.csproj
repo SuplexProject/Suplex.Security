@@ -89,6 +89,16 @@
     <Compile Include="Classes\AclModel\Utilities\UtilityExtensions.cs" />
     <Compile Include="Classes\Principal\Utilities\UserEqualityComparer.cs" />
     <Compile Include="Classes\Principal\Utilities\UtilityExtensions.cs" />
+    <Compile Include="Classes\TaskModel\Interfaces\IRole.cs" />
+    <Compile Include="Classes\TaskModel\Interfaces\ITask.cs" />
+    <Compile Include="Classes\TaskModel\Privilege.cs" />
+    <Compile Include="Classes\TaskModel\Permission.cs" />
+    <Compile Include="Classes\TaskModel\Role.cs" />
+    <Compile Include="Classes\TaskModel\Task.cs" />
+    <Compile Include="Classes\TaskModel\Utilities\PrivilegeUtilities.cs" />
+    <Compile Include="Classes\TaskModel\Utilities\PermissionUtilities.cs" />
+    <Compile Include="Classes\TaskModel\Utilities\RoleUtilities.cs" />
+    <Compile Include="Classes\TaskModel\Utilities\TaskUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

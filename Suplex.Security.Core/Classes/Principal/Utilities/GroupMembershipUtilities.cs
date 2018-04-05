@@ -7,6 +7,26 @@ namespace Suplex.Security.Principal
 {
     public static class GroupMembershipUtilities
     {
+        public static bool Resolve(this GroupMembershipItem gm, IList<Group> groups, IList<User> users, bool force = false)
+        {
+            if( gm.Group == null || gm.Member == null || force )
+            {
+                try
+                {
+                    if( gm.Group == null || force )
+                        gm.Group = groups.GetByUId<Group>( gm.GroupUId );
+
+                    if( gm.Member == null || force )
+                        gm.Member = gm.IsMemberUser ? users.GetByUId<SecurityPrincipalBase>( gm.MemberUId ) : groups.GetByUId<SecurityPrincipalBase>( gm.MemberUId );
+
+                    return gm.Group != null && gm.Member != null;
+                }
+                catch { return false; }
+            }
+            else
+                return true;
+        }
+
         public static bool Resolve(this IEnumerable<GroupMembershipItem> groupMembershipItems, List<Group> groups, List<User> users, bool force = false)
         {
             bool ok = true;

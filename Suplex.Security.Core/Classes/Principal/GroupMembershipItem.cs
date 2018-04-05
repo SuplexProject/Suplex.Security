@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Suplex.Security.Principal
 {
@@ -17,7 +16,6 @@ namespace Suplex.Security.Principal
 
             Validate();
         }
-
         internal GroupMembershipItem(Guid groupUId, SecurityPrincipalBase member)
         {
             GroupUId = groupUId;
@@ -43,6 +41,7 @@ namespace Suplex.Security.Principal
         }
         #endregion
 
+
         //fields don't serialize
         public Group Group;
         public SecurityPrincipalBase Member;
@@ -51,29 +50,10 @@ namespace Suplex.Security.Principal
         public Guid MemberUId { get; set; }
         public bool IsMemberUser { get; set; }
 
-        public bool Resolve(IList<Group> groups, IList<User> users, bool force = false)
-        {
-            if( Group == null || Member == null || force )
-            {
-                try
-                {
-                    if( Group == null || force )
-                        Group = groups.GetByUId<Group>( GroupUId );
-                    if( Member == null || force )
-                        Member = IsMemberUser ? users.GetByUId<SecurityPrincipalBase>( MemberUId ) : groups.GetByUId<SecurityPrincipalBase>( MemberUId );
-                    return true;
-                }
-                catch { return false; }
-            }
-            else
-                return true;
-        }
-
         public string ToMembershipKey()
         {
             return $"{GroupUId}_{MemberUId}";
         }
-
 
         public override string ToString()
         {
