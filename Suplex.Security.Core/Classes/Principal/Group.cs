@@ -1,12 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace Suplex.Security.Principal
 {
     public class Group : SecurityPrincipalBase
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public override bool IsUser { get { return false; } set { /*no-op*/ } }
-        public virtual byte[] Mask { get; set; }
-        public List<Group> Groups { get; set; }
+
+        private byte[] _mask;
+        public virtual byte[] Mask
+                {
+            get => _mask;
+            set
+            {
+                if(value != _mask )
+                {
+                    _mask = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UId ) ) );
+                }
+}
+        }
+
+        public ObservableCollection<Group> Groups { get; set; }
     }
 }

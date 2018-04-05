@@ -51,7 +51,7 @@ namespace Suplex.Security.Principal
         public Guid MemberUId { get; set; }
         public bool IsMemberUser { get; set; }
 
-        public bool Resolve(List<Group> groups, List<User> users, bool force = false)
+        public bool Resolve(IList<Group> groups, IList<User> users, bool force = false)
         {
             if( Group == null || Member == null || force )
             {

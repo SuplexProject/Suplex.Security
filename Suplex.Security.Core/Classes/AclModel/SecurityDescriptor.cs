@@ -1,9 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Suplex.Security.AclModel
 {
-    public class SecurityDescriptor : ISecurityDescriptor
+    public class SecurityDescriptor : ISecurityDescriptor, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         #region mirrored props
         public virtual bool DaclAllowInherit
         {
@@ -19,7 +22,11 @@ namespace Suplex.Security.AclModel
                 if( Dacl == null )
                     Dacl = new DiscretionaryAcl();
 
-                Dacl.AllowInherit = value;
+                if( value != Dacl.AllowInherit )
+                {
+                    Dacl.AllowInherit = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( DaclAllowInherit ) ) );
+                }
             }
         }
         public virtual bool SaclAllowInherit
@@ -36,7 +43,11 @@ namespace Suplex.Security.AclModel
                 if( Sacl == null )
                     Sacl = new SystemAcl();
 
-                Sacl.AllowInherit = value;
+                if( value != Sacl.AllowInherit )
+                {
+                    Sacl.AllowInherit = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( SaclAllowInherit ) ) );
+                }
             }
         }
         public virtual AuditType SaclAuditTypeFilter
@@ -53,7 +64,11 @@ namespace Suplex.Security.AclModel
                 if( Sacl == null )
                     Sacl = new SystemAcl();
 
-                Sacl.AuditTypeFilter = value;
+                if( value != Sacl.AuditTypeFilter )
+                {
+                    Sacl.AuditTypeFilter = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( SaclAuditTypeFilter ) ) );
+                }
             }
         }
         #endregion

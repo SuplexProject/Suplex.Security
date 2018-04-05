@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Suplex.Security.AclModel
+namespace Suplex.Security.Principal
 {
     public static class UtilityExtensions
     {
@@ -23,6 +23,22 @@ namespace Suplex.Security.AclModel
                     return i;
 
             return -1;
+        }
+
+        public static List<T> FindAll<T>(this IList<T> list, Predicate<T> match)
+        {
+            if( list == null )
+                throw new ArgumentNullException( nameof( list ) );
+
+            if( match == null )
+                throw new ArgumentNullException( nameof( match ) );
+
+            List<T> result = new List<T>();
+            for( int i = 0; i < list.Count; i++ )
+                if( match( list[i] ) )
+                    result.Add( list[i] );
+
+            return result;
         }
     }
 }

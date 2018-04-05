@@ -4,7 +4,6 @@ namespace Suplex.Security.AclModel
 {
     public class RightInfo<T> : IRightInfo where T : struct, IConvertible
     {
-
         public T Right { get; set; }
         public string FriendlyTypeName { get { return Right.GetFriendlyRightTypeName(); } }
         public Type RightType { get { return Right.GetType(); } }

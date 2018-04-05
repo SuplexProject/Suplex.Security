@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Suplex.Security.AclModel
 {
-    public class SystemAcl : List<IAccessControlEntryAudit>, ISystemAcl
+    public class SystemAcl : ObservableCollection<IAccessControlEntryAudit>, ISystemAcl
     {
         public bool AllowInherit { get; set; } = true;  //default ACLs allow inheritance
 

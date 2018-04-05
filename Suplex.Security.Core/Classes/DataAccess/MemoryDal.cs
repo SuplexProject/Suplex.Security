@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Suplex.Security.AclModel;
 using Suplex.Security.Principal;
 
 
@@ -154,7 +153,7 @@ namespace Suplex.Security.AclModel.DataAccess
         }
         public ISecureObject UpsertSecureObject(ISecureObject secureObject)
         {
-            List<SecureObject> list = Store.SecureObjects;
+            IList<SecureObject> list = Store.SecureObjects;
 
             if( secureObject.ParentUId.HasValue )
             {
@@ -176,7 +175,7 @@ namespace Suplex.Security.AclModel.DataAccess
 
         public void DeleteSecureObject(Guid secureObjectUId)
         {
-            List<SecureObject> list = Store.SecureObjects;
+            IList<SecureObject> list = Store.SecureObjects;
 
             SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UId == secureObjectUId );
             if( found != null )

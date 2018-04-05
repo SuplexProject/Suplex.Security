@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
@@ -10,12 +11,44 @@ namespace Suplex.Security.AclModel
         public event PropertyChangedEventHandler PropertyChanged;
 
         Guid? _uId = Guid.NewGuid();
+        public virtual Guid? UId
+        {
+            get => _uId;
+            set
+            {
+                if( value != _uId )
+                {
+                    _uId = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( UId ) ) );
+                }
+            }
+        }
         string _uniqueName;
+        public virtual string UniqueName
+        {
+            get => _uniqueName;
+            set
+            {
+                if( value != _uniqueName )
+                {
+                    _uniqueName = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( UniqueName ) ) );
+                }
+            }
+        }
         Guid? _parentUId;
-
-        public virtual Guid? UId { get => _uId; set => _uId = value; }
-        public virtual string UniqueName { get => _uniqueName; set => _uniqueName = value; }
-        public virtual Guid? ParentUId { get => _parentUId; set => _parentUId = value; }
+        public virtual Guid? ParentUId
+        {
+            get => _parentUId;
+            set
+            {
+                if( value != _parentUId )
+                {
+                    _parentUId = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( ParentUId ) ) );
+                }
+            }
+        }
         public virtual ISecurityDescriptor Security { get; set; } = new SecurityDescriptor();
 
 
@@ -23,11 +56,11 @@ namespace Suplex.Security.AclModel
         ISecureObject ISecureObject.Parent { get => Parent; set => Parent = value as SecureObject; }
 
 
-        public virtual List<SecureObject> Children { get; set; } = new List<SecureObject>();
+        public virtual ObservableCollection<SecureObject> Children { get; set; } = new ObservableCollection<SecureObject>();
         IList<ISecureObject> ISecureObject.Children
         {
-            get => Children == null ? new List<ISecureObject>() : new List<ISecureObject>( Children.OfType<SecureObject>() );
-            set => Children = value == null ? null : new List<SecureObject>( value?.OfType<SecureObject>() );
+            get => Children == null ? new ObservableCollection<ISecureObject>() : new ObservableCollection<ISecureObject>( Children.OfType<SecureObject>() );
+            set => Children = value == null ? null : new ObservableCollection<SecureObject>( value?.OfType<SecureObject>() );
         }
 
         #region Clone

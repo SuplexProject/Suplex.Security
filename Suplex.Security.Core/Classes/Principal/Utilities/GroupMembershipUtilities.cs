@@ -27,13 +27,13 @@ namespace Suplex.Security.Principal
         }
 
         public static IEnumerable<GroupMembershipItem> GetByGroup(this IEnumerable<GroupMembershipItem> groupMembershipItems, Group group,
-            bool includeDisabledMembers, List<Group> groups, List<User> users, bool forceResolution = false)
+            bool includeDisabledMembers, IList<Group> groups, IList<User> users, bool forceResolution = false)
         {
             return groupMembershipItems.GetByGroup( group.UId.Value, includeDisabledMembers, groups, users,forceResolution); ;
         }
 
         public static IEnumerable<GroupMembershipItem> GetByGroup(this IEnumerable<GroupMembershipItem> groupMembershipItems, Guid groupUId,
-            bool includeDisabledMembers, List<Group> groups, List<User> users, bool forceResolution = false)
+            bool includeDisabledMembers, IList<Group> groups, IList<User> users, bool forceResolution = false)
         {
             if( includeDisabledMembers )
                 return groupMembershipItems.Where( item => item.GroupUId == groupUId );
@@ -75,7 +75,7 @@ namespace Suplex.Security.Principal
         }
 
         public static IEnumerable<GroupMembershipItem> GetGroupMembershipHierarchy(this IEnumerable<GroupMembershipItem> groupMembershipItems,
-            Guid memberUId, bool includeDisabledMembership, List<Group> groups, List<User> users, bool forceResolution = false)
+            Guid memberUId, bool includeDisabledMembership, IList<Group> groups, IList<User> users, bool forceResolution = false)
         {
             List<GroupMembershipItem> result = new List<GroupMembershipItem>();
 

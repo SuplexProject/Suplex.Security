@@ -39,7 +39,7 @@ namespace Suplex.Security.AclModel
             return (T)found;
         }
 
-        public static void ShallowCloneTo(this List<SecureObject> source, List<SecureObject> destination)
+        public static void ShallowCloneTo(this IList<SecureObject> source, IList<SecureObject> destination)
         {
             foreach( SecureObject item in source )
             {

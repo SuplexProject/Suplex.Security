@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Suplex.Security.AclModel
 {
-    public class DiscretionaryAcl : List<IAccessControlEntry>, IDiscretionaryAcl
+    public class DiscretionaryAcl : ObservableCollection<IAccessControlEntry>, IDiscretionaryAcl
     {
         public bool AllowInherit { get; set; } = true;  //default ACLs allow inheritance
 

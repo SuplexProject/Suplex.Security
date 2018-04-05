@@ -88,6 +88,7 @@
     <Compile Include="Classes\Principal\User.cs" />
     <Compile Include="Classes\AclModel\Utilities\UtilityExtensions.cs" />
     <Compile Include="Classes\Principal\Utilities\UserEqualityComparer.cs" />
+    <Compile Include="Classes\Principal\Utilities\UtilityExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
