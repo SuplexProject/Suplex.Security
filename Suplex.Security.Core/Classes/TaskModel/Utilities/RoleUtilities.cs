@@ -61,5 +61,35 @@ namespace Suplex.Security.TaskModel
 
             return resolved;
         }
+
+        public static bool Eval(this IRole role, Guid taskUId)
+        {
+            bool ok = true;
+            bool found = false;
+
+            foreach( Privilege p in role.Privileges )
+                if( p.TaskUId == taskUId )
+                {
+                    found = true;
+                    ok &= p.Allowed;
+                }
+
+            return found ? ok : false;
+        }
+
+        public static bool Eval(this IEnumerable<IRole> roles, Guid taskUId)
+        {
+            bool ok = true;
+
+            foreach( IRole role in roles )
+                ok &= role.Eval( taskUId );
+
+            return ok;
+        }
+
+        public static IEnumerable<IRole> GetByTaskUId(this IEnumerable<IRole> roles, Guid taskUId)
+        {
+            return roles.Where( r => r.Privileges.ContainsTask( taskUId ) );
+        }
     }
 }
