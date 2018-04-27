@@ -57,6 +57,30 @@ namespace Suplex.Forms.ObjectModel.Api
 			return list;
 		}
 
+		public MembershipList<SecurityPrincipalBase> GetGroupMembers2(string groupId)
+		{
+			MembershipList<SecurityPrincipalBase> list = new MembershipList<SecurityPrincipalBase>();
+			GroupFactory groupFactory = new GroupFactory();
+			UserFactory userFactory = new UserFactory();
+
+			DataSet groupMembs = new DataSet();
+			DataSet nestedMembs = new DataSet();
+			_da.OpenConnection();
+			_da.GetDataSet( "splx.splx_api_sel_groupmembbygroup", new sSortedList( "@SPLX_GROUP_ID", groupId ), groupMembs, "groupMembs", false );
+			_da.GetDataSet( "splx.splx_api_sel_groupnestmembbygroup2", new sSortedList( "@SPLX_GROUP_ID", groupId ), nestedMembs, "nestedMembs", false );
+			_da.CloseConnection();
+			_da.NameTablesFromCompositeSelect( ref groupMembs );
+			_da.NameTablesFromCompositeSelect( ref nestedMembs );
+
+			list.MemberList.LoadSuplexObjectTable( groupMembs.Tables["GroupMembership"], userFactory, null, null );
+			list.NonMemberList.LoadSuplexObjectTable( groupMembs.Tables["GroupNonMembership"], userFactory, null, null );
+
+			list.MemberList.LoadSuplexObjectTable( nestedMembs.Tables["GroupMembership"], groupFactory, null, null );
+			list.NonMemberList.LoadSuplexObjectTable( nestedMembs.Tables["GroupNonMembership"], groupFactory, null, null );
+
+			return list;
+		}
+
 		public List<Group> GetGroupHierarchy(string groupId)
 		{
 			List<Group> groups = new List<Group>();
@@ -176,6 +200,32 @@ namespace Suplex.Forms.ObjectModel.Api
 			//}
 
 			return groups;
+		}
+
+		public List<Group> GetGroupList2()
+		{
+			List<Group> groups = new List<Group>();
+			Stack<Group> parentGroups = new Stack<Group>();
+
+			DataSet ds = _da.GetDataSet( "splx.splx_api_sel_groups2", null );
+
+			DataTable groupsTable = ds.Tables[0];
+			GroupFactory factory = new GroupFactory();
+			//factory.ColumnPrefix = "PARENT_";
+
+			DataRow[] parents = groupsTable.Select(); //"PARENT_SPLX_GROUP_ID IS NULL"
+			if( parents.Length > 0 )
+			{
+				Stack<DataRow> parentRows = new Stack<DataRow>();
+				foreach( DataRow r in parents )
+				{
+					Group g = factory.CreateObject( r );
+					parentGroups.Push( g );
+					groups.Add( g );
+				}
+			}
+
+            return groups;
 		}
 		#endregion
 

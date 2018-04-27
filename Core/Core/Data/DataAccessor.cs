@@ -67,6 +67,7 @@ namespace Suplex.Data
 			SqlConnection sqlConn = new SqlConnection( _connectionString );
 			SqlCommand sqlCmd = new SqlCommand( storedProcedureName, sqlConn );
 			sqlCmd.CommandType = CommandType.StoredProcedure;
+            sqlCmd.CommandTimeout = 600;
 			try
 			{
 				sqlConn.Open();
@@ -86,7 +87,8 @@ namespace Suplex.Data
 		{
 			SqlConnection sqlConn = new SqlConnection( _connectionString );
 			SqlCommand sqlCmd = new SqlCommand( storedProcedureName, sqlConn );
-			sqlCmd.CommandType = CommandType.StoredProcedure;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
+            sqlCmd.CommandTimeout = 600;
 
 			if( commandParameters != null )
 			{
@@ -150,7 +152,8 @@ namespace Suplex.Data
 
 			System.Data.SqlClient.SqlCommand sqlCmd = new System.Data.SqlClient.SqlCommand();
 			sqlCmd.CommandType = CommandType.StoredProcedure;
-			if( autoManageSqlConnection ) { this.OpenConnection(); } //added 11/12/04, //06072006: added autoManageSqlConnection
+            sqlCmd.CommandTimeout = 600;
+            if( autoManageSqlConnection ) { this.OpenConnection(); } //added 11/12/04, //06072006: added autoManageSqlConnection
 			sqlCmd.Connection = this.Connection; //openConnection(); //11/12/04
 			if( trans != null ) { sqlCmd.Transaction = trans; }
 			sqlCmd.CommandText = storedProcedureName;
@@ -243,9 +246,10 @@ namespace Suplex.Data
 			sqlCmd.Connection = this.Connection;
 			if( trans != null ) { sqlCmd.Transaction = trans; }
 			sqlCmd.CommandText = sql;
+            sqlCmd.CommandTimeout = 600;
 
-			try
-			{
+            try
+            {
 				sqlCmd.ExecuteNonQuery();
 			}
 			catch( SqlException sqlex )
@@ -278,7 +282,8 @@ namespace Suplex.Data
 
 			SqlCommand sqlCmd = new SqlCommand( storedProcedureName, sqlConn );
 			sqlCmd.CommandType = CommandType.StoredProcedure;
-			if( trans != null ) { sqlCmd.Transaction = trans; }
+            sqlCmd.CommandTimeout = 600;
+            if( trans != null ) { sqlCmd.Transaction = trans; }
 
 			if( commandParameters != null )
 			{
@@ -333,7 +338,8 @@ namespace Suplex.Data
 
 			SqlCommand sqlCmd = new SqlCommand( storedProcedureName, sqlConn );
 			sqlCmd.CommandType = CommandType.StoredProcedure;
-			if( trans != null ) { sqlCmd.Transaction = trans; }
+            sqlCmd.CommandTimeout = 600;
+            if( trans != null ) { sqlCmd.Transaction = trans; }
 
 			if( commandParameters != null )
 			{
@@ -396,8 +402,9 @@ namespace Suplex.Data
 			OpenConnection();
 			SqlCommand sqlCmd = new SqlCommand( storedProcedureName, _sqlConn );
 			sqlCmd.CommandType = CommandType.StoredProcedure;
+            sqlCmd.CommandTimeout = 600;
 
-			if( commandParameters != null )
+            if( commandParameters != null )
 			{
 				foreach( DictionaryEntry cmdParm in commandParameters )
 				{
@@ -431,8 +438,9 @@ namespace Suplex.Data
 			this.OpenConnection();
 			SqlCommand sqlCmd = new SqlCommand( storedProcedureName, this.Connection );
 			sqlCmd.CommandType = CommandType.StoredProcedure;
-			//sqlCmd.Parameters.Add( primaryKeyName, primaryKeyValue );	//06072006: depredated in 2.0
-			sqlCmd.Parameters.AddWithValue( primaryKeyName, primaryKeyValue );
+            sqlCmd.CommandTimeout = 600;
+            //sqlCmd.Parameters.Add( primaryKeyName, primaryKeyValue );	//06072006: depredated in 2.0
+            sqlCmd.Parameters.AddWithValue( primaryKeyName, primaryKeyValue );
 
 			try
 			{
