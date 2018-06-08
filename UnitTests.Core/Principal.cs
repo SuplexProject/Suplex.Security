@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NUnit.Framework;
 
 using Suplex.Security.AclModel.DataAccess;
@@ -64,9 +65,9 @@ namespace UnitTests
             g0 = new Group { Name = "g0" };
             g1 = new Group { Name = "g1" };
             g2 = new Group { Name = "g2" };
-            g3 = new Group { Name = "g3", IsEnabled = false };
-            g4 = new Group { Name = "g4" };
-            g5 = new Group { Name = "g5" };
+            g3 = new Group { Name = "g3", IsLocal = true, IsEnabled = false };
+            g4 = new Group { Name = "g4", IsLocal = true };
+            g5 = new Group { Name = "g5", IsLocal = true };
             _dal.UpsertGroup( g0 );
             _dal.UpsertGroup( g1 );
             _dal.UpsertGroup( g2 );
@@ -197,6 +198,25 @@ namespace UnitTests
         public void GetGroupMembership()
         {
             List<GroupMembershipItem> m = _dal.GetGroupMembership( u4 ).ToList();
+            //m.Resolve( _store.Groups, _store.Users );
+        }
+
+        [Test]
+        [TestCase( true )]
+        [TestCase( false )]
+        [Category( "GroupMembership" )]
+        public void GetGroupMembershipList(bool includeDisabledMembership = true)
+        {
+            MembershipList<SecurityPrincipalBase> m = _dal.GetGroupMembershipList( g0, includeDisabledMembership: includeDisabledMembership );
+        }
+
+        [Test]
+        [TestCase( true )]
+        [TestCase( false )]
+        [Category( "GroupMembership" )]
+        public void GetGroupMembershipListOf(bool includeDisabledMembership = false)
+        {
+            MembershipList<Group> m = _dal.GetGroupMembershipListOf( g4, includeDisabledMembership );
             //m.Resolve( _store.Groups, _store.Users );
         }
         #endregion

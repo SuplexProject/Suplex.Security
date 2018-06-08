@@ -141,6 +141,17 @@ namespace Suplex.Security.AclModel.DataAccess
             if( index >= 0 )
                 Store.GroupMembership.RemoveAt( index );
         }
+
+
+        public MembershipList<SecurityPrincipalBase> GetGroupMembershipList(Group group, bool includeDisabledMembership = false)
+        {
+            return Store.GroupMembership.GetGroupMembers( group, includeDisabledMembership, Store.Groups, Store.Users );
+        }
+
+        public MembershipList<Group> GetGroupMembershipListOf(SecurityPrincipalBase member, bool includeDisabledMembership = true)
+        {
+            return Store.GroupMembership.GetMemberOf( member, includeDisabledMembership, Store.Groups );
+        }
         #endregion
 
 

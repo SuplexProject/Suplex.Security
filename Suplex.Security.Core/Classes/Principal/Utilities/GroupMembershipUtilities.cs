@@ -17,7 +17,9 @@ namespace Suplex.Security.Principal
                         gm.Group = groups.GetByUId<Group>( gm.GroupUId );
 
                     if( gm.Member == null || force )
-                        gm.Member = gm.IsMemberUser ? users.GetByUId<SecurityPrincipalBase>( gm.MemberUId ) : groups.GetByUId<SecurityPrincipalBase>( gm.MemberUId );
+                        gm.Member = gm.IsMemberUser ?
+                            users != null ? users.GetByUId<SecurityPrincipalBase>( gm.MemberUId ) : null :
+                            groups.GetByUId<SecurityPrincipalBase>( gm.MemberUId );
 
                     return gm.Group != null && gm.Member != null;
                 }
@@ -49,7 +51,7 @@ namespace Suplex.Security.Principal
         public static IEnumerable<GroupMembershipItem> GetByGroup(this IEnumerable<GroupMembershipItem> groupMembershipItems, Group group,
             bool includeDisabledMembers, IList<Group> groups, IList<User> users, bool forceResolution = false)
         {
-            return groupMembershipItems.GetByGroup( group.UId.Value, includeDisabledMembers, groups, users,forceResolution); ;
+            return groupMembershipItems.GetByGroup( group.UId.Value, includeDisabledMembers, groups, users, forceResolution ); ;
         }
 
         public static IEnumerable<GroupMembershipItem> GetByGroup(this IEnumerable<GroupMembershipItem> groupMembershipItems, Guid groupUId,
@@ -178,21 +180,39 @@ namespace Suplex.Security.Principal
                 gmi => gmi.GroupUId == groupMembershipItem.GroupUId && gmi.MemberUId == groupMembershipItem.MemberUId );
         }
 
-        public static MembershipList<SecurityPrincipalBase> GetGroupMembers(this IEnumerable<GroupMembershipItem> groupMembershipItems, Group group, List<SecurityPrincipalBase> allPrincipals = null)
+        public static MembershipList<SecurityPrincipalBase> GetGroupMembers(this IEnumerable<GroupMembershipItem> groupMembershipItems, Group group, bool includeDisabledMembership = false,
+            IList<Group> groups = null, IList<User> users = null)
         {
             MembershipList<SecurityPrincipalBase> membership = new MembershipList<SecurityPrincipalBase>();
 
-            foreach( GroupMembershipItem item in groupMembershipItems )
-                if( item.GroupUId == group.UId && item.Member.IsEnabled )
-                    membership.MemberList.Add( item.Member );
+            foreach( GroupMembershipItem gmi in groupMembershipItems )
+                if( gmi.GroupUId == group.UId )
+                {
+                    gmi.Resolve( groups, users );
 
-            if( allPrincipals != null )
+                    if( gmi.Member.IsEnabled || includeDisabledMembership )
+                        membership.MemberList.Add( gmi.Member );
+                }
+
+            if( groups != null || users != null )
             {
                 membership.NonMemberList = new List<SecurityPrincipalBase>();
-                IEnumerator<SecurityPrincipalBase> nonMembers = allPrincipals.Except( membership.MemberList ).GetEnumerator();
-                while( nonMembers.MoveNext() )
-                    if( nonMembers.Current.UId != group.UId && nonMembers.Current.IsEnabled )
-                        membership.NonMemberList.Add( nonMembers.Current );
+
+                if( groups != null )
+                {
+                    IEnumerator<SecurityPrincipalBase> nonMembers = groups.Except( membership.MemberList ).GetEnumerator();
+                    while( nonMembers.MoveNext() )
+                        if( nonMembers.Current.UId != group.UId && (nonMembers.Current.IsEnabled || includeDisabledMembership) )
+                            membership.NonMemberList.Add( nonMembers.Current );
+                }
+
+                if( users != null )
+                {
+                    IEnumerator<SecurityPrincipalBase> nonMembers = users.Except( membership.MemberList ).GetEnumerator();
+                    while( nonMembers.MoveNext() )
+                        if( nonMembers.Current.UId != group.UId && (nonMembers.Current.IsEnabled || includeDisabledMembership) )
+                            membership.NonMemberList.Add( nonMembers.Current );
+                }
 
                 List<SecurityPrincipalBase> nonMembs = membership.NonMemberList;
                 List<SecurityPrincipalBase> nestedMembs = membership.NestedMemberList;
@@ -202,30 +222,44 @@ namespace Suplex.Security.Principal
             return membership;
         }
 
-        public static MembershipList<Group> GetMemberOf(this IEnumerable<GroupMembershipItem> groupMembershipItems, SecurityPrincipalBase member, List<Group> allGroups = null)
+        public static MembershipList<Group> GetMemberOf(this IEnumerable<GroupMembershipItem> groupMembershipItems, SecurityPrincipalBase member, bool? includeDisabledMembership, IList<Group> groups)
         {
+            if( !includeDisabledMembership.HasValue )
+                includeDisabledMembership = true;
+
             MembershipList<Group> membership = new MembershipList<Group>();
 
-            foreach( GroupMembershipItem item in groupMembershipItems )
-                if( item.Member.UId == member.UId )
-                    membership.MemberList.Add( item.Group );
+            foreach( GroupMembershipItem gmi in groupMembershipItems )
+            {
+                if( gmi.MemberUId == member.UId )
+                {
+                    gmi.Resolve( groups, null );
 
-            if( allGroups != null )
+                    if( gmi.Member.IsEnabled || includeDisabledMembership.Value )
+                        membership.MemberList.Add( gmi.Group );
+                }
+            }
+
+            if( groups != null )
             {
                 membership.NonMemberList = new List<Group>();
-                IEnumerator<Group> nonMembers = allGroups.Except( membership.MemberList ).GetEnumerator();
+                IEnumerator<Group> nonMembers = groups.Except( membership.MemberList ).GetEnumerator();
                 while( nonMembers.MoveNext() )
-                    if( nonMembers.Current.IsLocal && nonMembers.Current.UId != member.UId )
+                    if( nonMembers.Current.IsLocal && nonMembers.Current.UId != member.UId && (nonMembers.Current.IsEnabled || includeDisabledMembership.Value) )
                         membership.NonMemberList.Add( nonMembers.Current );
 
                 if( member is Group group )
                 {
                     //Group thisGroup = membership.NonMemberList.FirstOrDefault( group => group.UId == member.UId );
                     //membership.NonMemberList.Remove( thisGroup );
-                    IEnumerable<GroupMembershipItem> members = groupMembershipItems.GetByGroup( group, includeDisabledMembers: true, groups: null, users: null );
+                    IEnumerable<GroupMembershipItem> members = groupMembershipItems.GetByGroup( group, includeDisabledMembers: includeDisabledMembership.Value, groups: null, users: null );
                     foreach( GroupMembershipItem gmi in members )
-                        if( gmi.IsMemberUser )
+                        if( !gmi.IsMemberUser )
+                        {
+                            gmi.Resolve( groups, null );
+
                             membership.NonMemberList.Remove( (Group)gmi.Member );
+                        }
 
                     List<Group> nonMembs = membership.NonMemberList;
                     List<Group> nestedMembs = membership.NestedMemberList;
