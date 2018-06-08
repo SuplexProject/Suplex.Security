@@ -75,11 +75,11 @@ namespace Suplex.Security.AclModel.DataAccess
             {
                 Store.Groups[index] = group;
 
-                if( group.IsLocal )
+                if( !group.IsLocal )
                 {
-                    IEnumerable<GroupMembershipItem> gm = GetGroupMembers( group, includeDisabledMembers: true );
-                    foreach( GroupMembershipItem gmi in gm )
-                        DeleteGroupMembership( gmi );
+                    for( int i = Store.GroupMembership.Count - 1; i >= 0; i-- )
+                        if( Store.GroupMembership[i].GroupUId == group.UId )
+                            Store.GroupMembership.RemoveAt( i );
                 }
             }
             else
@@ -127,9 +127,12 @@ namespace Suplex.Security.AclModel.DataAccess
 
         public GroupMembershipItem UpsertGroupMembership(GroupMembershipItem groupMembershipItem)
         {
-            if( !Store.GroupMembership.ContainsItem( groupMembershipItem ) )
-                Store.GroupMembership.Add( groupMembershipItem );
-            //else [undefined: there's no such thing as a gm update]
+            groupMembershipItem.Resolve( Store.Groups, null );
+
+            if( groupMembershipItem.Group.IsLocal )
+                if( !Store.GroupMembership.ContainsItem( groupMembershipItem ) )
+                    Store.GroupMembership.Add( groupMembershipItem );
+                //else [undefined: there's no such thing as a gm update]
 
             return groupMembershipItem;
         }
