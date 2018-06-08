@@ -72,9 +72,20 @@ namespace Suplex.Security.AclModel.DataAccess
         {
             int index = Store.Groups.FindIndex( g => g.UId == group.UId );
             if( index >= 0 )
+            {
                 Store.Groups[index] = group;
+
+                if( group.IsLocal )
+                {
+                    IEnumerable<GroupMembershipItem> gm = GetGroupMembers( group, includeDisabledMembers: true );
+                    foreach( GroupMembershipItem gmi in gm )
+                        DeleteGroupMembership( gmi );
+                }
+            }
             else
+            {
                 Store.Groups.Add( group );
+            }
 
             return group;
         }
