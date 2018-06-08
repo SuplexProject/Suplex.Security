@@ -23,6 +23,7 @@ namespace Suplex.Security.AclModel
                 }
             }
         }
+
         string _uniqueName;
         public virtual string UniqueName
         {
@@ -36,6 +37,21 @@ namespace Suplex.Security.AclModel
                 }
             }
         }
+
+        bool _isEnabled;
+        public virtual bool IsEnabled
+        {
+            get => _isEnabled;
+            set
+            {
+                if( value != _isEnabled )
+                {
+                    _isEnabled = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( IsEnabled ) ) );
+                }
+            }
+        }
+
         Guid? _parentUId;
         public virtual Guid? ParentUId
         {
@@ -49,6 +65,7 @@ namespace Suplex.Security.AclModel
                 }
             }
         }
+
         public virtual ISecurityDescriptor Security { get; set; } = new SecurityDescriptor();
 
 
