@@ -7,6 +7,7 @@ namespace Suplex.Security.AclModel
     {
         Guid? UId { get; set; }
         string UniqueName { get; set; }
+        bool IsEnabled { get; set; }
         Guid? ParentUId { get; set; }
         ISecureObject Parent { get; set; }
         IList<ISecureObject> Children { get; set; }

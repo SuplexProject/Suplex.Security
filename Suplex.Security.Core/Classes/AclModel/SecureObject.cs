@@ -38,7 +38,7 @@ namespace Suplex.Security.AclModel
             }
         }
 
-        bool _isEnabled;
+        bool _isEnabled = true;
         public virtual bool IsEnabled
         {
             get => _isEnabled;

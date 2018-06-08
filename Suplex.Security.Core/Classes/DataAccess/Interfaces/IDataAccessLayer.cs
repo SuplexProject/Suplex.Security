@@ -22,8 +22,12 @@ namespace Suplex.Security.AclModel.DataAccess
         GroupMembershipItem UpsertGroupMembership(GroupMembershipItem groupMembershipItem);
         void DeleteGroupMembership(GroupMembershipItem groupMembershipItem);
 
-        ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren);
-        ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren);
+        MembershipList<SecurityPrincipalBase> GetGroupMembershipList(Group group, bool includeDisabledMembership = false);
+        MembershipList<Group> GetGroupMembershipListOf(SecurityPrincipalBase member, bool includeDisabledMembership = true);
+
+
+        ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren, bool includeDisabled = false);
+        ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren, bool includeDisabled = false);
         ISecureObject UpsertSecureObject(ISecureObject secureObject);
         void DeleteSecureObject(Guid secureObjectUId);
     }

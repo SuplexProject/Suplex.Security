@@ -156,18 +156,18 @@ namespace Suplex.Security.AclModel.DataAccess
 
 
         #region secure objects
-        public ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren = false)
+        public ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren = false, bool includeDisabled = false)
         {
-            SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UId == secureObjectUId );
+            SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UId == secureObjectUId && (o.IsEnabled || includeDisabled) );
             if( found != null && !includeChildren )
                 found.Children = null;
 
             return found;
         }
 
-        public ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren = true)
+        public ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren = true, bool includeDisabled = false)
         {
-            SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UniqueName.Equals( uniqueName, StringComparison.OrdinalIgnoreCase ) );
+            SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UniqueName.Equals( uniqueName, StringComparison.OrdinalIgnoreCase ) && (o.IsEnabled || includeDisabled) );
             if( found != null && !includeChildren )
                 found.Children = null;
 
