@@ -207,7 +207,7 @@ namespace UnitTests
         [Category( "GroupMembership" )]
         public void GetGroupMembershipList(bool includeDisabledMembership = true)
         {
-            MembershipList<SecurityPrincipalBase> m = _dal.GetGroupMembershipList( g0, includeDisabledMembership: includeDisabledMembership );
+            MembershipList<SecurityPrincipalBase> m = _dal.GetGroupMembershipList( g0, includeDisabledMembership );
         }
 
         [Test]
@@ -217,7 +217,42 @@ namespace UnitTests
         public void GetGroupMembershipListOf(bool includeDisabledMembership = false)
         {
             MembershipList<Group> m = _dal.GetGroupMembershipListOf( g4, includeDisabledMembership );
-            //m.Resolve( _store.Groups, _store.Users );
+        }
+
+        [Test]
+        [Category( "GroupMembership" )]
+        public void UpsertGroupMembership()
+        {
+            Group lg0 = new Group { Name = "lg0", IsLocal = true };
+            Group lg1 = new Group { Name = "lg1", IsLocal = true };
+            Group lg2 = new Group { Name = "lg2", IsLocal = true };
+            Group lg3 = new Group { Name = "lg3", IsLocal = true, IsEnabled = false };
+            Group lg4 = new Group { Name = "lg4", IsLocal = true };
+            Group lg5 = new Group { Name = "lg5", IsLocal = true };
+            _dal.UpsertGroup( lg0 );
+            _dal.UpsertGroup( lg1 );
+            _dal.UpsertGroup( lg2 );
+            _dal.UpsertGroup( lg3 );
+            _dal.UpsertGroup( lg4 );
+            _dal.UpsertGroup( lg5 );
+
+            GroupMembershipItem lg0g1 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = g1.UId.Value };
+            GroupMembershipItem lg0g2 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = g2.UId.Value };
+            GroupMembershipItem lg2g3 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = g3.UId.Value };
+            GroupMembershipItem lg2g4 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = g4.UId.Value };
+            _dal.UpsertGroupMembership( lg0g1 );
+            _dal.UpsertGroupMembership( lg0g2 );
+            _dal.UpsertGroupMembership( lg2g3 );
+            _dal.UpsertGroupMembership( lg2g4 );
+
+            List<GroupMembershipItem> m = _dal.GetGroupMembers( lg0 ).ToList();
+            Assert.AreEqual( 3, m.Count );
+
+            lg0.IsLocal = false;
+            _dal.UpsertGroup( lg0 );
+            m = _dal.GetGroupMembers( lg0 ).ToList();
+
+            Assert.AreEqual( 0, m.Count );
         }
         #endregion
     }
