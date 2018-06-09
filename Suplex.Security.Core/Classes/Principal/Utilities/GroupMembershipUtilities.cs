@@ -225,7 +225,7 @@ namespace Suplex.Security.Principal
         public static MembershipList<Group> GetMemberOf(this IEnumerable<GroupMembershipItem> groupMembershipItems, SecurityPrincipalBase member, bool? includeDisabledMembership, IList<Group> groups)
         {
             if( !includeDisabledMembership.HasValue )
-                includeDisabledMembership = true;
+                includeDisabledMembership = false;
 
             MembershipList<Group> membership = new MembershipList<Group>();
 
@@ -235,7 +235,7 @@ namespace Suplex.Security.Principal
                 {
                     gmi.Resolve( groups, null );
 
-                    if( gmi.Member.IsEnabled || includeDisabledMembership.Value )
+                    if( gmi.Group.IsEnabled || includeDisabledMembership.Value )
                         membership.MemberList.Add( gmi.Group );
                 }
             }

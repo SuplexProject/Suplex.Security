@@ -132,9 +132,18 @@ namespace Suplex.Security.AclModel.DataAccess
             if( groupMembershipItem.Group.IsLocal )
                 if( !Store.GroupMembership.ContainsItem( groupMembershipItem ) )
                     Store.GroupMembership.Add( groupMembershipItem );
-                //else [undefined: there's no such thing as a gm update]
+            //else [undefined: there's no such thing as a gm update]
 
             return groupMembershipItem;
+        }
+
+        public List<GroupMembershipItem> UpsertGroupMembership(List<GroupMembershipItem> groupMembershipItems)
+        {
+            List<GroupMembershipItem> gmis = new List<GroupMembershipItem>();
+            foreach( GroupMembershipItem gmi in groupMembershipItems )
+                gmis.Add( UpsertGroupMembership( gmi ) );
+
+            return gmis;
         }
 
         public void DeleteGroupMembership(GroupMembershipItem groupMembershipItem)
@@ -151,7 +160,7 @@ namespace Suplex.Security.AclModel.DataAccess
             return Store.GroupMembership.GetGroupMembers( group, includeDisabledMembership, Store.Groups, Store.Users );
         }
 
-        public MembershipList<Group> GetGroupMembershipListOf(SecurityPrincipalBase member, bool includeDisabledMembership = true)
+        public MembershipList<Group> GetGroupMembershipListOf(SecurityPrincipalBase member, bool includeDisabledMembership = false)
         {
             return Store.GroupMembership.GetMemberOf( member, includeDisabledMembership, Store.Groups );
         }

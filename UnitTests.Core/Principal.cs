@@ -62,8 +62,8 @@ namespace UnitTests
             _dal.UpsertUser( u4 );
             _dal.UpsertUser( u5 );
 
-            g0 = new Group { Name = "g0" };
-            g1 = new Group { Name = "g1" };
+            g0 = new Group { Name = "g0", IsLocal = true };
+            g1 = new Group { Name = "g1", IsEnabled = false };
             g2 = new Group { Name = "g2" };
             g3 = new Group { Name = "g3", IsLocal = true, IsEnabled = false };
             g4 = new Group { Name = "g4", IsLocal = true };
@@ -79,6 +79,7 @@ namespace UnitTests
             g0g2 = new GroupMembershipItem { GroupUId = g0.UId.Value, MemberUId = g2.UId.Value };
             g2g3 = new GroupMembershipItem { GroupUId = g2.UId.Value, MemberUId = g3.UId.Value };
             g2g4 = new GroupMembershipItem { GroupUId = g2.UId.Value, MemberUId = g4.UId.Value };
+            g2g4 = new GroupMembershipItem { GroupUId = g3.UId.Value, MemberUId = g4.UId.Value };
             _dal.UpsertGroupMembership( g0g1 );
             _dal.UpsertGroupMembership( g0g2 );
             _dal.UpsertGroupMembership( g2g3 );
@@ -208,6 +209,17 @@ namespace UnitTests
         public void GetGroupMembershipList(bool includeDisabledMembership = true)
         {
             MembershipList<SecurityPrincipalBase> m = _dal.GetGroupMembershipList( g0, includeDisabledMembership );
+
+            if( includeDisabledMembership )
+            {
+                Assert.AreEqual( 3, m.MemberList.Count );
+                Assert.AreEqual( 8, m.NonMemberList.Count );
+            }
+            else
+            {
+                Assert.AreEqual( 2, m.MemberList.Count );
+                Assert.AreEqual( 6, m.NonMemberList.Count );
+            }
         }
 
         [Test]
@@ -217,6 +229,17 @@ namespace UnitTests
         public void GetGroupMembershipListOf(bool includeDisabledMembership = false)
         {
             MembershipList<Group> m = _dal.GetGroupMembershipListOf( g4, includeDisabledMembership );
+
+            if( includeDisabledMembership )
+            {
+                Assert.AreEqual( 1, m.MemberList.Count );
+                Assert.AreEqual( 2, m.NonMemberList.Count );
+            }
+            else
+            {
+                Assert.AreEqual( 0, m.MemberList.Count );
+                Assert.AreEqual( 2, m.NonMemberList.Count );
+            }
         }
 
         [Test]
@@ -236,10 +259,10 @@ namespace UnitTests
             _dal.UpsertGroup( lg4 );
             _dal.UpsertGroup( lg5 );
 
-            GroupMembershipItem lg0g1 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = g1.UId.Value };
-            GroupMembershipItem lg0g2 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = g2.UId.Value };
-            GroupMembershipItem lg2g3 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = g3.UId.Value };
-            GroupMembershipItem lg2g4 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = g4.UId.Value };
+            GroupMembershipItem lg0g1 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = lg1.UId.Value };
+            GroupMembershipItem lg0g2 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = lg2.UId.Value };
+            GroupMembershipItem lg2g3 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = lg3.UId.Value };
+            GroupMembershipItem lg2g4 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = lg4.UId.Value };
             _dal.UpsertGroupMembership( lg0g1 );
             _dal.UpsertGroupMembership( lg0g2 );
             _dal.UpsertGroupMembership( lg2g3 );
