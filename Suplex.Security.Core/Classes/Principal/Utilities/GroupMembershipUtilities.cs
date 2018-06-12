@@ -18,7 +18,7 @@ namespace Suplex.Security.Principal
 
                     if( gm.Member == null || force )
                         gm.Member = gm.IsMemberUser ?
-                            users != null ? users.GetByUId<SecurityPrincipalBase>( gm.MemberUId ) : null :
+                            users?.GetByUId<SecurityPrincipalBase>( gm.MemberUId ) :
                             groups.GetByUId<SecurityPrincipalBase>( gm.MemberUId );
 
                     return gm.Group != null && gm.Member != null;
@@ -29,7 +29,7 @@ namespace Suplex.Security.Principal
                 return true;
         }
 
-        public static bool Resolve(this IEnumerable<GroupMembershipItem> groupMembershipItems, List<Group> groups, List<User> users, bool force = false)
+        public static bool Resolve(this IEnumerable<GroupMembershipItem> groupMembershipItems, IList<Group> groups, IList<User> users, bool force = false)
         {
             bool ok = true;
             foreach( GroupMembershipItem item in groupMembershipItems )
@@ -216,13 +216,14 @@ namespace Suplex.Security.Principal
 
                 List<SecurityPrincipalBase> nonMembs = membership.NonMemberList;
                 List<SecurityPrincipalBase> nestedMembs = membership.NestedMemberList;
-                RecurseIneligibleNonMembersUp( groupMembershipItems, group, ref nonMembs, ref nestedMembs );
+                RecurseIneligibleNonMembersUp( groupMembershipItems, group, ref nonMembs, ref nestedMembs, groups, users );
             }
 
             return membership;
         }
 
-        public static MembershipList<Group> GetMemberOf(this IEnumerable<GroupMembershipItem> groupMembershipItems, SecurityPrincipalBase member, bool? includeDisabledMembership, IList<Group> groups)
+        public static MembershipList<Group> GetMemberOf(this IEnumerable<GroupMembershipItem> groupMembershipItems, SecurityPrincipalBase member, bool? includeDisabledMembership,
+            IList<Group> groups, IList<User> users = null)
         {
             if( !includeDisabledMembership.HasValue )
                 includeDisabledMembership = false;
@@ -263,7 +264,7 @@ namespace Suplex.Security.Principal
 
                     List<Group> nonMembs = membership.NonMemberList;
                     List<Group> nestedMembs = membership.NestedMemberList;
-                    RecurseIneligibleNonMembers( groupMembershipItems, group, ref nonMembs, ref nestedMembs );
+                    RecurseIneligibleNonMembers( groupMembershipItems, group, ref nonMembs, ref nestedMembs, groups, users );
                 }
             }
 
@@ -329,21 +330,23 @@ namespace Suplex.Security.Principal
         }
 
         private static void RecurseIneligibleNonMembersUp(IEnumerable<GroupMembershipItem> groupMembershipItems, Group parent,
-            ref List<SecurityPrincipalBase> nonMembers, ref List<SecurityPrincipalBase> nestedMembs)
+            ref List<SecurityPrincipalBase> nonMembers, ref List<SecurityPrincipalBase> nestedMembs, IList<Group> groups, IList<User> users = null)
         {
             foreach( GroupMembershipItem item in groupMembershipItems )
             {
                 if( item.MemberUId == parent.UId )
                 {
+                    item.Resolve( groups, users );
+
                     nonMembers.Remove( item.Group );
                     nestedMembs.Add( item.Group );
 
-                    RecurseIneligibleNonMembersUp( groupMembershipItems, item.Group, ref nonMembers, ref nestedMembs );
+                    RecurseIneligibleNonMembersUp( groupMembershipItems, item.Group, ref nonMembers, ref nestedMembs, groups, users );
                 }
             }
         }
 
-        private static void RecurseIneligibleNonMembers<T>(IEnumerable<GroupMembershipItem> groupMembershipItems, Group parent, ref List<T> nonMembers, ref List<T> nestedMembs)
+        private static void RecurseIneligibleNonMembers<T>(IEnumerable<GroupMembershipItem> groupMembershipItems, Group parent, ref List<T> nonMembers, ref List<T> nestedMembs, IList<Group> groups, IList<User> users = null)
             where T : SecurityPrincipalBase
         {
             foreach( GroupMembershipItem item in groupMembershipItems )
@@ -352,10 +355,12 @@ namespace Suplex.Security.Principal
                 {
                     if( !item.IsMemberUser )
                     {
+                        item.Resolve( groups, users );
+
                         nonMembers.Remove( (T)item.Member );
                         nestedMembs.Add( (T)item.Member );
 
-                        RecurseIneligibleNonMembers( groupMembershipItems, (Group)item.Member, ref nonMembers, ref nestedMembs );
+                        RecurseIneligibleNonMembers( groupMembershipItems, (Group)item.Member, ref nonMembers, ref nestedMembs, groups, users );
                     }
                 }
             }

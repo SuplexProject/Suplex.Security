@@ -1,0 +1,49 @@
+Users:
+- UId: 0bdfe71c-5663-4f7f-be8b-3884373f97be
+  Name: x
+  IsLocal: true
+  IsBuiltIn: true
+  IsEnabled: true
+- UId: 1bda1876-3281-4a67-b5de-198e9e72ad53
+  Name: y
+  Description: User y
+  IsEnabled: true
+- UId: 20d134e9-a5ac-46ef-bc7e-fa6dc210e1f9
+  Name: z
+  IsLocal: true
+  IsBuiltIn: true
+  IsEnabled: true
+Groups:
+- UId: ff8abe51-116b-4d42-b01a-48f167f71dc7
+  Name: gx
+  IsEnabled: true
+  IsLocal: true
+  Mask: 
+  - 1
+  - 0
+- UId: c05c6deb-6a01-459b-9c87-916003f44429
+  Name: gy
+  IsEnabled: true
+  IsLocal: true
+  Mask: 
+  - 2
+  - 0
+- UId: 66f89524-cc5d-4938-9cd3-b2ce6ec6d75b
+  Name: gz
+  IsEnabled: true
+  IsLocal: true
+  Mask: 
+  - 3
+  - 0
+GroupMembership:
+- GroupUId: ff8abe51-116b-4d42-b01a-48f167f71dc7
+  MemberUId: 0bdfe71c-5663-4f7f-be8b-3884373f97be
+  IsMemberUser: true
+- GroupUId: ff8abe51-116b-4d42-b01a-48f167f71dc7
+  MemberUId: 1bda1876-3281-4a67-b5de-198e9e72ad53
+  IsMemberUser: true
+- GroupUId: c05c6deb-6a01-459b-9c87-916003f44429
+  MemberUId: ff8abe51-116b-4d42-b01a-48f167f71dc7
+- GroupUId: c05c6deb-6a01-459b-9c87-916003f44429
+  MemberUId: 66f89524-cc5d-4938-9cd3-b2ce6ec6d75b
+  IsMemberUser: false

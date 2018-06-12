@@ -162,7 +162,7 @@ namespace Suplex.Security.AclModel.DataAccess
 
         public MembershipList<Group> GetGroupMembershipListOf(SecurityPrincipalBase member, bool includeDisabledMembership = false)
         {
-            return Store.GroupMembership.GetMemberOf( member, includeDisabledMembership, Store.Groups );
+            return Store.GroupMembership.GetMemberOf( member, includeDisabledMembership, Store.Groups, Store.Users );
         }
         #endregion
 
