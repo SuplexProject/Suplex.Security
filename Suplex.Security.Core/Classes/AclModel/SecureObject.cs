@@ -66,7 +66,8 @@ namespace Suplex.Security.AclModel
             }
         }
 
-        public virtual ISecurityDescriptor Security { get; set; } = new SecurityDescriptor();
+        public virtual SecurityDescriptor Security { get; set; } = new SecurityDescriptor();
+        ISecurityDescriptor ISecureObject.Security { get => Security; set => Security = value as SecurityDescriptor; }
 
 
         public virtual SecureObject Parent { get; set; }

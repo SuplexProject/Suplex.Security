@@ -74,8 +74,12 @@ namespace Suplex.Security.AclModel
         #endregion
 
 
-        public virtual IDiscretionaryAcl Dacl { get; set; } = new DiscretionaryAcl();
-        public virtual ISystemAcl Sacl { get; set; } = new SystemAcl();
+        public virtual DiscretionaryAcl Dacl { get; set; } = new DiscretionaryAcl();
+        IDiscretionaryAcl ISecurityDescriptor.Dacl { get => Dacl; set => Dacl = value as DiscretionaryAcl; }
+
+        public virtual SystemAcl Sacl { get; set; } = new SystemAcl();
+        ISystemAcl ISecurityDescriptor.Sacl { get => Sacl; set => Sacl = value as SystemAcl; }
+
 
         public virtual SecurityResults Results { get; internal set; } = new SecurityResults();
 
