@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 
@@ -18,7 +19,7 @@ namespace Suplex.Security.AclModel
                 }
         }
 
-        public static T FindRecursive<T>(this IEnumerable<ISecureObject> source, Predicate<ISecureObject> match, ISecureObject parent = null) where T : ISecureObject
+        public static T FindRecursive<T>(this IEnumerable source, Predicate<ISecureObject> match, ISecureObject parent = null) where T : ISecureObject
         {
             ISecureObject found = null;
 

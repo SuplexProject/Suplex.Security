@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Suplex.Security.AclModel
@@ -10,7 +11,7 @@ namespace Suplex.Security.AclModel
         bool IsEnabled { get; set; }
         Guid? ParentUId { get; set; }
         ISecureObject Parent { get; set; }
-        IList<ISecureObject> Children { get; set; }
+        IList Children { get; set; }
 
         ISecurityDescriptor Security { get; set; }
     }

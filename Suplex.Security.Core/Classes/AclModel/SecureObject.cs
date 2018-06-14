@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -75,7 +76,7 @@ namespace Suplex.Security.AclModel
 
 
         public virtual ObservableCollection<SecureObject> Children { get; set; } = new ObservableCollection<SecureObject>();
-        IList<ISecureObject> ISecureObject.Children
+        IList ISecureObject.Children
         {
             get => Children == null ? new ObservableCollection<ISecureObject>() : new ObservableCollection<ISecureObject>( Children.OfType<SecureObject>() );
             set => Children = value == null ? null : new ObservableCollection<SecureObject>( value?.OfType<SecureObject>() );
