@@ -8,6 +8,7 @@ namespace Suplex.Security.AclModel
         public event PropertyChangedEventHandler PropertyChanged;
 
         #region mirrored props
+        bool _daclAllowInherit = true;
         public virtual bool DaclAllowInherit
         {
             get
@@ -15,20 +16,22 @@ namespace Suplex.Security.AclModel
                 if( Dacl == null )
                     Dacl = new DiscretionaryAcl();
 
-                return Dacl.AllowInherit;
+                return _daclAllowInherit;
             }
             set
             {
                 if( Dacl == null )
                     Dacl = new DiscretionaryAcl();
 
-                if( value != Dacl.AllowInherit )
+                if( value != _daclAllowInherit )
                 {
-                    Dacl.AllowInherit = value;
+                    Dacl.AllowInherit = _daclAllowInherit = value;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( DaclAllowInherit ) ) );
                 }
             }
         }
+
+        bool _saclAllowInherit = true;
         public virtual bool SaclAllowInherit
         {
             get
@@ -36,20 +39,23 @@ namespace Suplex.Security.AclModel
                 if( Sacl == null )
                     Sacl = new SystemAcl();
 
-                return Sacl.AllowInherit;
+                return _saclAllowInherit;
             }
             set
             {
                 if( Sacl == null )
                     Sacl = new SystemAcl();
 
-                if( value != Sacl.AllowInherit )
+                if( value != _saclAllowInherit )
                 {
-                    Sacl.AllowInherit = value;
+                    Sacl.AllowInherit = _saclAllowInherit = value;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( SaclAllowInherit ) ) );
                 }
             }
         }
+
+        AuditType _saclAuditFilter =
+            AuditType.SuccessAudit | AuditType.FailureAudit | AuditType.Information | AuditType.Warning | AuditType.Error;
         public virtual AuditType SaclAuditTypeFilter
         {
             get
@@ -57,16 +63,16 @@ namespace Suplex.Security.AclModel
                 if( Sacl == null )
                     Sacl = new SystemAcl();
 
-                return Sacl.AuditTypeFilter;
+                return _saclAuditFilter;
             }
             set
             {
                 if( Sacl == null )
                     Sacl = new SystemAcl();
 
-                if( value != Sacl.AuditTypeFilter )
+                if( value != _saclAuditFilter )
                 {
-                    Sacl.AuditTypeFilter = value;
+                    Sacl.AuditTypeFilter = _saclAuditFilter = value;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( SaclAuditTypeFilter ) ) );
                 }
             }
