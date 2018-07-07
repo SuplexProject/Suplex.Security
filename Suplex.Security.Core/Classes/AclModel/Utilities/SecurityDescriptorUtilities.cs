@@ -27,5 +27,14 @@ namespace Suplex.Security.AclModel
             sd.Dacl.CopyTo( targetSecurityDescriptor.Dacl );
             sd.Sacl.CopyTo( targetSecurityDescriptor.Sacl );
         }
+
+        //friendly shotrcut helper method
+        public static bool HasAccess<T>(this ISecurityDescriptor sd, T right) where T : struct, IConvertible
+        {
+            if( !sd.Results.ContainsRightType( right ) )
+                sd.Results.InitResult( right );
+
+            return sd.Results[right.GetFriendlyRightTypeName()][Convert.ToInt32( right )].AccessAllowed;
+        }
     }
 }

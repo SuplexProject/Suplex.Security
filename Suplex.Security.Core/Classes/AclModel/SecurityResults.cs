@@ -31,6 +31,13 @@ namespace Suplex.Security.AclModel
         }
 
 
+        public SecurityResult GetByTypeRight<T>(T right) where T : struct, IConvertible
+        {
+            if( !ContainsRightType( right ) )
+                InitResult( right );
+
+            return this[right.GetFriendlyRightTypeName()][Convert.ToInt32( right )];
+        }
         public SecurityResult GetByTypeRight<T>(T rightType, int right) where T : struct, IConvertible
         {
             if( !ContainsRightType( rightType ) )

@@ -7,7 +7,7 @@ namespace Suplex.Security.AclModel
 {
     public static class SecureObjectUtilities
     {
-        public static void EvalSecurity(this ISecureObject secureObject)
+        public static SecurityResults EvalSecurity(this ISecureObject secureObject)
         {
             secureObject.Security.Eval();
 
@@ -17,6 +17,8 @@ namespace Suplex.Security.AclModel
                     secureObject.Security.CopyTo( child.Security );
                     EvalSecurity( child );
                 }
+
+            return secureObject.Security.Results;
         }
 
         public static T FindRecursive<T>(this IEnumerable source, Predicate<ISecureObject> match, ISecureObject parent = null) where T : ISecureObject
