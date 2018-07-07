@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -76,6 +77,7 @@
     <Compile Include="Classes\AclModel\Enums\FileSystemRight.cs" />
     <Compile Include="Classes\AclModel\Enums\RecordRight.cs" />
     <Compile Include="Classes\AclModel\Enums\UiRight.cs" />
+    <Compile Include="Classes\Principal\Utilities\DirectoryServiceUtilities.cs" />
     <Compile Include="Classes\Principal\Utilities\GroupEqualityComparer.cs" />
     <Compile Include="Classes\Principal\Interfaces\ISecurityPrincipal.cs" />
     <Compile Include="Classes\Principal\Group.cs" />
