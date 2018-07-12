@@ -141,7 +141,7 @@ namespace UnitTests
 
         [Test]
         [Category("Secureobject")]
-        public void UpsertUser()
+        public void UpsertSecureObject()
         {
             SecureObject child = new SecureObject() { UniqueName = "child" };
             ISecureObject top = _dal.GetSecureObjectByUniqueName(so.UniqueName);
