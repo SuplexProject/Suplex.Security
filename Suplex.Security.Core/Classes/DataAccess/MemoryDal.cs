@@ -191,7 +191,7 @@ namespace Suplex.Security.AclModel.DataAccess
 
             if( secureObject.ParentUId.HasValue )
             {
-                SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.ParentUId == secureObject.ParentUId );
+                SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UId == secureObject.ParentUId );
                 if( found != null )
                     list = found.Children;
                 else

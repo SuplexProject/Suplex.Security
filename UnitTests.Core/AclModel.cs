@@ -11,6 +11,21 @@ namespace UnitTests
     [TestFixture]
     public class AclModel
     {
+        #region setup
+        SuplexStore _store = null;
+        MemoryDal _dal = null;
+        SecureObject so = null;
+
+        [OneTimeSetUp]
+        public void Init()
+        {
+            _store = new SuplexStore();
+            _dal = new MemoryDal(_store);
+            so = new SecureObject { UniqueName = "top" };
+            _dal.UpsertSecureObject(so);
+        }
+        #endregion
+
         [Test]
         [Category( "EvalDacl" )]
         public void EvalDacl()
@@ -122,6 +137,22 @@ namespace UnitTests
 
             ////string x = store.ToYaml( serializeAsJson: false );
             ////FileStore f = FileStore.FromYaml( x );
+        }
+
+        [Test]
+        [Category("Secureobject")]
+        public void UpsertUser()
+        {
+            SecureObject child = new SecureObject() { UniqueName = "child" };
+            ISecureObject top = _dal.GetSecureObjectByUniqueName(so.UniqueName);
+            child.ParentUId = top.UId;
+            _dal.UpsertSecureObject(child);
+
+            ISecureObject found = _dal.GetSecureObjectByUniqueName(child.UniqueName);
+            Assert.IsNotNull(found);
+            bool eq = child.UniqueName.Equals(found.UniqueName);
+            Assert.IsTrue(eq);
+            
         }
     }
 }

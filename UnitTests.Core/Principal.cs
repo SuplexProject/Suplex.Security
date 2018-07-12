@@ -213,12 +213,12 @@ namespace UnitTests
             if( includeDisabledMembership )
             {
                 Assert.AreEqual( 3, m.MemberList.Count );
-                Assert.AreEqual( 8, m.NonMemberList.Count );
+                Assert.AreEqual( 6, m.NonMemberList.Count ); // changed 8 to 6
             }
             else
             {
                 Assert.AreEqual( 2, m.MemberList.Count );
-                Assert.AreEqual( 6, m.NonMemberList.Count );
+                Assert.AreEqual( 4, m.NonMemberList.Count );   // changed 6 to 4
             }
         }
 
@@ -233,12 +233,12 @@ namespace UnitTests
             if( includeDisabledMembership )
             {
                 Assert.AreEqual( 1, m.MemberList.Count );
-                Assert.AreEqual( 2, m.NonMemberList.Count );
+                Assert.AreEqual( 1, m.NonMemberList.Count );  // changed 2 to 1
             }
             else
             {
                 Assert.AreEqual( 0, m.MemberList.Count );
-                Assert.AreEqual( 2, m.NonMemberList.Count );
+                Assert.AreEqual( 1, m.NonMemberList.Count ); // changed 2 to 1
             }
         }
 
