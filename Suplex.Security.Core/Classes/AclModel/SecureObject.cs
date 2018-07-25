@@ -96,7 +96,7 @@ namespace Suplex.Security.AclModel
             };
 
             if( shallow )
-                Security = Security;
+                secureObject.Security = Security;
             else
             {
                 secureObject.Security = new SecurityDescriptor();
