@@ -82,18 +82,48 @@ namespace Suplex.Security.AclModel
             set => Children = value == null ? null : new ObservableCollection<SecureObject>( value?.OfType<SecureObject>() );
         }
 
-        #region Clone
+        #region Clone/Sync
         object ICloneable.Clone() { return Clone( true ); }
         ISecureObject ICloneable<ISecureObject>.Clone(bool shallow) { return Clone( shallow ); }
         public SecureObject Clone(bool shallow = true)
         {
-            return new SecureObject
+            SecureObject secureObject = new SecureObject
             {
                 UId = UId,
                 UniqueName = UniqueName,
-                ParentUId = ParentUId,
-                Security = Security
+                IsEnabled = IsEnabled,
+                ParentUId = ParentUId
             };
+
+            if( shallow )
+                Security = Security;
+            else
+            {
+                secureObject.Security = new SecurityDescriptor();
+                Security.CopyTo( secureObject.Security );
+            }
+
+            return secureObject;
+        }
+
+        void ICloneable<ISecureObject>.Sync(ISecureObject source, bool shallow = true)
+        {
+            Sync( (SecureObject)source, shallow: shallow );
+        }
+        public virtual void Sync(SecureObject source, bool shallow = true)
+        {
+            UId = source.UId;
+            UniqueName = source.UniqueName;
+            IsEnabled = source.IsEnabled;
+            ParentUId = source.ParentUId;
+
+            if( shallow )
+                Security = source.Security;
+            else
+            {
+                Security = new SecurityDescriptor();
+                source.Security.CopyTo( Security );
+            }
         }
         #endregion
 

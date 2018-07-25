@@ -31,5 +31,6 @@ namespace Suplex.Security.AclModel.DataAccess
         ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren, bool includeDisabled = false);
         ISecureObject UpsertSecureObject(ISecureObject secureObject);
         void DeleteSecureObject(Guid secureObjectUId);
+        void UpdateSecureObjectParentUId(ISecureObject secureObject, Guid? newParentUId);
     }
 }

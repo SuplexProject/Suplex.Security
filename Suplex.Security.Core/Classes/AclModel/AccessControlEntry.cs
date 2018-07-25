@@ -21,6 +21,7 @@ namespace Suplex.Security.AclModel
                 }
             }
         }
+
         T _right;
         IRightInfo _rightData;
         public virtual T Right
@@ -36,6 +37,7 @@ namespace Suplex.Security.AclModel
                 }
             }
         }
+
         bool _allowed = true;
         public virtual bool Allowed
         {
@@ -49,6 +51,7 @@ namespace Suplex.Security.AclModel
                 }
             }
         }
+
         bool _inheritable = true;
         public virtual bool Inheritable
         {
@@ -62,6 +65,7 @@ namespace Suplex.Security.AclModel
                 }
             }
         }
+
         Guid? _inheritedFrom;
         public virtual Guid? InheritedFrom
         {
@@ -75,6 +79,7 @@ namespace Suplex.Security.AclModel
                 }
             }
         }
+
         Guid? _trusteeUId;
         public virtual Guid? TrusteeUId
         {
@@ -97,6 +102,7 @@ namespace Suplex.Security.AclModel
         }
 
 
+        #region Clone/Sync
         object ICloneable.Clone()
         {
             return Clone( true );
@@ -113,6 +119,18 @@ namespace Suplex.Security.AclModel
 
             return ace;
         }
+
+        public virtual void Sync(IAccessControlEntry source, bool shallow = true)
+        {
+            UId = source.UId;
+            Right = ((IAccessControlEntry<T>)source).Right;
+            Allowed = source.Allowed;
+            if( this is IAccessControlEntryAudit && source is IAccessControlEntryAudit )
+                ((IAccessControlEntryAudit)this).Denied = ((IAccessControlEntryAudit)source).Denied;
+            Inheritable = source.Inheritable;
+            TrusteeUId = source.TrusteeUId;
+        }
+        #endregion
 
 
         public override string ToString()

@@ -172,7 +172,7 @@ namespace Suplex.Security.AclModel.DataAccess
         {
             SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UId == secureObjectUId && (o.IsEnabled || includeDisabled) );
             if( found != null && !includeChildren )
-                found.Children = null;
+                found = found.Clone( shallow: false );
 
             return found;
         }
@@ -181,10 +181,11 @@ namespace Suplex.Security.AclModel.DataAccess
         {
             SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UniqueName.Equals( uniqueName, StringComparison.OrdinalIgnoreCase ) && (o.IsEnabled || includeDisabled) );
             if( found != null && !includeChildren )
-                found.Children = null;
+                found = found.Clone( shallow: false );
 
             return found;
         }
+
         public ISecureObject UpsertSecureObject(ISecureObject secureObject)
         {
             IList<SecureObject> list = Store.SecureObjects;
@@ -200,7 +201,7 @@ namespace Suplex.Security.AclModel.DataAccess
 
             int index = list.FindIndex( o => o.UId == secureObject.UId );
             if( index >= 0 )
-                list[index] = (SecureObject)secureObject;
+                list[index].Sync( (SecureObject)secureObject, shallow: false );
             else
                 list.Add( (SecureObject)secureObject );
 
@@ -220,6 +221,42 @@ namespace Suplex.Security.AclModel.DataAccess
                 int index = list.FindIndex( o => o.UId == secureObjectUId );
                 if( index >= 0 )
                     list.RemoveAt( index );
+            }
+        }
+
+        public void UpdateSecureObjectParentUId(ISecureObject secureObject, Guid? newParentUId)
+        {
+            IList<SecureObject> list = Store.SecureObjects;
+
+            if( secureObject.ParentUId.HasValue )
+            {
+                SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UId == secureObject.ParentUId );
+                if( found != null )
+                    list = found.Children;
+                else
+                    throw new KeyNotFoundException( $"Could not find SecureContainer with ParentId: {secureObject.ParentUId}" );
+            }
+
+            int index = list.FindIndex( o => o.UId == secureObject.UId );
+            if( index >= 0 )
+            {
+                SecureObject so = list[index];
+                so.ParentUId = newParentUId;
+
+                list.RemoveAt( index );
+
+
+                IList<SecureObject> newlist = Store.SecureObjects;
+                if( newParentUId.HasValue )
+                {
+                    SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UId == newParentUId );
+                    if( found != null )
+                        newlist = found.Children;
+                    else
+                        throw new KeyNotFoundException( $"Could not find SecureContainer with ParentId: {newParentUId}" );
+                }
+
+                newlist.Add( so );
             }
         }
         #endregion
