@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{D5F7
 		scripts\AssemblyInfo.xml = scripts\AssemblyInfo.xml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suplex.Security.Core.std", "Suplex.Security.Core.std\Suplex.Security.Core.std.csproj", "{6A640641-6720-4171-96DB-3085B7E0AA16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A640641-6720-4171-96DB-3085B7E0AA16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A640641-6720-4171-96DB-3085B7E0AA16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A640641-6720-4171-96DB-3085B7E0AA16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A640641-6720-4171-96DB-3085B7E0AA16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

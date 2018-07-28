@@ -1,0 +1,107 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Suplex.Security.Core</AssemblyName>
+    <RootNamespace>Suplex.Security</RootNamespace>
+    <Version>1.0.18208</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Steve Shortt</Authors>
+    <Description>Suplex.Security is an application security and RBAC abstraction Layer. Implments hierarchical DACL model and common RBAC model.  Suplex Security contains thte POCOs.</Description>
+    <PackageIconUrl>https://raw.githubusercontent.com/steveshortt/Suplex/master/resources/suplex64.png</PackageIconUrl>
+    <PackageProjectUrl>http://suplex.readthedocs.io/en/latest/</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/steveshortt/Suplex/master/LICENSE</PackageLicenseUrl>
+    <PackageReleaseNotes>1.0 Release.  All features are presently working and passing unit tests.
+
+- 18206: Corrected bug due to typo in SecureObject.Clone
+- 18205: Added support for IClonable.Sync and UpdateSecureObjectParentUId
+- 18181: Adjustment to DaclAllowInherit/SaclAllowInherit/SaclAuditTypeFilter for bug fix to seriazation.
+- 18175: Correction to MakeGenericAceFromType to create AuditAces
+- 18164: Tweak to ISecureObject design
+- 18163: Added concrete implementation for SecurityDescriptor, Dacl, Sacl
+- 18161: Bug fixes to GroupMembership -&gt; GetGroupMembershipList\GetGroupMembershipListOf
+- 18160: Bug fixes to GroupMembership utilities, new methods on IDataAccessLayer
+- 18095: INotify implemented everywhere; more complere interface coverage
+- 18086: Corrections to GroupMembership
+- 18083: DaclModel POCOs.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\AccessControlEntry.cs" Link="Classes\AclModel\AccessControlEntry.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\AccessControlEntryAudit.cs" Link="Classes\AclModel\AccessControlEntryAudit.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\DiscretionaryAcl.cs" Link="Classes\AclModel\DiscretionaryAcl.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Enums\AuditCategory.cs" Link="Classes\AclModel\Enums\AuditCategory.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Enums\AuditType.cs" Link="Classes\AclModel\Enums\AuditType.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Enums\FileSystemRight.cs" Link="Classes\AclModel\Enums\FileSystemRight.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Enums\RecordRight.cs" Link="Classes\AclModel\Enums\RecordRight.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Enums\SynchronizationRight.cs" Link="Classes\AclModel\Enums\SynchronizationRight.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Enums\UiRight.cs" Link="Classes\AclModel\Enums\UiRight.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Interfaces\IAccessControlEntry.cs" Link="Classes\AclModel\Interfaces\IAccessControlEntry.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Interfaces\IAccessControlList.cs" Link="Classes\AclModel\Interfaces\IAccessControlList.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Interfaces\ICloneable.cs" Link="Classes\AclModel\Interfaces\ICloneable.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Interfaces\IDiscretionaryAcl.cs" Link="Classes\AclModel\Interfaces\IDiscretionaryAcl.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Interfaces\IRightInfo.cs" Link="Classes\AclModel\Interfaces\IRightInfo.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Interfaces\ISecureObject.cs" Link="Classes\AclModel\Interfaces\ISecureObject.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Interfaces\ISecurityDescriptor.cs" Link="Classes\AclModel\Interfaces\ISecurityDescriptor.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Interfaces\ISystemAcl.cs" Link="Classes\AclModel\Interfaces\ISystemAcl.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\RightInfo.cs" Link="Classes\AclModel\RightInfo.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\SecureObject.cs" Link="Classes\AclModel\SecureObject.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\SecurityDescriptor.cs" Link="Classes\AclModel\SecurityDescriptor.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\SecurityResults.cs" Link="Classes\AclModel\SecurityResults.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\SystemAcl.cs" Link="Classes\AclModel\SystemAcl.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\AccessControlEntryUtilities.cs" Link="Classes\AclModel\Utilities\AccessControlEntryUtilities.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\AccessControlListUtilities.cs" Link="Classes\AclModel\Utilities\AccessControlListUtilities.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\AceComparer.cs" Link="Classes\AclModel\Utilities\AceComparer.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\EnumUtilities.cs" Link="Classes\AclModel\Utilities\EnumUtilities.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\RightFields.cs" Link="Classes\AclModel\Utilities\RightFields.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\RightsAccessorAttribute.cs" Link="Classes\AclModel\Utilities\RightsAccessorAttribute.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\SecureObjectUtilities.cs" Link="Classes\AclModel\Utilities\SecureObjectUtilities.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\SecurityDescriptorUtilities.cs" Link="Classes\AclModel\Utilities\SecurityDescriptorUtilities.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\UtilityExtensions.cs" Link="Classes\AclModel\Utilities\UtilityExtensions.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\Interfaces\IDataAccessLayer.cs" Link="Classes\DataAccess\Interfaces\IDataAccessLayer.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\Interfaces\ISuplexStore.cs" Link="Classes\DataAccess\Interfaces\ISuplexStore.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\MemoryDal.cs" Link="Classes\DataAccess\MemoryDal.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\SuplexStore.cs" Link="Classes\DataAccess\SuplexStore.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Principal\Abstract\SecurityPrinicpalBase.cs" Link="Classes\Principal\Abstract\SecurityPrinicpalBase.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Principal\Group.cs" Link="Classes\Principal\Group.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Principal\GroupMembershipItem.cs" Link="Classes\Principal\GroupMembershipItem.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Principal\Interfaces\ISecurityPrincipal.cs" Link="Classes\Principal\Interfaces\ISecurityPrincipal.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Principal\MembershipList.cs" Link="Classes\Principal\MembershipList.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Principal\User.cs" Link="Classes\Principal\User.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Principal\Utilities\DirectoryServiceUtilities.cs" Link="Classes\Principal\Utilities\DirectoryServiceUtilities.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Principal\Utilities\GroupEqualityComparer.cs" Link="Classes\Principal\Utilities\GroupEqualityComparer.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Principal\Utilities\GroupMembershipEqualityComparer.cs" Link="Classes\Principal\Utilities\GroupMembershipEqualityComparer.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Principal\Utilities\GroupMembershipUtilities.cs" Link="Classes\Principal\Utilities\GroupMembershipUtilities.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Principal\Utilities\SecurityPrincipalEqualityComparer.cs" Link="Classes\Principal\Utilities\SecurityPrincipalEqualityComparer.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Principal\Utilities\SecurityPrincipalUtilities.cs" Link="Classes\Principal\Utilities\SecurityPrincipalUtilities.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Principal\Utilities\UserEqualityComparer.cs" Link="Classes\Principal\Utilities\UserEqualityComparer.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Principal\Utilities\UtilityExtensions.cs" Link="Classes\Principal\Utilities\UtilityExtensions.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\TaskModel\Interfaces\IRole.cs" Link="Classes\TaskModel\Interfaces\IRole.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\TaskModel\Interfaces\ITask.cs" Link="Classes\TaskModel\Interfaces\ITask.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\TaskModel\Permission.cs" Link="Classes\TaskModel\Permission.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\TaskModel\Privilege.cs" Link="Classes\TaskModel\Privilege.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\TaskModel\Role.cs" Link="Classes\TaskModel\Role.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\TaskModel\Task.cs" Link="Classes\TaskModel\Task.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\TaskModel\Utilities\PermissionUtilities.cs" Link="Classes\TaskModel\Utilities\PermissionUtilities.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\TaskModel\Utilities\PrivilegeUtilities.cs" Link="Classes\TaskModel\Utilities\PrivilegeUtilities.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\TaskModel\Utilities\RoleUtilities.cs" Link="Classes\TaskModel\Utilities\RoleUtilities.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\TaskModel\Utilities\TaskUtilities.cs" Link="Classes\TaskModel\Utilities\TaskUtilities.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Classes\AclModel\Enums\" />
+    <Folder Include="Classes\AclModel\Interfaces\" />
+    <Folder Include="Classes\AclModel\Utilities\" />
+    <Folder Include="Classes\DataAccess\Interfaces\" />
+    <Folder Include="Classes\Principal\Abstract\" />
+    <Folder Include="Classes\Principal\Interfaces\" />
+    <Folder Include="Classes\Principal\Utilities\" />
+    <Folder Include="Classes\TaskModel\Interfaces\" />
+    <Folder Include="Classes\TaskModel\Utilities\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.0.0" />
+  </ItemGroup>
+
+</Project>
