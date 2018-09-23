@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Suplex.Security.AclModel
 {
@@ -67,6 +66,20 @@ namespace Suplex.Security.AclModel
         {
             if( rightType == null || !rightType.IsEnum )
                 throw new ArgumentException( $"{nameof( rightType )} is required and must be of type Enum." );
+        }
+
+        public static List<Type> GetRightTypes(string assemblyString = null, string namespaceString = "Suplex.Security.AclModel")
+        {
+            Assembly a = Assembly.GetExecutingAssembly();
+
+            if( !string.IsNullOrWhiteSpace( assemblyString ) )
+                a = Assembly.Load( assemblyString );
+
+            return a.GetTypes().Where( t => t != null &&
+                t.IsEnum &&
+                t.Namespace.Equals( namespaceString, StringComparison.OrdinalIgnoreCase ) &&
+                t.Name.EndsWith( "Right", StringComparison.OrdinalIgnoreCase ) )
+                .ToList();
         }
     }
 }

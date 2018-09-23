@@ -28,8 +28,6 @@ namespace Suplex.Security.AclModel
         }
         public static void Eval(this IDiscretionaryAcl dacl, Type rightType, SecurityResults securityResults)
         {
-            securityResults.InitResult( rightType );
-
             string rtn = rightType.GetFriendlyRightTypeName();
             IEnumerable<IAccessControlEntry> found = from ace in dacl
                                                      where ace.RightData.FriendlyTypeName.Equals( rtn )
@@ -118,8 +116,6 @@ namespace Suplex.Security.AclModel
         }
         public static void Eval(this ISystemAcl sacl, Type rightType, SecurityResults securityResults)
         {
-            securityResults.InitResult( rightType );
-
             string rtn = rightType.GetFriendlyRightTypeName();
             IEnumerable<IAccessControlEntryAudit> found = from ace in sacl
                                                           where ace.RightData.FriendlyTypeName.Equals( rtn )

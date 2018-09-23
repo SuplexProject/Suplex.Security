@@ -53,6 +53,21 @@ namespace Suplex.Security.AclModel
             return this[rightType.GetFriendlyRightTypeName()][right];
         }
 
+        public Dictionary<int, SecurityResult> GetByType<T>(T rightType) where T : struct, IConvertible
+        {
+            if( !ContainsRightType( rightType ) )
+                InitResult( rightType );
+
+            return this[rightType.GetFriendlyRightTypeName()];
+        }
+        public Dictionary<int, SecurityResult> GetByType(Type rightType)
+        {
+            if( !ContainsRightType( rightType ) )
+                InitResult( rightType );
+
+            return this[rightType.GetFriendlyRightTypeName()];
+        }
+
         public void SetByTypeRight<T>(T rightType, int right, SecurityResult value) where T : struct, IConvertible
         {
             this[rightType.GetFriendlyRightTypeName()][right] = value;

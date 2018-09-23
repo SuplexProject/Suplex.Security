@@ -23,7 +23,6 @@ namespace Suplex.Security.AclModel
         }
 
         T _right;
-        IRightInfo _rightData;
         public virtual T Right
         {
             get => _right;
@@ -32,7 +31,7 @@ namespace Suplex.Security.AclModel
                 if( !value.Equals( _right ) )
                 {
                     _right = value;
-                    _rightData = new RightInfo<T> { Right = value };
+                    RightData = new RightInfo<T> { Right = value };
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( Right ) ) );
                 }
             }
@@ -95,7 +94,7 @@ namespace Suplex.Security.AclModel
         }
 
 
-        public IRightInfo RightData => _rightData;
+        public IRightInfo RightData { get; private set; } = new RightInfo<T>();
         public void SetRight(string value)
         {
             Right = (T)Enum.Parse( Right.GetType(), value );

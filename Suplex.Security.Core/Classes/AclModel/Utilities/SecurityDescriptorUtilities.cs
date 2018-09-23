@@ -36,5 +36,12 @@ namespace Suplex.Security.AclModel
 
             return sd.Results[right.GetFriendlyRightTypeName()][Convert.ToInt32( right )].AccessAllowed;
         }
+
+        public static void Clear(this ISecurityDescriptor sd)
+        {
+            sd.Dacl.Clear();
+            sd.Sacl.Clear();
+            sd.Results.Clear();
+        }
     }
 }
