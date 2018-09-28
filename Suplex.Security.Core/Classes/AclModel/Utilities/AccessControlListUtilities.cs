@@ -85,11 +85,11 @@ namespace Suplex.Security.AclModel
         }
 
 
-        public static void CopyTo(this IDiscretionaryAcl dacl, IDiscretionaryAcl targetDacl)
+        public static void CopyTo(this IDiscretionaryAcl dacl, IDiscretionaryAcl targetDacl, bool forceInheritance = false)
         {
-            if( targetDacl.AllowInherit )
+            if( targetDacl.AllowInherit || forceInheritance )
                 foreach( IAccessControlEntry ace in dacl )
-                    if( ace.Inheritable )
+                    if( ace.Inheritable || forceInheritance )
                         targetDacl.Add( ace.Clone() );
         }
         #endregion
@@ -160,11 +160,11 @@ namespace Suplex.Security.AclModel
             }
         }
 
-        public static void CopyTo(this ISystemAcl sacl, ISystemAcl targetSacl)
+        public static void CopyTo(this ISystemAcl sacl, ISystemAcl targetSacl, bool forceInheritance = false)
         {
-            if( targetSacl.AllowInherit )
+            if( targetSacl.AllowInherit || forceInheritance )
                 foreach( IAccessControlEntryAudit ace in sacl )
-                    if( ace.Inheritable )
+                    if( ace.Inheritable || forceInheritance )
                         targetSacl.Add( (IAccessControlEntryAudit)ace.Clone() );
         }
         #endregion

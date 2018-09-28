@@ -22,10 +22,10 @@ namespace Suplex.Security.AclModel
         }
 
 
-        public static void CopyTo(this ISecurityDescriptor sd, ISecurityDescriptor targetSecurityDescriptor)
+        public static void CopyTo(this ISecurityDescriptor sd, ISecurityDescriptor targetSecurityDescriptor, bool forceInheritance = false)
         {
-            sd.Dacl.CopyTo( targetSecurityDescriptor.Dacl );
-            sd.Sacl.CopyTo( targetSecurityDescriptor.Sacl );
+            sd.Dacl.CopyTo( targetSecurityDescriptor.Dacl, forceInheritance );
+            sd.Sacl.CopyTo( targetSecurityDescriptor.Sacl, forceInheritance );
         }
 
         //friendly shotrcut helper method

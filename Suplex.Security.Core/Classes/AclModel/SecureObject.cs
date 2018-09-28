@@ -99,8 +99,13 @@ namespace Suplex.Security.AclModel
                 secureObject.Security = Security;
             else
             {
-                secureObject.Security = new SecurityDescriptor();
-                Security.CopyTo( secureObject.Security );
+                secureObject.Security.Clear();
+
+                Security.CopyTo( secureObject.Security, forceInheritance: true );
+
+                secureObject.Security.DaclAllowInherit = Security.DaclAllowInherit;
+                secureObject.Security.SaclAllowInherit = Security.SaclAllowInherit;
+                secureObject.Security.SaclAuditTypeFilter = Security.SaclAuditTypeFilter;
             }
 
             return secureObject;
@@ -121,8 +126,13 @@ namespace Suplex.Security.AclModel
                 Security = source.Security;
             else
             {
-                Security = new SecurityDescriptor();
-                source.Security.CopyTo( Security );
+                Security.Clear();
+
+                source.Security.CopyTo( Security, forceInheritance: true );
+
+                Security.DaclAllowInherit = source.Security.DaclAllowInherit;
+                Security.SaclAllowInherit = source.Security.SaclAllowInherit;
+                Security.SaclAuditTypeFilter = source.Security.SaclAuditTypeFilter;
             }
         }
         #endregion
