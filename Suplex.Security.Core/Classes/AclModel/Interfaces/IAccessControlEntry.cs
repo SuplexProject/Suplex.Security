@@ -16,6 +16,8 @@ namespace Suplex.Security.AclModel
 
         IRightInfo RightData { get; }
         void SetRight(string value);
+
+        bool IsDirty { get; set; }
     }
 
     public interface IAccessControlEntry<T> : IAccessControlEntry where T : struct, IConvertible
