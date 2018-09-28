@@ -76,10 +76,10 @@ namespace Suplex.Security.AclModel
                 a = Assembly.Load( assemblyString );
 
             return a.GetTypes().Where( t => t != null &&
-                t.IsEnum &&
-                t.Namespace.Equals( namespaceString, StringComparison.OrdinalIgnoreCase ) &&
-                t.Name.EndsWith( "Right", StringComparison.OrdinalIgnoreCase ) )
-                .ToList();
+                    t.IsEnum &&
+                    t.Namespace.Equals( namespaceString, StringComparison.OrdinalIgnoreCase ) &&
+                    t.Name.EndsWith( "Right", StringComparison.OrdinalIgnoreCase ) )
+                    .OrderBy( t => t.Name ).ToList();
         }
     }
 }

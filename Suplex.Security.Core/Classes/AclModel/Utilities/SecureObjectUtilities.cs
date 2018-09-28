@@ -42,6 +42,22 @@ namespace Suplex.Security.AclModel
             return (T)found;
         }
 
+        public static void EnsureParentUIdRecursive(this IEnumerable<ISecureObject> secureObjects)
+        {
+            foreach( ISecureObject secureObject in secureObjects )
+                secureObject.EnsureParentUIdRecursive();
+        }
+
+        public static void EnsureParentUIdRecursive(this ISecureObject secureObject)
+        {
+            if( secureObject?.Children?.Count > 0 )
+                foreach( ISecureObject child in secureObject.Children )
+                {
+                    child.ParentUId = secureObject.UId;
+                    child.EnsureParentUIdRecursive();
+                }
+        }
+
         public static void ShallowCloneTo(this IList<SecureObject> source, IList<SecureObject> destination)
         {
             foreach( SecureObject item in source )
