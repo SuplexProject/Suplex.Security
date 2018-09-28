@@ -16,6 +16,7 @@ namespace Suplex.Security.AclModel
                 if( value != _denied )
                 {
                     _denied = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( Denied ) ) );
                 }
             }
@@ -24,11 +25,14 @@ namespace Suplex.Security.AclModel
         new public virtual IAccessControlEntryAudit Clone(bool shallow = true)
         {
             IAccessControlEntryAudit ace = (IAccessControlEntryAudit)MemberwiseClone();
+            ace.SetRight( RightData.Value.ToString() );
 
             ace.UId = Guid.NewGuid();
 
             if( !ace.InheritedFrom.HasValue )
                 ace.InheritedFrom = UId;
+
+            ace.IsDirty = false;
 
             return ace;
         }

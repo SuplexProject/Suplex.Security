@@ -32,6 +32,7 @@ namespace Suplex.Security.AclModel
                 {
                     _right = value;
                     RightData = new RightInfo<T> { Right = value };
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( Right ) ) );
                 }
             }
@@ -46,6 +47,7 @@ namespace Suplex.Security.AclModel
                 if( value != _allowed )
                 {
                     _allowed = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( Allowed ) ) );
                 }
             }
@@ -60,6 +62,7 @@ namespace Suplex.Security.AclModel
                 if( value != _inheritable )
                 {
                     _inheritable = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( Inheritable ) ) );
                 }
             }
@@ -74,6 +77,7 @@ namespace Suplex.Security.AclModel
                 if( value != _inheritedFrom )
                 {
                     _inheritedFrom = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( InheritedFrom ) ) );
                 }
             }
@@ -88,6 +92,7 @@ namespace Suplex.Security.AclModel
                 if( value != _trusteeUId )
                 {
                     _trusteeUId = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( TrusteeUId ) ) );
                 }
             }
@@ -100,6 +105,8 @@ namespace Suplex.Security.AclModel
             Right = (T)Enum.Parse( Right.GetType(), value );
         }
 
+        public bool IsDirty { get; set; }
+
 
         #region Clone/Sync
         object ICloneable.Clone()
@@ -110,11 +117,14 @@ namespace Suplex.Security.AclModel
         public virtual IAccessControlEntry Clone(bool shallow = true)
         {
             IAccessControlEntry ace = (IAccessControlEntry)MemberwiseClone();
+            ace.SetRight( RightData.Value.ToString() );
 
             ace.UId = Guid.NewGuid();
 
             if( !ace.InheritedFrom.HasValue )
                 ace.InheritedFrom = UId;
+
+            ace.IsDirty = false;
 
             return ace;
         }
