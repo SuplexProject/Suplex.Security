@@ -6,7 +6,7 @@ namespace Suplex.Security.AclModel
 {
     public interface ISecureObject : ICloneable<ISecureObject>
     {
-        Guid? UId { get; set; }
+        Guid UId { get; set; }
         string UniqueName { get; set; }
         bool IsEnabled { get; set; }
         Guid? ParentUId { get; set; }

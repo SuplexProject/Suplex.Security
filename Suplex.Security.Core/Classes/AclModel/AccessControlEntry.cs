@@ -8,8 +8,8 @@ namespace Suplex.Security.AclModel
         public event PropertyChangedEventHandler PropertyChanged;
 
 
-        Guid? _uId = Guid.NewGuid();
-        public virtual Guid? UId
+        Guid _uId = Guid.NewGuid();
+        public virtual Guid UId
         {
             get => _uId;
             set
@@ -17,6 +17,7 @@ namespace Suplex.Security.AclModel
                 if( value != _uId )
                 {
                     _uId = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( UId ) ) );
                 }
             }
@@ -105,7 +106,20 @@ namespace Suplex.Security.AclModel
             Right = (T)Enum.Parse( Right.GetType(), value );
         }
 
-        public bool IsDirty { get; set; }
+        bool _isDirty = false;
+        public virtual bool IsDirty
+        {
+            get => _isDirty;
+            set
+            {
+                if( value != _isDirty )
+                {
+                    _isDirty = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( IsDirty ) ) );
+                }
+            }
+        }
+
 
 
         #region Clone/Sync

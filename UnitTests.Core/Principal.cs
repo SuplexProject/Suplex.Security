@@ -75,11 +75,11 @@ namespace UnitTests
             _dal.UpsertGroup( g4 );
             _dal.UpsertGroup( g5 );
 
-            g0g1 = new GroupMembershipItem { GroupUId = g0.UId.Value, MemberUId = g1.UId.Value };
-            g0g2 = new GroupMembershipItem { GroupUId = g0.UId.Value, MemberUId = g2.UId.Value };
-            g2g3 = new GroupMembershipItem { GroupUId = g2.UId.Value, MemberUId = g3.UId.Value };
-            g2g4 = new GroupMembershipItem { GroupUId = g2.UId.Value, MemberUId = g4.UId.Value };
-            g2g4 = new GroupMembershipItem { GroupUId = g3.UId.Value, MemberUId = g4.UId.Value };
+            g0g1 = new GroupMembershipItem { GroupUId = g0.UId, MemberUId = g1.UId };
+            g0g2 = new GroupMembershipItem { GroupUId = g0.UId, MemberUId = g2.UId };
+            g2g3 = new GroupMembershipItem { GroupUId = g2.UId, MemberUId = g3.UId };
+            g2g4 = new GroupMembershipItem { GroupUId = g2.UId, MemberUId = g4.UId };
+            g2g4 = new GroupMembershipItem { GroupUId = g3.UId, MemberUId = g4.UId };
             _dal.UpsertGroupMembership( g0g1 );
             _dal.UpsertGroupMembership( g0g2 );
             _dal.UpsertGroupMembership( g2g3 );
@@ -105,7 +105,7 @@ namespace UnitTests
         [Category( "User" )]
         public void GetUserByUId()
         {
-            User found = _dal.GetUserByUId( u0.UId.Value );
+            User found = _dal.GetUserByUId( u0.UId );
             bool eq = new UserEqualityComparer().Equals( u0, found );
             Assert.IsTrue( eq );
         }
@@ -137,8 +137,8 @@ namespace UnitTests
         [Category( "User" )]
         public void DeleteUser()
         {
-            _dal.DeleteUser( u5.UId.Value );
-            User found = _dal.GetUserByUId( u5.UId.Value );
+            _dal.DeleteUser( u5.UId );
+            User found = _dal.GetUserByUId( u5.UId );
             Assert.IsNull( found );
         }
         #endregion
@@ -148,7 +148,7 @@ namespace UnitTests
         [Category( "Group" )]
         public void GetGroupByUId()
         {
-            Group found = _dal.GetGroupByUId( g0.UId.Value );
+            Group found = _dal.GetGroupByUId( g0.UId );
             bool eq = new GroupEqualityComparer().Equals( g0, found );
             Assert.IsTrue( eq );
         }
@@ -180,8 +180,8 @@ namespace UnitTests
         [Category( "Group" )]
         public void DeleteGroup()
         {
-            _dal.DeleteGroup( g5.UId.Value );
-            Group found = _dal.GetGroupByUId( g5.UId.Value );
+            _dal.DeleteGroup( g5.UId );
+            Group found = _dal.GetGroupByUId( g5.UId );
             Assert.IsNull( found );
         }
         #endregion
@@ -259,10 +259,10 @@ namespace UnitTests
             _dal.UpsertGroup( lg4 );
             _dal.UpsertGroup( lg5 );
 
-            GroupMembershipItem lg0g1 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = lg1.UId.Value };
-            GroupMembershipItem lg0g2 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = lg2.UId.Value };
-            GroupMembershipItem lg2g3 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = lg3.UId.Value };
-            GroupMembershipItem lg2g4 = new GroupMembershipItem { GroupUId = lg0.UId.Value, MemberUId = lg4.UId.Value };
+            GroupMembershipItem lg0g1 = new GroupMembershipItem { GroupUId = lg0.UId, MemberUId = lg1.UId };
+            GroupMembershipItem lg0g2 = new GroupMembershipItem { GroupUId = lg0.UId, MemberUId = lg2.UId };
+            GroupMembershipItem lg2g3 = new GroupMembershipItem { GroupUId = lg0.UId, MemberUId = lg3.UId };
+            GroupMembershipItem lg2g4 = new GroupMembershipItem { GroupUId = lg0.UId, MemberUId = lg4.UId };
             _dal.UpsertGroupMembership( lg0g1 );
             _dal.UpsertGroupMembership( lg0g2 );
             _dal.UpsertGroupMembership( lg2g3 );

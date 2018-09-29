@@ -107,7 +107,7 @@ namespace Suplex.Security.AclModel.DataAccess
         #region group membership
         public IEnumerable<GroupMembershipItem> GetGroupMembers(Group group, bool includeDisabledMembers = false)
         {
-            return GetGroupMembers( group.UId.Value, includeDisabledMembers );
+            return GetGroupMembers( group.UId, includeDisabledMembers );
         }
 
         public IEnumerable<GroupMembershipItem> GetGroupMembers(Guid groupUId, bool includeDisabledMembers = false)
@@ -117,7 +117,7 @@ namespace Suplex.Security.AclModel.DataAccess
 
         public IEnumerable<GroupMembershipItem> GetGroupMembership(SecurityPrincipalBase member, bool includeDisabledMembership = false)
         {
-            return GetGroupMembership( member.UId.Value, includeDisabledMembership );
+            return GetGroupMembership( member.UId, includeDisabledMembership );
         }
 
         public IEnumerable<GroupMembershipItem> GetGroupMembership(Guid memberUId, bool includeDisabledMembership = false)

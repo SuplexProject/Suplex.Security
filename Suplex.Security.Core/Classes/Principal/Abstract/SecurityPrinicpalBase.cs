@@ -7,8 +7,8 @@ namespace Suplex.Security.Principal
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        Guid? _uId = Guid.NewGuid();
-        public virtual Guid? UId
+        Guid _uId = Guid.NewGuid();
+        public virtual Guid UId
         {
             get => _uId;
             set

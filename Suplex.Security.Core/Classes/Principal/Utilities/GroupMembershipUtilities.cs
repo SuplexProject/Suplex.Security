@@ -51,7 +51,7 @@ namespace Suplex.Security.Principal
         public static IEnumerable<GroupMembershipItem> GetByGroup(this IEnumerable<GroupMembershipItem> groupMembershipItems, Group group,
             bool includeDisabledMembers, IList<Group> groups, IList<User> users, bool forceResolution = false)
         {
-            return groupMembershipItems.GetByGroup( group.UId.Value, includeDisabledMembers, groups, users, forceResolution ); ;
+            return groupMembershipItems.GetByGroup( group.UId, includeDisabledMembers, groups, users, forceResolution ); ;
         }
 
         public static IEnumerable<GroupMembershipItem> GetByGroup(this IEnumerable<GroupMembershipItem> groupMembershipItems, Guid groupUId,
@@ -75,7 +75,7 @@ namespace Suplex.Security.Principal
         public static IEnumerable<GroupMembershipItem> GetByMember(this IEnumerable<GroupMembershipItem> groupMembershipItems, SecurityPrincipalBase member,
             bool includeDisabledMembers, List<Group> groups, List<User> users, bool forceResolution = false)
         {
-            return groupMembershipItems.GetByMember( member.UId.Value, includeDisabledMembers, groups, users, forceResolution );
+            return groupMembershipItems.GetByMember( member.UId, includeDisabledMembers, groups, users, forceResolution );
         }
 
         public static IEnumerable<GroupMembershipItem> GetByMember(this IEnumerable<GroupMembershipItem> groupMembershipItems, Guid memberUId,

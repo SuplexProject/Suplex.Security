@@ -53,6 +53,7 @@ namespace Suplex.Security.AclModel
             if( secureObject?.Children?.Count > 0 )
                 foreach( ISecureObject child in secureObject.Children )
                 {
+                    child.Parent = secureObject;
                     child.ParentUId = secureObject.UId;
                     child.EnsureParentUIdRecursive();
                 }
@@ -66,6 +67,27 @@ namespace Suplex.Security.AclModel
                 destination.Add( clone );
                 if( item.Children != null && item.Children.Count > 0 )
                     item.Children.ShallowCloneTo( clone.Children );
+            }
+        }
+
+        public static void ChangeParent(this SecureObject source, SecureObject target, IList<SecureObject> storeList)
+        {
+            if( source.Parent != null )
+                source.Parent.Children.Remove( source );
+            else
+                storeList.Remove( source );
+
+            if( target != null )
+            {
+                source.Parent = target;
+                source.ParentUId = target.UId;
+                target.Children.Add( source );
+            }
+            else
+            {
+                source.Parent = null;
+                source.ParentUId = null;
+                storeList.Add( source );
             }
         }
     }

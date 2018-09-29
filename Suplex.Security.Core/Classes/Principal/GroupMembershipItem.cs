@@ -9,9 +9,9 @@ namespace Suplex.Security.Principal
         public GroupMembershipItem(Group group, SecurityPrincipalBase member)
         {
             Group = group;
-            GroupUId = group.UId.Value;
+            GroupUId = group.UId;
             Member = member;
-            MemberUId = member.UId.Value;
+            MemberUId = member.UId;
             IsMemberUser = member is User;
 
             Validate();
@@ -20,7 +20,7 @@ namespace Suplex.Security.Principal
         {
             GroupUId = groupUId;
             Member = member;
-            MemberUId = member.UId.Value;
+            MemberUId = member.UId;
             IsMemberUser = member is User;
 
             Validate();
