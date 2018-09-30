@@ -11,12 +11,6 @@ namespace Suplex.Security.AclModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public SecureObject()
-        {
-            Security = new SecurityDescriptor();
-            IsDirty = false;
-        }
-
         Guid _uId = Guid.NewGuid();
         public virtual Guid UId
         {
@@ -77,36 +71,41 @@ namespace Suplex.Security.AclModel
             }
         }
 
-        bool _isDirty = false;
-        public virtual bool IsDirty
+        #region IsDirty
+        bool? _isDirty = null;
+        public virtual bool? IsDirty
         {
-            get => _isDirty;
+            get => _enableIsDirty ? _isDirty : null;
             set
             {
-                if( value != _isDirty )
+                if( _enableIsDirty && value != _isDirty )
                 {
                     _isDirty = value;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( IsDirty ) ) );
                 }
             }
         }
-
-        SecurityDescriptor _sd;
-        public virtual SecurityDescriptor Security
+        bool _enableIsDirty = false;
+        public virtual void EnableIsDirty()
         {
-            get => _sd;
-            set
-            {
-                if( value != _sd )
-                {
-                    _sd = value;
-                    _sd.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e) { IsDirty = true; };
-                    IsDirty = true;
-                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( Security ) ) );
-                }
-            }
+            _enableIsDirty = true;
+            IsDirty = false;
+            Security.PropertyChanged += Security_PropertyChanged;
+            Security.Dacl.CollectionChanged += SecurityAcl_CollectionChanged;
+            Security.Sacl.CollectionChanged += SecurityAcl_CollectionChanged;
         }
+        public virtual void DisableIsDirty()
+        {
+            _enableIsDirty = false;
+            Security.PropertyChanged -= Security_PropertyChanged;
+            Security.Dacl.CollectionChanged -= SecurityAcl_CollectionChanged;
+            Security.Sacl.CollectionChanged -= SecurityAcl_CollectionChanged;
+        }
+        private void Security_PropertyChanged(object sender, PropertyChangedEventArgs e) { IsDirty = true; }
+        private void SecurityAcl_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) { IsDirty = true; }
+        #endregion
 
+        public virtual SecurityDescriptor Security { get; set; } = new SecurityDescriptor();
         ISecurityDescriptor ISecureObject.Security { get => Security; set => Security = value as SecurityDescriptor; }
 
 
