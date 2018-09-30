@@ -11,6 +11,12 @@ namespace Suplex.Security.AclModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public SecureObject()
+        {
+            Security = new SecurityDescriptor();
+            IsDirty = false;
+        }
+
         Guid _uId = Guid.NewGuid();
         public virtual Guid UId
         {
@@ -20,6 +26,7 @@ namespace Suplex.Security.AclModel
                 if( value != _uId )
                 {
                     _uId = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( UId ) ) );
                 }
             }
@@ -34,6 +41,7 @@ namespace Suplex.Security.AclModel
                 if( value != _uniqueName )
                 {
                     _uniqueName = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( UniqueName ) ) );
                 }
             }
@@ -48,6 +56,7 @@ namespace Suplex.Security.AclModel
                 if( value != _isEnabled )
                 {
                     _isEnabled = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( IsEnabled ) ) );
                 }
             }
@@ -62,12 +71,42 @@ namespace Suplex.Security.AclModel
                 if( value != _parentUId )
                 {
                     _parentUId = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( ParentUId ) ) );
                 }
             }
         }
 
-        public virtual SecurityDescriptor Security { get; set; } = new SecurityDescriptor();
+        bool _isDirty = false;
+        public virtual bool IsDirty
+        {
+            get => _isDirty;
+            set
+            {
+                if( value != _isDirty )
+                {
+                    _isDirty = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( IsDirty ) ) );
+                }
+            }
+        }
+
+        SecurityDescriptor _sd;
+        public virtual SecurityDescriptor Security
+        {
+            get => _sd;
+            set
+            {
+                if( value != _sd )
+                {
+                    _sd = value;
+                    _sd.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e) { IsDirty = true; };
+                    IsDirty = true;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( Security ) ) );
+                }
+            }
+        }
+
         ISecurityDescriptor ISecureObject.Security { get => Security; set => Security = value as SecurityDescriptor; }
 
 
@@ -107,6 +146,8 @@ namespace Suplex.Security.AclModel
                 secureObject.Security.SaclAllowInherit = Security.SaclAllowInherit;
                 secureObject.Security.SaclAuditTypeFilter = Security.SaclAuditTypeFilter;
             }
+
+            secureObject.IsDirty = false;
 
             return secureObject;
         }

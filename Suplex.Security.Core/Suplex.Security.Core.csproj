@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\AclModel\AccessControlEntryAudit.cs" />
+    <Compile Include="Classes\DataAccess\Interfaces\IRecordState.cs" />
     <Compile Include="Classes\AclModel\Interfaces\ISecurityDescriptor.cs" />
     <Compile Include="Classes\AclModel\Utilities\SecurityDescriptorUtilities.cs" />
     <Compile Include="Classes\AclModel\Utilities\AceComparer.cs" />

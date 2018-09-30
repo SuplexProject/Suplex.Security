@@ -16,7 +16,6 @@ namespace Suplex.Security.AclModel
                 if( value != _denied )
                 {
                     _denied = value;
-                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( Denied ) ) );
                 }
             }
@@ -31,8 +30,6 @@ namespace Suplex.Security.AclModel
 
             if( !ace.InheritedFrom.HasValue )
                 ace.InheritedFrom = UId;
-
-            ace.IsDirty = false;
 
             return ace;
         }
