@@ -2,7 +2,7 @@
 
 namespace Suplex.Security.Principal
 {
-    public interface ISecurityPrincipal
+    public interface ISecurityPrincipal : ICloneable<ISecurityPrincipal>
     {
         Guid UId { get; set; }
         string Name { get; set; }

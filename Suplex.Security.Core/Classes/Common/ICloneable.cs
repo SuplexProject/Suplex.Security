@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Suplex.Security.AclModel
+namespace Suplex.Security
 {
     public interface ICloneable<T> : ICloneable
     {

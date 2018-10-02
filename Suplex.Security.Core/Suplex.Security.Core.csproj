@@ -43,14 +43,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\AclModel\AccessControlEntryAudit.cs" />
-    <Compile Include="Classes\DataAccess\Interfaces\IRecordState.cs" />
+    <Compile Include="Classes\Common\IRecordState.cs" />
     <Compile Include="Classes\AclModel\Interfaces\ISecurityDescriptor.cs" />
     <Compile Include="Classes\AclModel\Utilities\SecurityDescriptorUtilities.cs" />
     <Compile Include="Classes\AclModel\Utilities\AceComparer.cs" />
     <Compile Include="Classes\AclModel\Interfaces\ISystemAcl.cs" />
     <Compile Include="Classes\AclModel\Interfaces\IDiscretionaryAcl.cs" />
     <Compile Include="Classes\AclModel\Interfaces\IAccessControlList.cs" />
-    <Compile Include="Classes\AclModel\Interfaces\ICloneable.cs" />
+    <Compile Include="Classes\Common\ICloneable.cs" />
     <Compile Include="Classes\AclModel\Interfaces\IRightInfo.cs" />
     <Compile Include="Classes\AclModel\Interfaces\ISecureObject.cs" />
     <Compile Include="Classes\AclModel\Utilities\AccessControlEntryUtilities.cs" />

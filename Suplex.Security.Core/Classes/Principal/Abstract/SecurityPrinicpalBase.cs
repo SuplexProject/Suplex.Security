@@ -16,6 +16,7 @@ namespace Suplex.Security.Principal
                 if( value != _uId )
                 {
                     _uId = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( UId ) ) );
                 }
             }
@@ -29,6 +30,7 @@ namespace Suplex.Security.Principal
                 if( value != _name )
                 {
                     _name = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( Name ) ) );
                 }
             }
@@ -42,6 +44,7 @@ namespace Suplex.Security.Principal
                 if( value != _description )
                 {
                     _description = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( Description ) ) );
                 }
             }
@@ -55,6 +58,7 @@ namespace Suplex.Security.Principal
                 if( value != _isLocal )
                 {
                     _isLocal = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( IsLocal ) ) );
                 }
             }
@@ -68,6 +72,7 @@ namespace Suplex.Security.Principal
                 if( value != _isBuiltIn )
                 {
                     _isBuiltIn = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( IsBuiltIn ) ) );
                 }
             }
@@ -81,6 +86,7 @@ namespace Suplex.Security.Principal
                 if( value != _isEnabled )
                 {
                     _isEnabled = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( IsEnabled ) ) );
                 }
             }
@@ -94,10 +100,36 @@ namespace Suplex.Security.Principal
                 if( value != _isValid )
                 {
                     _isValid = value;
+                    IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( IsValid ) ) );
                 }
             }
         }
+        #region IsDirty
+        bool? _isDirty = null;
+        public virtual bool? IsDirty
+        {
+            get => _enableIsDirty ? _isDirty : null;
+            set
+            {
+                if( _enableIsDirty && value != _isDirty )
+                {
+                    _isDirty = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( IsDirty ) ) );
+                }
+            }
+        }
+        bool _enableIsDirty = false;
+        public virtual void EnableIsDirty()
+        {
+            _enableIsDirty = true;
+            IsDirty = false;
+        }
+        public virtual void DisableIsDirty()
+        {
+            _enableIsDirty = false;
+        }
+        #endregion
 
 
         public abstract bool IsUser { get; set; } //friendly prop just for databinding and such
@@ -105,6 +137,20 @@ namespace Suplex.Security.Principal
         public override string ToString()
         {
             return $"{UId}/{Name}/IsUser: {IsUser}";
+        }
+
+
+        object ICloneable.Clone() { return Clone( true ); }
+        public abstract ISecurityPrincipal Clone(bool shallow = true);
+        public virtual void Sync(ISecurityPrincipal source, bool shallow = true)
+        {
+            UId = source.UId;
+            Name = source.Name;
+            Description = source.Description;
+            IsLocal = source.IsLocal;
+            IsBuiltIn = source.IsBuiltIn;
+            IsEnabled = source.IsEnabled;
+            IsValid = source.IsValid;
         }
     }
 }

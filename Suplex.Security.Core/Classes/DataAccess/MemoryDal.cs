@@ -36,7 +36,7 @@ namespace Suplex.Security.AclModel.DataAccess
         {
             int index = Store.Users.FindIndex( u => u.UId == user.UId );
             if( index >= 0 )
-                Store.Users[index] = user;
+                Store.Users[index].Sync( user, shallow: false );
             else
                 Store.Users.Add( user );
 
@@ -73,7 +73,7 @@ namespace Suplex.Security.AclModel.DataAccess
             int index = Store.Groups.FindIndex( g => g.UId == group.UId );
             if( index >= 0 )
             {
-                Store.Groups[index] = group;
+                Store.Groups[index].Sync( group, shallow: false );
 
                 if( !group.IsLocal )
                 {

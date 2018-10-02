@@ -38,7 +38,6 @@
     <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Enums\UiRight.cs" Link="Classes\AclModel\Enums\UiRight.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Interfaces\IAccessControlEntry.cs" Link="Classes\AclModel\Interfaces\IAccessControlEntry.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Interfaces\IAccessControlList.cs" Link="Classes\AclModel\Interfaces\IAccessControlList.cs" />
-    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Interfaces\ICloneable.cs" Link="Classes\AclModel\Interfaces\ICloneable.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Interfaces\IDiscretionaryAcl.cs" Link="Classes\AclModel\Interfaces\IDiscretionaryAcl.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Interfaces\IRightInfo.cs" Link="Classes\AclModel\Interfaces\IRightInfo.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Interfaces\ISecureObject.cs" Link="Classes\AclModel\Interfaces\ISecureObject.cs" />
@@ -58,6 +57,8 @@
     <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\SecureObjectUtilities.cs" Link="Classes\AclModel\Utilities\SecureObjectUtilities.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\SecurityDescriptorUtilities.cs" Link="Classes\AclModel\Utilities\SecurityDescriptorUtilities.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\UtilityExtensions.cs" Link="Classes\AclModel\Utilities\UtilityExtensions.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Common\ICloneable.cs" Link="Classes\Common\ICloneable.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Common\IRecordState.cs" Link="Classes\Common\IRecordState.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\Interfaces\IDataAccessLayer.cs" Link="Classes\DataAccess\Interfaces\IDataAccessLayer.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\Interfaces\ISuplexStore.cs" Link="Classes\DataAccess\Interfaces\ISuplexStore.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\MemoryDal.cs" Link="Classes\DataAccess\MemoryDal.cs" />
