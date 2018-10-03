@@ -60,6 +60,8 @@ namespace Suplex.Security.Principal
                     _isLocal = value;
                     IsDirty = true;
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( IsLocal ) ) );
+                    if( !IsUser )
+                        PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( IsUserOrLocalGroup ) ) );
                 }
             }
         }
@@ -132,7 +134,10 @@ namespace Suplex.Security.Principal
         #endregion
 
 
-        public abstract bool IsUser { get; set; } //friendly prop just for databinding and such
+        //friendly props just for databinding and such
+        public abstract bool IsUser { get; set; }
+        public virtual bool IsUserOrLocalGroup { get { return IsUser || (!IsUser && IsLocal); } }
+
 
         public override string ToString()
         {
