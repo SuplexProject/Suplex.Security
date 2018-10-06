@@ -18,7 +18,8 @@ namespace Suplex.Security.AclModel.DataAccess
         void DeleteGroup(Guid groupUId);
 
         IEnumerable<GroupMembershipItem> GetGroupMembers(Guid groupUId, bool includeDisabledMembership = false);
-        IEnumerable<GroupMembershipItem> GetGroupMembership(Guid memberUId, bool includeDisabledMembership = false);
+        IEnumerable<GroupMembershipItem> GetGroupMemberOf(Guid memberUId, bool includeDisabledMembership = false);
+        IEnumerable<GroupMembershipItem> GetGroupMembershipHierarchy(Guid memberUId, bool includeDisabledMembership = false);
         GroupMembershipItem UpsertGroupMembership(GroupMembershipItem groupMembershipItem);
         List<GroupMembershipItem> UpsertGroupMembership(List<GroupMembershipItem> groupMembershipItems);
         void DeleteGroupMembership(GroupMembershipItem groupMembershipItem);

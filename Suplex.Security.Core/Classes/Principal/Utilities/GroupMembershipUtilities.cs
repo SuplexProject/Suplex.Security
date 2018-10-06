@@ -73,13 +73,13 @@ namespace Suplex.Security.Principal
         }
 
         public static IEnumerable<GroupMembershipItem> GetByMember(this IEnumerable<GroupMembershipItem> groupMembershipItems, SecurityPrincipalBase member,
-            bool includeDisabledMembers, List<Group> groups, List<User> users, bool forceResolution = false)
+            bool includeDisabledMembers, IList<Group> groups, IList<User> users, bool forceResolution = false)
         {
             return groupMembershipItems.GetByMember( member.UId, includeDisabledMembers, groups, users, forceResolution );
         }
 
         public static IEnumerable<GroupMembershipItem> GetByMember(this IEnumerable<GroupMembershipItem> groupMembershipItems, Guid memberUId,
-            bool includeDisabledMembers, List<Group> groups, List<User> users, bool forceResolution = false)
+            bool includeDisabledMembers, IList<Group> groups, IList<User> users, bool forceResolution = false)
         {
             if( includeDisabledMembers )
                 return groupMembershipItems.Where( item => item.MemberUId == memberUId );

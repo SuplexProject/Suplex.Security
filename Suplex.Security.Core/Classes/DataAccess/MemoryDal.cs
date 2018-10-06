@@ -115,12 +115,22 @@ namespace Suplex.Security.AclModel.DataAccess
             return Store.GroupMembership.GetByGroup( groupUId, includeDisabledMembers, Store.Groups, Store.Users );
         }
 
-        public IEnumerable<GroupMembershipItem> GetGroupMembership(SecurityPrincipalBase member, bool includeDisabledMembership = false)
+        public IEnumerable<GroupMembershipItem> GetGroupMemberOf(SecurityPrincipalBase member, bool includeDisabledMembers = false)
         {
-            return GetGroupMembership( member.UId, includeDisabledMembership );
+            return GetGroupMemberOf( member.UId, includeDisabledMembers );
         }
 
-        public IEnumerable<GroupMembershipItem> GetGroupMembership(Guid memberUId, bool includeDisabledMembership = false)
+        public IEnumerable<GroupMembershipItem> GetGroupMemberOf(Guid memberUId, bool includeDisabledMembers = false)
+        {
+            return Store.GroupMembership.GetByMember( memberUId, includeDisabledMembers, Store.Groups, Store.Users );
+        }
+
+        public IEnumerable<GroupMembershipItem> GetGroupMembershipHierarchy(SecurityPrincipalBase member, bool includeDisabledMembership = false)
+        {
+            return GetGroupMembershipHierarchy( member.UId, includeDisabledMembership );
+        }
+
+        public IEnumerable<GroupMembershipItem> GetGroupMembershipHierarchy(Guid memberUId, bool includeDisabledMembership = false)
         {
             return Store.GroupMembership.GetGroupMembershipHierarchy( memberUId, includeDisabledMembership, Store.Groups, Store.Users );
         }

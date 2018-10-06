@@ -198,7 +198,7 @@ namespace UnitTests
         [Category( "GroupMembership" )]
         public void GetGroupMembership()
         {
-            List<GroupMembershipItem> m = _dal.GetGroupMembership( u4 ).ToList();
+            List<GroupMembershipItem> m = _dal.GetGroupMembershipHierarchy( u4 ).ToList();
             //m.Resolve( _store.Groups, _store.Users );
         }
 
