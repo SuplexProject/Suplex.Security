@@ -71,7 +71,31 @@ namespace Suplex.Security.AclModel
             }
         }
 
+
         #region IsDirty
+        bool? _isSecure = false;
+        public virtual bool? IsSecure
+        {
+            get => _isSecure = GetIsSecure();
+            set
+            {
+                bool isSecure = GetIsSecure();
+                if( isSecure != _isSecure )
+                {
+                    _isSecure = isSecure;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( IsSecure ) ) );
+                }
+            }
+        }
+        internal void SetIsSecure()
+        {
+            IsSecure = true;
+        }
+        internal bool GetIsSecure()
+        {
+            return !Security.DaclAllowInherit || !Security.SaclAllowInherit || Security.Dacl.Count > 0 || Security.Sacl.Count > 0;
+        }
+
         bool? _isDirty = null;
         public virtual bool? IsDirty
         {
@@ -101,8 +125,8 @@ namespace Suplex.Security.AclModel
             Security.Dacl.CollectionChanged -= SecurityAcl_CollectionChanged;
             Security.Sacl.CollectionChanged -= SecurityAcl_CollectionChanged;
         }
-        private void Security_PropertyChanged(object sender, PropertyChangedEventArgs e) { IsDirty = true; }
-        private void SecurityAcl_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) { IsDirty = true; }
+        private void Security_PropertyChanged(object sender, PropertyChangedEventArgs e) { IsDirty = true; SetIsSecure(); }
+        private void SecurityAcl_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) { IsDirty = true; SetIsSecure(); }
         #endregion
 
         public virtual SecurityDescriptor Security { get; set; } = new SecurityDescriptor();
@@ -146,6 +170,8 @@ namespace Suplex.Security.AclModel
                 secureObject.Security.SaclAuditTypeFilter = Security.SaclAuditTypeFilter;
             }
 
+            secureObject.SetIsSecure();
+
             secureObject.IsDirty = false;
 
             return secureObject;
@@ -174,6 +200,8 @@ namespace Suplex.Security.AclModel
                 Security.SaclAllowInherit = source.Security.SaclAllowInherit;
                 Security.SaclAuditTypeFilter = source.Security.SaclAuditTypeFilter;
             }
+
+            SetIsSecure();
         }
         #endregion
 
