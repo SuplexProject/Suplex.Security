@@ -60,6 +60,7 @@
     <Compile Include="..\Suplex.Security.Core\Classes\Common\ICloneable.cs" Link="Classes\Common\ICloneable.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\Common\IRecordState.cs" Link="Classes\Common\IRecordState.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\Interfaces\IDataAccessLayer.cs" Link="Classes\DataAccess\Interfaces\IDataAccessLayer.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\Interfaces\ISuplexDalHost.cs" Link="Classes\DataAccess\Interfaces\ISuplexDalHost.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\Interfaces\ISuplexStore.cs" Link="Classes\DataAccess\Interfaces\ISuplexStore.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\MemoryDal.cs" Link="Classes\DataAccess\MemoryDal.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\SuplexStore.cs" Link="Classes\DataAccess\SuplexStore.cs" />
@@ -93,7 +94,6 @@
     <Folder Include="Classes\AclModel\Enums\" />
     <Folder Include="Classes\AclModel\Interfaces\" />
     <Folder Include="Classes\AclModel\Utilities\" />
-    <Folder Include="Classes\DataAccess\Interfaces\" />
     <Folder Include="Classes\Principal\Abstract\" />
     <Folder Include="Classes\Principal\Interfaces\" />
     <Folder Include="Classes\Principal\Utilities\" />
