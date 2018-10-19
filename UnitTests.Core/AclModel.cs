@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using NUnit.Framework;
 
-using Suplex.Security.AclModel.DataAccess;
+using Suplex.Security.DataAccess;
 using Suplex.Security.AclModel;
 
 namespace UnitTests

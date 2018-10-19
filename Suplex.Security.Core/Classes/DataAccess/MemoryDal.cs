@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Suplex.Security.AclModel;
 using Suplex.Security.Principal;
 
 
-namespace Suplex.Security.AclModel.DataAccess
+namespace Suplex.Security.DataAccess
 {
-    public class MemoryDal : IDataAccessLayer
+    public class MemoryDal : ISuplexDal
     {
         #region ctor
         public MemoryDal() { }
@@ -21,18 +22,18 @@ namespace Suplex.Security.AclModel.DataAccess
 
 
         #region users
-        public List<User> GetUserByName(string name)
+        public virtual List<User> GetUserByName(string name)
         {
             return Store.Users.FindAll( u => u.Name.Equals( name, StringComparison.OrdinalIgnoreCase ) );
         }
 
-        public User GetUserByUId(Guid userUId)
+        public virtual User GetUserByUId(Guid userUId)
         {
             int index = Store.Users.FindIndex( u => u.UId == userUId );
             return index >= 0 ? Store.Users[index] : null;
         }
 
-        public User UpsertUser(User user)
+        public virtual User UpsertUser(User user)
         {
             int index = Store.Users.FindIndex( u => u.UId == user.UId );
             if( index >= 0 )
@@ -43,7 +44,7 @@ namespace Suplex.Security.AclModel.DataAccess
             return user;
         }
 
-        public void DeleteUser(Guid userUId)
+        public virtual void DeleteUser(Guid userUId)
         {
             int index = Store.Users.FindIndex( u => u.UId == userUId );
             if( index >= 0 )
@@ -57,18 +58,18 @@ namespace Suplex.Security.AclModel.DataAccess
 
 
         #region groups
-        public List<Group> GetGroupByName(string name)
+        public virtual List<Group> GetGroupByName(string name)
         {
             return Store.Groups.FindAll( g => g.Name.Equals( name, StringComparison.OrdinalIgnoreCase ) );
         }
 
-        public Group GetGroupByUId(Guid groupUId)
+        public virtual Group GetGroupByUId(Guid groupUId)
         {
             int index = Store.Groups.FindIndex( g => g.UId == groupUId );
             return index >= 0 ? Store.Groups[index] : null;
         }
 
-        public Group UpsertGroup(Group group)
+        public virtual Group UpsertGroup(Group group)
         {
             int index = Store.Groups.FindIndex( g => g.UId == group.UId );
             if( index >= 0 )
@@ -90,7 +91,7 @@ namespace Suplex.Security.AclModel.DataAccess
             return group;
         }
 
-        public void DeleteGroup(Guid groupUId)
+        public virtual void DeleteGroup(Guid groupUId)
         {
             int index = Store.Groups.FindIndex( g => g.UId == groupUId );
             if( index >= 0 )
@@ -105,37 +106,37 @@ namespace Suplex.Security.AclModel.DataAccess
 
 
         #region group membership
-        public IEnumerable<GroupMembershipItem> GetGroupMembers(Group group, bool includeDisabledMembers = false)
+        public virtual IEnumerable<GroupMembershipItem> GetGroupMembers(Group group, bool includeDisabledMembers = false)
         {
             return GetGroupMembers( group.UId, includeDisabledMembers );
         }
 
-        public IEnumerable<GroupMembershipItem> GetGroupMembers(Guid groupUId, bool includeDisabledMembers = false)
+        public virtual IEnumerable<GroupMembershipItem> GetGroupMembers(Guid groupUId, bool includeDisabledMembers = false)
         {
             return Store.GroupMembership.GetByGroup( groupUId, includeDisabledMembers, Store.Groups, Store.Users );
         }
 
-        public IEnumerable<GroupMembershipItem> GetGroupMemberOf(SecurityPrincipalBase member, bool includeDisabledMembers = false)
+        public virtual IEnumerable<GroupMembershipItem> GetGroupMemberOf(SecurityPrincipalBase member, bool includeDisabledMembers = false)
         {
             return GetGroupMemberOf( member.UId, includeDisabledMembers );
         }
 
-        public IEnumerable<GroupMembershipItem> GetGroupMemberOf(Guid memberUId, bool includeDisabledMembers = false)
+        public virtual IEnumerable<GroupMembershipItem> GetGroupMemberOf(Guid memberUId, bool includeDisabledMembers = false)
         {
             return Store.GroupMembership.GetByMember( memberUId, includeDisabledMembers, Store.Groups, Store.Users );
         }
 
-        public IEnumerable<GroupMembershipItem> GetGroupMembershipHierarchy(SecurityPrincipalBase member, bool includeDisabledMembership = false)
+        public virtual IEnumerable<GroupMembershipItem> GetGroupMembershipHierarchy(SecurityPrincipalBase member, bool includeDisabledMembership = false)
         {
             return GetGroupMembershipHierarchy( member.UId, includeDisabledMembership );
         }
 
-        public IEnumerable<GroupMembershipItem> GetGroupMembershipHierarchy(Guid memberUId, bool includeDisabledMembership = false)
+        public virtual IEnumerable<GroupMembershipItem> GetGroupMembershipHierarchy(Guid memberUId, bool includeDisabledMembership = false)
         {
             return Store.GroupMembership.GetGroupMembershipHierarchy( memberUId, includeDisabledMembership, Store.Groups, Store.Users );
         }
 
-        public GroupMembershipItem UpsertGroupMembership(GroupMembershipItem groupMembershipItem)
+        public virtual GroupMembershipItem UpsertGroupMembership(GroupMembershipItem groupMembershipItem)
         {
             groupMembershipItem.Resolve( Store.Groups, null );
 
@@ -147,7 +148,7 @@ namespace Suplex.Security.AclModel.DataAccess
             return groupMembershipItem;
         }
 
-        public List<GroupMembershipItem> UpsertGroupMembership(List<GroupMembershipItem> groupMembershipItems)
+        public virtual List<GroupMembershipItem> UpsertGroupMembership(List<GroupMembershipItem> groupMembershipItems)
         {
             List<GroupMembershipItem> gmis = new List<GroupMembershipItem>();
             foreach( GroupMembershipItem gmi in groupMembershipItems )
@@ -156,7 +157,7 @@ namespace Suplex.Security.AclModel.DataAccess
             return gmis;
         }
 
-        public void DeleteGroupMembership(GroupMembershipItem groupMembershipItem)
+        public virtual void DeleteGroupMembership(GroupMembershipItem groupMembershipItem)
         {
             int index = Store.GroupMembership.FindIndex( gmi =>
                 gmi.GroupUId == groupMembershipItem.GroupUId && gmi.MemberUId == groupMembershipItem.MemberUId );
@@ -165,12 +166,12 @@ namespace Suplex.Security.AclModel.DataAccess
         }
 
 
-        public MembershipList<SecurityPrincipalBase> GetGroupMembershipList(Group group, bool includeDisabledMembership = false)
+        public virtual MembershipList<SecurityPrincipalBase> GetGroupMembershipList(Group group, bool includeDisabledMembership = false)
         {
             return Store.GroupMembership.GetGroupMembers( group, includeDisabledMembership, Store.Groups, Store.Users );
         }
 
-        public MembershipList<Group> GetGroupMembershipListOf(SecurityPrincipalBase member, bool includeDisabledMembership = false)
+        public virtual MembershipList<Group> GetGroupMembershipListOf(SecurityPrincipalBase member, bool includeDisabledMembership = false)
         {
             return Store.GroupMembership.GetMemberOf( member, includeDisabledMembership, Store.Groups, Store.Users );
         }
@@ -178,7 +179,7 @@ namespace Suplex.Security.AclModel.DataAccess
 
 
         #region secure objects
-        public ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren = false, bool includeDisabled = false)
+        public virtual ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren = false, bool includeDisabled = false)
         {
             SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UId == secureObjectUId && (o.IsEnabled || includeDisabled) );
             if( found != null && !includeChildren )
@@ -187,7 +188,7 @@ namespace Suplex.Security.AclModel.DataAccess
             return found;
         }
 
-        public ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren = true, bool includeDisabled = false)
+        public virtual ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren = true, bool includeDisabled = false)
         {
             SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UniqueName.Equals( uniqueName, StringComparison.OrdinalIgnoreCase ) && (o.IsEnabled || includeDisabled) );
             if( found != null && !includeChildren )
@@ -196,7 +197,7 @@ namespace Suplex.Security.AclModel.DataAccess
             return found;
         }
 
-        public ISecureObject UpsertSecureObject(ISecureObject secureObject)
+        public virtual ISecureObject UpsertSecureObject(ISecureObject secureObject)
         {
             IList<SecureObject> list = Store.SecureObjects;
 
@@ -218,7 +219,7 @@ namespace Suplex.Security.AclModel.DataAccess
             return secureObject;
         }
 
-        public void DeleteSecureObject(Guid secureObjectUId)
+        public virtual void DeleteSecureObject(Guid secureObjectUId)
         {
             IList<SecureObject> list = Store.SecureObjects;
 
@@ -234,7 +235,7 @@ namespace Suplex.Security.AclModel.DataAccess
             }
         }
 
-        public void UpdateSecureObjectParentUId(ISecureObject secureObject, Guid? newParentUId)
+        public virtual void UpdateSecureObjectParentUId(ISecureObject secureObject, Guid? newParentUId)
         {
             IList<SecureObject> list = Store.SecureObjects;
 

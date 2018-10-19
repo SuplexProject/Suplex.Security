@@ -1,8 +1,8 @@
-﻿namespace Suplex.Security.AclModel.DataAccess
+﻿namespace Suplex.Security.DataAccess
 {
     public interface ISuplexDalHost
     {
-        IDataAccessLayer Dal { get; }
+        ISuplexDal Dal { get; }
         void Configure(object config);
     }
 }

@@ -56,10 +56,10 @@
     <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\RightsAccessorAttribute.cs" Link="Classes\AclModel\Utilities\RightsAccessorAttribute.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\SecureObjectUtilities.cs" Link="Classes\AclModel\Utilities\SecureObjectUtilities.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\SecurityDescriptorUtilities.cs" Link="Classes\AclModel\Utilities\SecurityDescriptorUtilities.cs" />
-    <Compile Include="..\Suplex.Security.Core\Classes\AclModel\Utilities\UtilityExtensions.cs" Link="Classes\AclModel\Utilities\UtilityExtensions.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\Common\ICloneable.cs" Link="Classes\Common\ICloneable.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\Common\IRecordState.cs" Link="Classes\Common\IRecordState.cs" />
-    <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\Interfaces\IDataAccessLayer.cs" Link="Classes\DataAccess\Interfaces\IDataAccessLayer.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\Common\UtilityExtensions.cs" Link="Classes\Common\UtilityExtensions.cs" />
+    <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\Interfaces\ISuplexDal.cs" Link="Classes\DataAccess\Interfaces\ISuplexDal.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\Interfaces\ISuplexDalHost.cs" Link="Classes\DataAccess\Interfaces\ISuplexDalHost.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\Interfaces\ISuplexStore.cs" Link="Classes\DataAccess\Interfaces\ISuplexStore.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\DataAccess\MemoryDal.cs" Link="Classes\DataAccess\MemoryDal.cs" />
@@ -77,7 +77,6 @@
     <Compile Include="..\Suplex.Security.Core\Classes\Principal\Utilities\SecurityPrincipalEqualityComparer.cs" Link="Classes\Principal\Utilities\SecurityPrincipalEqualityComparer.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\Principal\Utilities\SecurityPrincipalUtilities.cs" Link="Classes\Principal\Utilities\SecurityPrincipalUtilities.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\Principal\Utilities\UserEqualityComparer.cs" Link="Classes\Principal\Utilities\UserEqualityComparer.cs" />
-    <Compile Include="..\Suplex.Security.Core\Classes\Principal\Utilities\UtilityExtensions.cs" Link="Classes\Principal\Utilities\UtilityExtensions.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\TaskModel\Interfaces\IRole.cs" Link="Classes\TaskModel\Interfaces\IRole.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\TaskModel\Interfaces\ITask.cs" Link="Classes\TaskModel\Interfaces\ITask.cs" />
     <Compile Include="..\Suplex.Security.Core\Classes\TaskModel\Permission.cs" Link="Classes\TaskModel\Permission.cs" />

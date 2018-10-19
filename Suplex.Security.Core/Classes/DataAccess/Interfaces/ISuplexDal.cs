@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Suplex.Security.AclModel;
 using Suplex.Security.Principal;
 
-namespace Suplex.Security.AclModel.DataAccess
+namespace Suplex.Security.DataAccess
 {
-    public interface IDataAccessLayer
+    public interface ISuplexDal
     {
         User GetUserByUId(Guid userUId);
         List<User> GetUserByName(string name);

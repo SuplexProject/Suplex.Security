@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
+using Suplex.Security.AclModel;
 using Suplex.Security.Principal;
 
-namespace Suplex.Security.AclModel.DataAccess
+namespace Suplex.Security.DataAccess
 {
     public class SuplexStore : ISuplexStore
     {

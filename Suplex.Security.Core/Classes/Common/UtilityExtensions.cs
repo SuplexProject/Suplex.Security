@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Suplex.Security.Principal
+namespace Suplex.Security
 {
     public static class UtilityExtensions
     {

@@ -60,7 +60,7 @@
     <Compile Include="Classes\AclModel\Utilities\AccessControlListUtilities.cs" />
     <Compile Include="Classes\AclModel\Utilities\SecureObjectUtilities.cs" />
     <Compile Include="Classes\AclModel\SystemAcl.cs" />
-    <Compile Include="Classes\DataAccess\Interfaces\IDataAccessLayer.cs" />
+    <Compile Include="Classes\DataAccess\Interfaces\ISuplexDal.cs" />
     <Compile Include="Classes\DataAccess\Interfaces\ISuplexDalHost.cs" />
     <Compile Include="Classes\DataAccess\Interfaces\ISuplexStore.cs" />
     <Compile Include="Classes\DataAccess\MemoryDal.cs" />
@@ -90,9 +90,8 @@
     <Compile Include="Classes\Principal\Utilities\SecurityPrincipalEqualityComparer.cs" />
     <Compile Include="Classes\Principal\Utilities\SecurityPrincipalUtilities.cs" />
     <Compile Include="Classes\Principal\User.cs" />
-    <Compile Include="Classes\AclModel\Utilities\UtilityExtensions.cs" />
     <Compile Include="Classes\Principal\Utilities\UserEqualityComparer.cs" />
-    <Compile Include="Classes\Principal\Utilities\UtilityExtensions.cs" />
+    <Compile Include="Classes\Common\UtilityExtensions.cs" />
     <Compile Include="Classes\TaskModel\Interfaces\IRole.cs" />
     <Compile Include="Classes\TaskModel\Interfaces\ITask.cs" />
     <Compile Include="Classes\TaskModel\Privilege.cs" />

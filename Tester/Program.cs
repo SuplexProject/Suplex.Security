@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 //using Newtonsoft.Json;
 
-using Suplex.Security.AclModel.DataAccess;
+using Suplex.Security.DataAccess;
 //using Suplex.Security.AclModel.DataAccess.Utilities;
 using Suplex.Security.AclModel;
 using Suplex.Security.Principal;
