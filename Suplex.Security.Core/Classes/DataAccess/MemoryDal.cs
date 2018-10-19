@@ -16,9 +16,10 @@ namespace Suplex.Security.DataAccess
         {
             Store = SuplexStore;
         }
-
-        public ISuplexStore Store { get; set; }
         #endregion
+
+
+        public virtual ISuplexStore Store { get; set; }
 
 
         #region users
