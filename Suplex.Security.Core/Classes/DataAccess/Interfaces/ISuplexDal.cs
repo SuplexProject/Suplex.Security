@@ -9,12 +9,12 @@ namespace Suplex.Security.DataAccess
     public interface ISuplexDal
     {
         User GetUserByUId(Guid userUId);
-        List<User> GetUserByName(string name);
+        List<User> GetUserByName(string name, bool exact = false);
         User UpsertUser(User user);
         void DeleteUser(Guid userUId);
 
         Group GetGroupByUId(Guid groupUId);
-        List<Group> GetGroupByName(string name);
+        List<Group> GetGroupByName(string name, bool exact = false);
         Group UpsertGroup(Group group);
         void DeleteGroup(Guid groupUId);
 
@@ -29,6 +29,7 @@ namespace Suplex.Security.DataAccess
         MembershipList<Group> GetGroupMembershipListOf(SecurityPrincipalBase member, bool includeDisabledMembership = false);
 
 
+        IEnumerable<ISecureObject> GetSecureObjects();
         ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren, bool includeDisabled = false);
         ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren, bool includeDisabled = false);
         ISecureObject UpsertSecureObject(ISecureObject secureObject);

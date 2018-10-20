@@ -23,9 +23,14 @@ namespace Suplex.Security.DataAccess
 
 
         #region users
-        public virtual List<User> GetUserByName(string name)
+        public virtual List<User> GetUserByName(string name, bool exact = false)
         {
-            return Store.Users.FindAll( u => u.Name.Equals( name, StringComparison.OrdinalIgnoreCase ) );
+            if( name == null ) name = string.Empty;
+
+            if( exact )
+                return Store.Users.FindAll( u => u.Name.Equals( name, StringComparison.OrdinalIgnoreCase ) );
+            else
+                return Store.Users.FindAll( u => u.Name.IndexOf( name, StringComparison.OrdinalIgnoreCase ) >= 0 );
         }
 
         public virtual User GetUserByUId(Guid userUId)
@@ -59,9 +64,14 @@ namespace Suplex.Security.DataAccess
 
 
         #region groups
-        public virtual List<Group> GetGroupByName(string name)
+        public virtual List<Group> GetGroupByName(string name, bool exact = false)
         {
-            return Store.Groups.FindAll( g => g.Name.Equals( name, StringComparison.OrdinalIgnoreCase ) );
+            if( name == null ) name = string.Empty;
+
+            if( exact )
+                return Store.Groups.FindAll( g => g.Name.Equals( name, StringComparison.OrdinalIgnoreCase ) );
+            else
+                return Store.Groups.FindAll( g => g.Name.IndexOf( name, StringComparison.OrdinalIgnoreCase ) >= 0 );
         }
 
         public virtual Group GetGroupByUId(Guid groupUId)
@@ -180,6 +190,11 @@ namespace Suplex.Security.DataAccess
 
 
         #region secure objects
+        public IEnumerable<ISecureObject> GetSecureObjects()
+        {
+            return Store.SecureObjects;
+        }
+
         public virtual ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren = false, bool includeDisabled = false)
         {
             SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UId == secureObjectUId && (o.IsEnabled || includeDisabled) );
