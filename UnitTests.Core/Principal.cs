@@ -208,7 +208,7 @@ namespace UnitTests
         [Category( "GroupMembership" )]
         public void GetGroupMembershipList(bool includeDisabledMembership = true)
         {
-            MembershipList<SecurityPrincipalBase> m = _dal.GetGroupMembershipList( g0, includeDisabledMembership );
+            MembershipList<SecurityPrincipalBase> m = _dal.GetGroupMembersList( g0, includeDisabledMembership );
 
             if( includeDisabledMembership )
             {
@@ -228,7 +228,7 @@ namespace UnitTests
         [Category( "GroupMembership" )]
         public void GetGroupMembershipListOf(bool includeDisabledMembership = false)
         {
-            MembershipList<Group> m = _dal.GetGroupMembershipListOf( g4, includeDisabledMembership );
+            MembershipList<Group> m = _dal.GetGroupMemberOfList( g4, includeDisabledMembership );
 
             if( includeDisabledMembership )
             {

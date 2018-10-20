@@ -177,12 +177,21 @@ namespace Suplex.Security.DataAccess
         }
 
 
-        public virtual MembershipList<SecurityPrincipalBase> GetGroupMembershipList(Group group, bool includeDisabledMembership = false)
+        public MembershipList<SecurityPrincipalBase> GetGroupMembersList(Guid groupUId, bool includeDisabledMembership = false)
+        {
+            return GetGroupMembersList( new Group { UId = groupUId }, includeDisabledMembership );
+        }
+        public virtual MembershipList<SecurityPrincipalBase> GetGroupMembersList(Group group, bool includeDisabledMembership = false)
         {
             return Store.GroupMembership.GetGroupMembers( group, includeDisabledMembership, Store.Groups, Store.Users );
         }
 
-        public virtual MembershipList<Group> GetGroupMembershipListOf(SecurityPrincipalBase member, bool includeDisabledMembership = false)
+        public virtual MembershipList<Group> GetGroupMemberOfList(Guid memberUId, bool isMemberGroup = false, bool includeDisabledMembership = false)
+        {
+            SecurityPrincipalBase member = isMemberGroup ? new Group { UId = memberUId } as SecurityPrincipalBase : new User { UId = memberUId } as SecurityPrincipalBase;
+            return GetGroupMemberOfList( member, includeDisabledMembership );
+        }
+        public virtual MembershipList<Group> GetGroupMemberOfList(SecurityPrincipalBase member, bool includeDisabledMembership = false)
         {
             return Store.GroupMembership.GetMemberOf( member, includeDisabledMembership, Store.Groups, Store.Users );
         }

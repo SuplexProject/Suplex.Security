@@ -25,8 +25,10 @@ namespace Suplex.Security.DataAccess
         List<GroupMembershipItem> UpsertGroupMembership(List<GroupMembershipItem> groupMembershipItems);
         void DeleteGroupMembership(GroupMembershipItem groupMembershipItem);
 
-        MembershipList<SecurityPrincipalBase> GetGroupMembershipList(Group group, bool includeDisabledMembership = false);
-        MembershipList<Group> GetGroupMembershipListOf(SecurityPrincipalBase member, bool includeDisabledMembership = false);
+        MembershipList<SecurityPrincipalBase> GetGroupMembersList(Guid groupUId, bool includeDisabledMembership = false);
+        MembershipList<SecurityPrincipalBase> GetGroupMembersList(Group group, bool includeDisabledMembership = false);
+        MembershipList<Group> GetGroupMemberOfList(Guid memberUId, bool isMemberGroup = false, bool includeDisabledMembership = false);
+        MembershipList<Group> GetGroupMemberOfList(SecurityPrincipalBase member, bool includeDisabledMembership = false);
 
 
         IEnumerable<ISecureObject> GetSecureObjects();
