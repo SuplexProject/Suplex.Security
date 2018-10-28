@@ -117,6 +117,11 @@ namespace Suplex.Security.DataAccess
 
 
         #region group membership
+        public virtual IEnumerable<GroupMembershipItem> GetGroupMembership()
+        {
+            return Store.GroupMembership;
+        }
+
         public virtual IEnumerable<GroupMembershipItem> GetGroupMembers(Group group, bool includeDisabledMembers = false)
         {
             return GetGroupMembers( group.UId, includeDisabledMembers );

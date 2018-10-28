@@ -18,6 +18,7 @@ namespace Suplex.Security.DataAccess
         Group UpsertGroup(Group group);
         void DeleteGroup(Guid groupUId);
 
+        IEnumerable<GroupMembershipItem> GetGroupMembership();
         IEnumerable<GroupMembershipItem> GetGroupMembers(Guid groupUId, bool includeDisabledMembership = false);
         IEnumerable<GroupMembershipItem> GetGroupMemberOf(Guid memberUId, bool includeDisabledMembership = false);
         IEnumerable<GroupMembershipItem> GetGroupMembershipHierarchy(Guid memberUId, bool includeDisabledMembership = false);
