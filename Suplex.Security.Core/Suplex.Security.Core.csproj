@@ -1,112 +1,58 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2500B108-FF24-44B6-8BEB-D0E37D0ED98E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Suplex.Security</RootNamespace>
-    <AssemblyName>Suplex.Security.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <Authors>Steve Shortt</Authors>
+    <Copyright>Copyright ©  Steve Shortt, 2016 - 2019</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.18350.0</FileVersion>
+    <Version>1.0.18350.0</Version>
+    <PackageReleaseNotes>1.0 Release.  All features are presently working and passing unit tests.
+
+- 18350: Upgraded to net 461, included netstandard20 in package
+- 18301: Added GetGroupMembership to ISuplexDal
+- 18295: Added a couple fields to RightFields, light Dal updates for increased utility and method name updates
+- 18291: Re-namespaced DataAccessLayer classes, renamed IDataAccessLayer to ISuplexDal
+- 18280: Made all UId fields non-nullable, added ICloneable to ISecurityPrincipal, bug-fixes to Dal Upsert methods
+- 18206: Corrected bug due to typo in SecureObject.Clone
+- 18205: Added support for IClonable.Sync and UpdateSecureObjectParentUId
+- 18181: Adjustment to DaclAllowInherit/SaclAllowInherit/SaclAuditTypeFilter for bug fix to seriazation.
+- 18175: Correction to MakeGenericAceFromType to create AuditAces
+- 18164: Tweak to ISecureObject design
+- 18163: Added concrete implementation for SecurityDescriptor, Dacl, Sacl
+- 18161: Bug fixes to GroupMembership -&amp;gt; GetGroupMembershipList\GetGroupMembershipListOf
+- 18160: Bug fixes to GroupMembership utilities, new methods on IDataAccessLayer
+- 18095: INotify implemented everywhere; more complere interface coverage
+- 18086: Corrections to GroupMembership
+- 18083: DaclModel POCOs.</PackageReleaseNotes>
+    <Description>Suplex.Security is an application security and RBAC abstraction Layer. Implments hierarchical DACL model and common RBAC model.  Suplex Security contains thte POCOs.</Description>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/steveshortt/Suplex/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/steveshortt/Suplex/master/resources/suplex64.png</PackageIconUrl>
+    <PackageProjectUrl>http://suplex.readthedocs.io/en/latest/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SuplexProject/Suplex.Security</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Security ACLs RBAC Roles</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+
+    <!-- Conditionally obtain references for the .NET Framework 4.5 target -->
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="System.DirectoryServices" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Classes\AclModel\AccessControlEntryAudit.cs" />
-    <Compile Include="Classes\Common\IRecordState.cs" />
-    <Compile Include="Classes\AclModel\Interfaces\ISecurityDescriptor.cs" />
-    <Compile Include="Classes\AclModel\Utilities\SecurityDescriptorUtilities.cs" />
-    <Compile Include="Classes\AclModel\Utilities\AceComparer.cs" />
-    <Compile Include="Classes\AclModel\Interfaces\ISystemAcl.cs" />
-    <Compile Include="Classes\AclModel\Interfaces\IDiscretionaryAcl.cs" />
-    <Compile Include="Classes\AclModel\Interfaces\IAccessControlList.cs" />
-    <Compile Include="Classes\Common\ICloneable.cs" />
-    <Compile Include="Classes\AclModel\Interfaces\IRightInfo.cs" />
-    <Compile Include="Classes\AclModel\Interfaces\ISecureObject.cs" />
-    <Compile Include="Classes\AclModel\Utilities\AccessControlEntryUtilities.cs" />
-    <Compile Include="Classes\AclModel\Utilities\RightFields.cs" />
-    <Compile Include="Classes\AclModel\RightInfo.cs" />
-    <Compile Include="Classes\AclModel\SecureObject.cs" />
-    <Compile Include="Classes\AclModel\Utilities\AccessControlListUtilities.cs" />
-    <Compile Include="Classes\AclModel\Utilities\SecureObjectUtilities.cs" />
-    <Compile Include="Classes\AclModel\SystemAcl.cs" />
-    <Compile Include="Classes\DataAccess\Interfaces\ISuplexDal.cs" />
-    <Compile Include="Classes\DataAccess\Interfaces\ISuplexDalHost.cs" />
-    <Compile Include="Classes\DataAccess\Interfaces\ISuplexStore.cs" />
-    <Compile Include="Classes\DataAccess\MemoryDal.cs" />
-    <Compile Include="Classes\DataAccess\SuplexStore.cs" />
-    <Compile Include="Classes\Principal\Abstract\SecurityPrinicpalBase.cs" />
-    <Compile Include="Classes\AclModel\DiscretionaryAcl.cs" />
-    <Compile Include="Classes\AclModel\Enums\AuditType.cs" />
-    <Compile Include="Classes\AclModel\Enums\AuditCategory.cs" />
-    <Compile Include="Classes\AclModel\Utilities\EnumUtilities.cs" />
-    <Compile Include="Classes\AclModel\AccessControlEntry.cs" />
-    <Compile Include="Classes\AclModel\Interfaces\IAccessControlEntry.cs" />
-    <Compile Include="Classes\AclModel\SecurityDescriptor.cs" />
-    <Compile Include="Classes\AclModel\SecurityResults.cs" />
-    <Compile Include="Classes\AclModel\Utilities\RightsAccessorAttribute.cs" />
-    <Compile Include="Classes\AclModel\Enums\SynchronizationRight.cs" />
-    <Compile Include="Classes\AclModel\Enums\FileSystemRight.cs" />
-    <Compile Include="Classes\AclModel\Enums\RecordRight.cs" />
-    <Compile Include="Classes\AclModel\Enums\UiRight.cs" />
-    <Compile Include="Classes\Principal\Utilities\DirectoryServiceUtilities.cs" />
-    <Compile Include="Classes\Principal\Utilities\GroupEqualityComparer.cs" />
-    <Compile Include="Classes\Principal\Interfaces\ISecurityPrincipal.cs" />
-    <Compile Include="Classes\Principal\Group.cs" />
-    <Compile Include="Classes\Principal\GroupMembershipItem.cs" />
-    <Compile Include="Classes\Principal\MembershipList.cs" />
-    <Compile Include="Classes\Principal\Utilities\GroupMembershipEqualityComparer.cs" />
-    <Compile Include="Classes\Principal\Utilities\GroupMembershipUtilities.cs" />
-    <Compile Include="Classes\Principal\Utilities\SecurityPrincipalEqualityComparer.cs" />
-    <Compile Include="Classes\Principal\Utilities\SecurityPrincipalUtilities.cs" />
-    <Compile Include="Classes\Principal\User.cs" />
-    <Compile Include="Classes\Principal\Utilities\UserEqualityComparer.cs" />
-    <Compile Include="Classes\Common\UtilityExtensions.cs" />
-    <Compile Include="Classes\TaskModel\Interfaces\IRole.cs" />
-    <Compile Include="Classes\TaskModel\Interfaces\ITask.cs" />
-    <Compile Include="Classes\TaskModel\Privilege.cs" />
-    <Compile Include="Classes\TaskModel\Permission.cs" />
-    <Compile Include="Classes\TaskModel\Role.cs" />
-    <Compile Include="Classes\TaskModel\Task.cs" />
-    <Compile Include="Classes\TaskModel\Utilities\PrivilegeUtilities.cs" />
-    <Compile Include="Classes\TaskModel\Utilities\PermissionUtilities.cs" />
-    <Compile Include="Classes\TaskModel\Utilities\RoleUtilities.cs" />
-    <Compile Include="Classes\TaskModel\Utilities\TaskUtilities.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Remove="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File $(SolutionDir)scripts\setVersion.ps1 -path $(ProjectDir)Properties\AssemblyInfo.cs -versionFile $(SolutionDir)scripts\AssemblyInfo.xml</PreBuildEvent>
-  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.DirectoryServices">
+      <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.DirectoryServices.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File $(SolutionDir)scripts\setVersion.ps1 -path $(ProjectPath) -versionFile $(SolutionDir)scripts\AssemblyInfo.xml" />
+  </Target>
+
 </Project>
