@@ -300,6 +300,79 @@ namespace Suplex.Security.DataAccess
                 newlist.Add( so );
             }
         }
+
+
+        public virtual ISecureObject EvalSecureObjectSecurity(string uniqueName, string userName, IEnumerable<string> externalGroupMembership)
+        {
+            ISecureObject secureObject = GetSecureObjectByUniqueName( uniqueName, includeChildren: true, includeDisabled: false );
+            if( secureObject == null )
+                throw new Exception( $"Could oot find a match for {nameof( uniqueName )} [{uniqueName}]." );
+            else
+                secureObject.Children = null;
+
+            List<User> users = GetUserByName( userName, exact: true );
+            if( users.Count != 1 )
+                throw new Exception( $"Inexaact match on {nameof( userName )} [{userName}], match count = {users.Count}." );
+
+            return EvalSecureObjectSecurity( secureObject, users[0], externalGroupMembership );
+        }
+
+        public virtual ISecureObject EvalSecureObjectSecurity(Guid secureObjectUId, Guid userUId, IEnumerable<string> externalGroupMembership)
+        {
+            ISecureObject secureObject = GetSecureObjectByUId( secureObjectUId, includeChildren: false, includeDisabled: false );
+            if( secureObject == null )
+                throw new Exception( $"Could oot find a match for {nameof( secureObjectUId )} [{secureObjectUId}]." );
+            else
+                secureObject.Children = null;
+
+            User user = GetUserByUId( userUId );
+            if( user == null )
+                throw new Exception( $"Could oot find a match for {nameof( userUId )} [{userUId}]." );
+
+            return EvalSecureObjectSecurity( secureObject, user, externalGroupMembership );
+        }
+
+        public virtual ISecureObject EvalSecureObjectSecurity(ISecureObject secureObject, User user, IEnumerable<string> externalGroupMembership)
+        {
+            Store.Groups.ToDictionaries( out Dictionary<Guid, Group> groupsByUId, out Dictionary<string, Group> groupsByName );
+
+            //cache of the user's groupMembership, indexed by groupUId -> dict for fast lookups
+            Dictionary<Guid, Group> resolved = new Dictionary<Guid, Group>();
+
+            //get groupMembership
+            IEnumerable<GroupMembershipItem> membership = GetGroupMemberOf( user.UId, includeDisabledMembers: false );
+            foreach( GroupMembershipItem gmi in membership )
+                resolved[gmi.GroupUId] = groupsByUId[gmi.GroupUId];
+
+            //resolve externalGroupMembership
+            if( externalGroupMembership != null )
+                foreach( string externalGroupName in externalGroupMembership )
+                    if( groupsByName.ContainsKey( externalGroupName ) )
+                        resolved[groupsByName[externalGroupName].UId] = groupsByName[externalGroupName];
+
+            //walk SecureObj hier and remove unresolvable Aces
+            ISecureObject curr = secureObject;
+            ISecureObject last = secureObject;
+            while( curr != null )
+            {
+                for( int i = curr.Security.Dacl.Count - 1; i >= 0; i-- )
+                    if( !resolved.ContainsKey( curr.Security.Dacl[i].TrusteeUId.Value ) )
+                        curr.Security.Dacl.RemoveAt( i );
+
+                for( int i = curr.Security.Sacl.Count - 1; i >= 0; i-- )
+                    if( !resolved.ContainsKey( curr.Security.Sacl[i].TrusteeUId.Value ) )
+                        curr.Security.Sacl.RemoveAt( i );
+
+                last = curr;
+                curr = curr.Parent;
+            }
+
+            //eval the SecurityDescriptor
+            last.EvalSecurity();
+
+            //return the resolved object
+            return secureObject;
+        }
         #endregion
     }
 }

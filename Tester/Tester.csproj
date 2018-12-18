@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Suplex.Security.FileSystemDal">
+      <HintPath>..\..\Suplex.Security.FileSystemDal\Suplex.Security.FileSystemDal\bin\Debug\Suplex.Security.FileSystemDal.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

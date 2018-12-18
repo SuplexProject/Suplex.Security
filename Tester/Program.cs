@@ -76,6 +76,12 @@ GroupMembership:
   MemberUId: c05c6deb-6a01-459b-9c87-916003f44429";
             #endregion
 
+            FileSystemDal dal = FileSystemDal.LoadFromYamlFile( @"C:\Devo\Suplex\Suplex.UI.Wpf\Suplex.Legacy.Converter\bin\Debug\out.splx" );
+            ISecureObject secureObject = dal.EvalSecureObjectSecurity( "sampleFileCopy", "Steve", null );
+            bool hasAccess = secureObject.Security.Results.GetByTypeRight( FileSystemRight.Execute ).AccessAllowed;
+                //["FileSystem"][(int)FileSystemRight.Execute].AccessAllowed; ;
+
+
             SecureObject top = new SecureObject() { UniqueName = "top" };
             DiscretionaryAcl topdacl = new DiscretionaryAcl
             {
