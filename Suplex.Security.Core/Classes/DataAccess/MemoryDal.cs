@@ -360,7 +360,10 @@ namespace Suplex.Security.DataAccess
                         curr.Security.Sacl.RemoveAt( i );
 
                 top = curr;
-                curr = curr.Parent;
+                if( curr.Parent != null && curr.Parent.IsEnabled )
+                    curr = curr.Parent;
+                else
+                    curr = null;
             }
 
             //eval the SecurityDescriptor
