@@ -307,8 +307,6 @@ namespace Suplex.Security.DataAccess
             ISecureObject secureObject = GetSecureObjectByUniqueName( uniqueName, includeChildren: true, includeDisabled: false );
             if( secureObject == null )
                 throw new Exception( $"Could oot find a match for {nameof( uniqueName )} [{uniqueName}]." );
-            else
-                secureObject.Children = null;
 
             List<User> users = GetUserByName( userName, exact: true );
             if( users.Count != 1 )
@@ -322,8 +320,6 @@ namespace Suplex.Security.DataAccess
             ISecureObject secureObject = GetSecureObjectByUId( secureObjectUId, includeChildren: false, includeDisabled: false );
             if( secureObject == null )
                 throw new Exception( $"Could oot find a match for {nameof( secureObjectUId )} [{secureObjectUId}]." );
-            else
-                secureObject.Children = null;
 
             User user = GetUserByUId( userUId );
             if( user == null )
@@ -352,7 +348,7 @@ namespace Suplex.Security.DataAccess
 
             //walk SecureObj hier and remove unresolvable Aces
             ISecureObject curr = secureObject;
-            ISecureObject last = secureObject;
+            ISecureObject top = secureObject;
             while( curr != null )
             {
                 for( int i = curr.Security.Dacl.Count - 1; i >= 0; i-- )
@@ -363,12 +359,12 @@ namespace Suplex.Security.DataAccess
                     if( !resolved.ContainsKey( curr.Security.Sacl[i].TrusteeUId.Value ) )
                         curr.Security.Sacl.RemoveAt( i );
 
-                last = curr;
+                top = curr;
                 curr = curr.Parent;
             }
 
             //eval the SecurityDescriptor
-            last.EvalSecurity();
+            top.EvalSecurity();
 
             //return the resolved object
             return secureObject;

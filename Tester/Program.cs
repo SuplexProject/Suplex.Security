@@ -79,8 +79,8 @@ GroupMembership:
             FileSystemDal dal = FileSystemDal.LoadFromYamlFile( @"C:\Devo\Suplex\Suplex.UI.Wpf\Suplex.Legacy.Converter\bin\Debug\out.splx" );
             ISecureObject secureObject = dal.EvalSecureObjectSecurity( "sampleFileCopy", "Steve", null );
             bool hasAccess = secureObject.Security.Results.GetByTypeRight( FileSystemRight.Execute ).AccessAllowed;
-                //["FileSystem"][(int)FileSystemRight.Execute].AccessAllowed; ;
-
+            //["FileSystem"][(int)FileSystemRight.Execute].AccessAllowed; ;
+            return;
 
             SecureObject top = new SecureObject() { UniqueName = "top" };
             DiscretionaryAcl topdacl = new DiscretionaryAcl
