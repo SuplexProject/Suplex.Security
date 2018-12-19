@@ -366,7 +366,15 @@ namespace Suplex.Security.DataAccess
 
                 top = curr;
                 if( curr.Parent != null && curr.Parent.IsEnabled )
-                    curr = curr.Parent;
+                {
+                    ISecureObject parent = curr.Parent;
+                    for( int i = parent.Children.Count - 1; i >= 0; i-- )
+                        if( !((ISecureObject)parent.Children[i]).UId.Equals( curr.UId ) )
+                            parent.Children.RemoveAt( i );
+
+                    curr.Parent = null;
+                    curr = parent;
+                }
                 else
                     curr = null;
             }

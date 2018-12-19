@@ -48,18 +48,14 @@ namespace Suplex.Security.AclModel
 
                 //Logic: Look in the Dacl for aces of the given AceType, create a new mask of the combined rights.
                 //  If Allowed: bitwise-OR the value into the mask.
-                //  If Deined: if the mask contains the value, XOR the value out.
+                //  If Deined: if the mask contains matching values, XOR the values out.
                 //The result mask contains only the allowed rights.
                 int mask = 0;
                 foreach( IAccessControlEntry ace in aces )
                     if( ace.Allowed )
                         mask |= ace.RightData.Value;
                     else
-                    {
-                        int matched = mask & ace.RightData.Value;
-                        if( matched > 0 )
-                            mask ^= matched;
-                    }
+                        mask ^= (mask & ace.RightData.Value);
 
 
                 //For each right of the given acetype, perform a bitwise - AND to see if the right is specified in the mask.

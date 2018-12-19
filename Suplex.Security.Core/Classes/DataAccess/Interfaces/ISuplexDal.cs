@@ -38,5 +38,8 @@ namespace Suplex.Security.DataAccess
         ISecureObject UpsertSecureObject(ISecureObject secureObject);
         void DeleteSecureObject(Guid secureObjectUId);
         void UpdateSecureObjectParentUId(ISecureObject secureObject, Guid? newParentUId);
+
+        ISecureObject EvalSecureObjectSecurity(string uniqueName, string userName, IEnumerable<string> externalGroupMembership);
+        ISecureObject EvalSecureObjectSecurity(Guid secureObjectUId, Guid userUId, IEnumerable<string> externalGroupMembership);
     }
 }
