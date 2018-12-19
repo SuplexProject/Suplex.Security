@@ -54,8 +54,12 @@ namespace Suplex.Security.AclModel
                 foreach( IAccessControlEntry ace in aces )
                     if( ace.Allowed )
                         mask |= ace.RightData.Value;
-                    else if( (mask & ace.RightData.Value) == ace.RightData.Value )
-                        mask ^= ace.RightData.Value;
+                    else
+                    {
+                        int matched = mask & ace.RightData.Value;
+                        if( matched > 0 )
+                            mask ^= matched;
+                    }
 
 
                 //For each right of the given acetype, perform a bitwise - AND to see if the right is specified in the mask.

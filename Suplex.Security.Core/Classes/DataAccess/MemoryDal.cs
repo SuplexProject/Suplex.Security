@@ -330,10 +330,15 @@ namespace Suplex.Security.DataAccess
 
         public virtual ISecureObject EvalSecureObjectSecurity(ISecureObject secureObject, User user, IEnumerable<string> externalGroupMembership)
         {
+            //get utility lookups for groups list
             Store.Groups.ToDictionaries( out Dictionary<Guid, Group> groupsByUId, out Dictionary<string, Group> groupsByName );
 
             //cache of the user's groupMembership, indexed by groupUId -> dict for fast lookups
-            Dictionary<Guid, Group> resolved = new Dictionary<Guid, Group>();
+            //include the user itself in case of any directly-assigned aces
+            Dictionary<Guid, SecurityPrincipalBase> resolved = new Dictionary<Guid, SecurityPrincipalBase>
+            {
+                { user.UId, user }
+            };
 
             //get groupMembership
             IEnumerable<GroupMembershipItem> membership = GetGroupMemberOf( user.UId, includeDisabledMembers: false );
