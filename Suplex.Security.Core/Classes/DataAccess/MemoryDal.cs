@@ -112,6 +112,24 @@ namespace Suplex.Security.DataAccess
                 if( (!Store.GroupMembership[i].IsMemberUser && Store.GroupMembership[i].MemberUId == groupUId) ||
                     Store.GroupMembership[i].GroupUId == groupUId )
                     Store.GroupMembership.RemoveAt( i );
+
+            for( int i = 0; i <= Store.SecureObjects.Count - 1; i++ )
+            {
+                RecursiveDeleteGroupInSecureObjects( Store.SecureObjects[i], groupUId );
+            }
+        }
+        private void RecursiveDeleteGroupInSecureObjects(SecureObject so, Guid groupUId)
+        {
+            for( int j = so.Security.Dacl.Count - 1; j >= 0; j-- )
+                if( so.Security.Dacl[j].TrusteeUId == groupUId )
+                    so.Security.Dacl.RemoveAt( j );
+            for( int k = so.Security.Sacl.Count - 1; k >= 0; k-- )
+                if( so.Security.Sacl[k].TrusteeUId == groupUId )
+                    so.Security.Sacl.RemoveAt( k );
+            for( int l = 0; l <= so.Children.Count - 1; l++ )
+            {
+                RecursiveDeleteGroupInSecureObjects( so.Children[l], groupUId );
+            }
         }
         #endregion
 
@@ -156,15 +174,92 @@ namespace Suplex.Security.DataAccess
         {
             groupMembershipItem.Resolve( Store.Groups, null );
 
+            if( groupMembershipItem.Group == groupMembershipItem.Member )
+                return null;
+
             if( groupMembershipItem.Group.IsLocal )
                 if( !Store.GroupMembership.ContainsItem( groupMembershipItem ) )
+                {
+                    // check for circular referencing
+                    // (group + ancendents) cannot be a part of (member + descendents)
+                    bool circRef = false;
+                    Stack<GroupMembershipItem> items = new Stack<GroupMembershipItem>();
+
+                    // get member and its descendents
+                    List<Guid> descendents = new List<Guid>();
+                    descendents.Add( groupMembershipItem.MemberUId );
+                    IEnumerable<GroupMembershipItem> children = Store.GroupMembership.Where( i => i.GroupUId == groupMembershipItem.MemberUId );
+                    foreach( GroupMembershipItem child in children )
+                    {
+                        if( child.MemberUId == groupMembershipItem.GroupUId )
+                        {
+                            circRef = true;
+                            break;
+                        }
+                        items.Push( child );
+                        descendents.Add( child.MemberUId );
+                    }
+                    if( !circRef )
+                    {
+                        while( items.Count > 0 )
+                        {
+                            GroupMembershipItem item = items.Pop();
+                            IEnumerable<GroupMembershipItem> children2 = Store.GroupMembership.Where( i => i.GroupUId == item.MemberUId );
+                            List<GroupMembershipItem> test = children2.ToList();
+                            foreach( GroupMembershipItem child in children2 )
+                            {
+                                if( child.MemberUId == groupMembershipItem.GroupUId )
+                                {
+                                    circRef = true;
+                                    break;
+                                }
+                                items.Push( child );
+                                descendents.Add( child.MemberUId );
+                            }
+                        }
+                    }
+                    // walk up the hierarchy to check if any one of the ascendents is a descendent of the member
+                    if( !circRef )
+                    {
+                        IEnumerable<GroupMembershipItem> parents = Store.GroupMembership.Where( i => i.MemberUId == groupMembershipItem.GroupUId );
+                        foreach( GroupMembershipItem parent in parents )
+                        {
+                            if( descendents.Contains( parent.GroupUId ) )
+                            {
+                                circRef = true;
+                                break;
+                            }
+                            items.Push( parent );
+                        }
+                    }
+
+                    if( !circRef )
+                    {
+                        while( items.Count > 0 )
+                        {
+                            GroupMembershipItem item = items.Pop();
+                            IEnumerable<GroupMembershipItem> parents2 = Store.GroupMembership.Where( i => i.MemberUId == item.GroupUId );
+                            foreach( GroupMembershipItem parent in parents2 )
+                            {
+                                if( descendents.Contains( parent.GroupUId ) )
+                                {
+                                    circRef = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if( circRef )
+                        return null;
+
                     Store.GroupMembership.Add( groupMembershipItem );
+
+                }
             //else [undefined: there's no such thing as a gm update]
 
             return groupMembershipItem;
         }
-
-        public virtual List<GroupMembershipItem> UpsertGroupMembership(List<GroupMembershipItem> groupMembershipItems)
+        public virtual IEnumerable<GroupMembershipItem> UpsertGroupMembership(IEnumerable<GroupMembershipItem> groupMembershipItems)
         {
             List<GroupMembershipItem> gmis = new List<GroupMembershipItem>();
             foreach( GroupMembershipItem gmi in groupMembershipItems )
@@ -180,7 +275,13 @@ namespace Suplex.Security.DataAccess
             if( index >= 0 )
                 Store.GroupMembership.RemoveAt( index );
         }
-
+        public virtual void DeleteGroupMembership(IEnumerable<GroupMembershipItem> groupMembershipItems)
+        {
+            foreach( GroupMembershipItem gmi in groupMembershipItems )
+            {
+                DeleteGroupMembership( gmi );
+            }
+        }
 
         public MembershipList<SecurityPrincipalBase> GetGroupMembersList(Guid groupUId, bool includeDisabledMembership = false)
         {
@@ -231,6 +332,23 @@ namespace Suplex.Security.DataAccess
         {
             IList<SecureObject> list = Store.SecureObjects;
 
+            // ensure TrusteeUId in dacl/sacl is valid
+            IDiscretionaryAcl dacl = secureObject.Security.Dacl;
+            for (int i = dacl.Count - 1; i >= 0; i-- )
+            {
+                if( !(Store.Groups.FindIndex( g => g.UId == dacl[i].TrusteeUId ) >= 0) )
+                {
+                    dacl.RemoveAt( i );
+                }
+            }
+            ISystemAcl sacl = secureObject.Security.Sacl;
+            for( int i = sacl.Count - 1; i >= 0; i-- )
+            {
+                if( !(Store.Groups.FindIndex( g => g.UId == sacl[i].TrusteeUId ) >= 0) )
+                {
+                    sacl.RemoveAt( i );
+                }
+            }
             if( secureObject.ParentUId.HasValue )
             {
                 SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UId == secureObject.ParentUId );
@@ -300,7 +418,11 @@ namespace Suplex.Security.DataAccess
                 newlist.Add( so );
             }
         }
-
+        public virtual void UpdateSecureObjectParentUId(Guid secureObjectUId, Guid? newParentUId)
+        {
+            ISecureObject secureObject = GetSecureObjectByUId( secureObjectUId, true, true );
+            UpdateSecureObjectParentUId( secureObject, newParentUId );
+        }
 
         public virtual ISecureObject EvalSecureObjectSecurity(string uniqueName, string userName, IEnumerable<string> externalGroupMembership = null)
         {

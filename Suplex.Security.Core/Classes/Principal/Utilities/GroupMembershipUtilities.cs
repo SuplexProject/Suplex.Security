@@ -159,6 +159,7 @@ namespace Suplex.Security.Principal
                 }
             }
 
+            result.Resolve( groups, users, forceResolution );
             return result;
         }
 

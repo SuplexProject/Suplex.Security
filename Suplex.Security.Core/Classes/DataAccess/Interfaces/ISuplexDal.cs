@@ -23,8 +23,9 @@ namespace Suplex.Security.DataAccess
         IEnumerable<GroupMembershipItem> GetGroupMemberOf(Guid memberUId, bool includeDisabledMembership = false);
         IEnumerable<GroupMembershipItem> GetGroupMembershipHierarchy(Guid memberUId, bool includeDisabledMembership = false);
         GroupMembershipItem UpsertGroupMembership(GroupMembershipItem groupMembershipItem);
-        List<GroupMembershipItem> UpsertGroupMembership(List<GroupMembershipItem> groupMembershipItems);
+        IEnumerable<GroupMembershipItem> UpsertGroupMembership(IEnumerable<GroupMembershipItem> groupMembershipItems);
         void DeleteGroupMembership(GroupMembershipItem groupMembershipItem);
+        void DeleteGroupMembership(IEnumerable<GroupMembershipItem> groupMembershipItem);
 
         MembershipList<SecurityPrincipalBase> GetGroupMembersList(Guid groupUId, bool includeDisabledMembership = false);
         MembershipList<SecurityPrincipalBase> GetGroupMembersList(Group group, bool includeDisabledMembership = false);
@@ -38,6 +39,7 @@ namespace Suplex.Security.DataAccess
         ISecureObject UpsertSecureObject(ISecureObject secureObject);
         void DeleteSecureObject(Guid secureObjectUId);
         void UpdateSecureObjectParentUId(ISecureObject secureObject, Guid? newParentUId);
+        void UpdateSecureObjectParentUId(Guid secureObjectUId, Guid? newParentUId);
 
         ISecureObject EvalSecureObjectSecurity(string uniqueName, string userName, IEnumerable<string> externalGroupMembership = null);
         ISecureObject EvalSecureObjectSecurity(Guid secureObjectUId, Guid userUId, IEnumerable<string> externalGroupMembership = null);
