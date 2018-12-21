@@ -11,6 +11,7 @@
     <Version>1.0.18355.0</Version>
     <PackageReleaseNotes>1.0 Release.  All features are presently working and passing unit tests.
 
+- 18355: includes updates to ISuplexDal specification, fixes to EvalSecureObjectSecurity
 - 18350: Upgraded to net 461, included netstandard20 in package
 - 18301: Added GetGroupMembership to ISuplexDal
 - 18295: Added a couple fields to RightFields, light Dal updates for increased utility and method name updates
