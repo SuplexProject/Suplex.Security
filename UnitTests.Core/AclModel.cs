@@ -5,6 +5,7 @@ using NUnit.Framework;
 
 using Suplex.Security.DataAccess;
 using Suplex.Security.AclModel;
+using Suplex.Security.Principal;
 
 namespace UnitTests
 {
@@ -153,6 +154,68 @@ namespace UnitTests
             bool eq = child.UniqueName.Equals(found.UniqueName);
             Assert.IsTrue(eq);
             
+        }
+        [Test]
+        [Category( "Secureobject" )]
+        public void UpsertSecureObjectWithInvalidTrustees()
+        {
+            Group g0 = new Suplex.Security.Principal.Group { Name = "g0", IsEnabled = true };
+            Group g1 = new Suplex.Security.Principal.Group { Name = "g1", IsEnabled = true };
+            Group g2 = new Suplex.Security.Principal.Group { Name = "g2", IsEnabled = true };
+            _dal.UpsertGroup( g0 );
+            _dal.UpsertGroup( g1 );
+            _dal.UpsertGroup( g2 );
+
+            DiscretionaryAcl topDacl = new DiscretionaryAcl
+            {
+                new AccessControlEntry<UIRight>() { TrusteeUId = g0.UId, Allowed = true, Right = UIRight.FullControl },
+                new AccessControlEntry<FileSystemRight>() { TrusteeUId = g1.UId, Allowed = false, Right = FileSystemRight.List },
+                new AccessControlEntry<FileSystemRight>() { TrusteeUId = Guid.NewGuid(), Allowed = false, Right = FileSystemRight.List },
+                new AccessControlEntry<FileSystemRight>() { TrusteeUId = Guid.NewGuid(), Allowed = false, Right = FileSystemRight.List }
+            };
+            SystemAcl topSacl = new SystemAcl
+            {
+                new AccessControlEntryAudit<FileSystemRight>() { TrusteeUId = Guid.NewGuid(), Allowed = false, Right = FileSystemRight.List },
+                new AccessControlEntryAudit<UIRight>() { TrusteeUId = g0.UId, Allowed = true, Right = UIRight.FullControl },
+                new AccessControlEntryAudit<FileSystemRight>() { TrusteeUId = g1.UId, Allowed = false, Right = FileSystemRight.List },
+                new AccessControlEntryAudit<RecordRight>() { TrusteeUId = g2.UId, Allowed = false, Right = RecordRight.Select },
+                new AccessControlEntryAudit<SynchronizationRight>() { TrusteeUId = Guid.NewGuid(), Allowed = false, Right = SynchronizationRight.Download }
+
+            };
+            SecurityDescriptor sd = new SecurityDescriptor
+            {
+                Dacl = topDacl,
+                Sacl = topSacl
+            };
+            ISecureObject secureObject = _dal.GetSecureObjectByUId( so.UId );
+            secureObject.Security = sd;
+            _dal.UpsertSecureObject( secureObject );
+
+            ISecureObject found = _dal.GetSecureObjectByUId( so.UId );
+            Assert.AreEqual( 2, found.Security.Dacl.Count );
+            Assert.AreEqual( 3, found.Security.Sacl.Count );
+        }
+
+        [Test]
+        [Category( "Secureobject" )]
+        public void UpdateSecureObjectParentUId()
+        {
+            ISecureObject top = _dal.GetSecureObjectByUniqueName( so.UniqueName );
+
+            SecureObject top2 = new SecureObject { UniqueName = "top2" };
+            _dal.UpsertSecureObject( top2 );
+            SecureObject child = new SecureObject { UniqueName = "child", ParentUId = top2.UId };
+            _dal.UpsertSecureObject( child );
+
+            _dal.UpdateSecureObjectParentUId( top2.UId, top.UId );
+            ISecureObject found = _dal.GetSecureObjectByUniqueName( top2.UniqueName );
+            Assert.AreEqual( top.UId, found.ParentUId );
+            Assert.AreEqual( 1, found.Children.Count );
+
+            _dal.UpdateSecureObjectParentUId( top2.UId, null );
+            found = _dal.GetSecureObjectByUniqueName( top2.UniqueName );
+            Assert.IsNull( found.ParentUId );
+            Assert.AreEqual( 1, found.Children.Count );
         }
     }
 }

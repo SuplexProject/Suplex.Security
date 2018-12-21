@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 using Suplex.Security.DataAccess;
 using Suplex.Security.Principal;
+using Suplex.Security.AclModel;
 
 namespace UnitTests
 {
@@ -184,6 +185,55 @@ namespace UnitTests
             Group found = _dal.GetGroupByUId( g5.UId );
             Assert.IsNull( found );
         }
+
+        [Test]
+        [Category( "Group" )]
+        public void DeleteGroupDeletesGroupsInSaclDacl()
+        {
+            Group testGroup = new Group { Name = "Group for testing DeleteGroup()", IsLocal = true };
+            _dal.UpsertGroup( testGroup );
+
+            SecureObject top0 = new SecureObject { UniqueName = "Top0" };
+            DiscretionaryAcl top0dacl = new DiscretionaryAcl
+            {
+
+                new AccessControlEntry<FileSystemRight>() { TrusteeUId = testGroup.UId,  Allowed = true, Right = FileSystemRight.FullControl },
+                new AccessControlEntry<FileSystemRight>() { TrusteeUId = g1.UId, Allowed = false, Right = FileSystemRight.Execute, Inheritable = false }
+            };
+            SystemAcl top0sacl  = new SystemAcl
+            {
+                new AccessControlEntryAudit<UIRight>() { TrusteeUId = g2.UId, Allowed = true, Right = UIRight.FullControl },
+                new AccessControlEntryAudit<UIRight>() { TrusteeUId = testGroup.UId, Allowed = false, Right = UIRight.Enabled }
+            };
+
+            SecureObject top0ch0 = new SecureObject() { UniqueName = "top0ch0", ParentUId = top0.UId };
+            DiscretionaryAcl top0ch0dacl = new DiscretionaryAcl
+            {
+
+                new AccessControlEntry<FileSystemRight>() { TrusteeUId = testGroup.UId,  Allowed = true, Right = FileSystemRight.FullControl },
+                new AccessControlEntry<FileSystemRight>() { TrusteeUId = g3.UId, Allowed = false, Right = FileSystemRight.Execute, Inheritable = false }
+            };
+            SystemAcl top0ch0sacl = new SystemAcl
+            {
+                new AccessControlEntryAudit<UIRight>() { TrusteeUId = g2.UId, Allowed = true, Right = UIRight.FullControl },
+                new AccessControlEntryAudit<UIRight>() { TrusteeUId = g3.UId, Allowed = false, Right = UIRight.Enabled }
+            };
+
+            top0.Security.Dacl = top0dacl;
+            top0.Security.Sacl = top0sacl;
+            _dal.UpsertSecureObject( top0 );
+
+            top0ch0.Security.Dacl = top0ch0dacl;
+            top0ch0.Security.Sacl = top0ch0sacl;
+            _dal.UpsertSecureObject( top0ch0 );
+
+            _dal.DeleteGroup( testGroup.UId );
+            Assert.AreEqual( 1, top0dacl.Count );
+            Assert.AreEqual( 1, top0sacl.Count );
+            Assert.AreEqual( 1, top0ch0dacl.Count );
+            Assert.AreEqual( 2, top0ch0sacl.Count );
+
+        }
         #endregion
 
         #region groupMembership
@@ -277,6 +327,83 @@ namespace UnitTests
 
             Assert.AreEqual( 0, m.Count );
         }
+        [Test]
+        [Category( "GroupMembership" )]
+        public void UpsertGroupMembershipCircularReferencing()
+        {
+            Group lg0 = new Group { Name = "lg0", IsLocal = true };
+            Group lg1 = new Group { Name = "lg1", IsLocal = true };
+            Group lg2 = new Group { Name = "lg2", IsLocal = true };
+            Group lg3 = new Group { Name = "lg3", IsLocal = true };
+            Group lg4 = new Group { Name = "lg4", IsLocal = true };
+            Group lg5 = new Group { Name = "lg5", IsLocal = true };
+            Group lga = new Group { Name = "lga", IsLocal = true };
+            Group lgb = new Group { Name = "lgb", IsLocal = true };
+            _dal.UpsertGroup( lg0 );
+            _dal.UpsertGroup( lg1 );
+            _dal.UpsertGroup( lg2 );
+            _dal.UpsertGroup( lg3 );
+            _dal.UpsertGroup( lg4 );
+            _dal.UpsertGroup( lg5 );
+            _dal.UpsertGroup( lga );
+            _dal.UpsertGroup( lgb );
+            GroupMembershipItem lg0lg1 = new GroupMembershipItem { GroupUId = lg0.UId, MemberUId = lg1.UId };
+            GroupMembershipItem lg1lg2 = new GroupMembershipItem { GroupUId = lg1.UId, MemberUId = lg2.UId };
+            GroupMembershipItem lg2lg3 = new GroupMembershipItem { GroupUId = lg2.UId, MemberUId = lg3.UId };
+            GroupMembershipItem lg3lg4 = new GroupMembershipItem { GroupUId = lg3.UId, MemberUId = lg4.UId };
+            GroupMembershipItem lg4lg5 = new GroupMembershipItem { GroupUId = lg4.UId, MemberUId = lg5.UId };
+            GroupMembershipItem lgalg1 = new GroupMembershipItem { GroupUId = lga.UId, MemberUId = lg1.UId };
+            GroupMembershipItem lgblg2 = new GroupMembershipItem { GroupUId = lgb.UId, MemberUId = lg2.UId };
+            _dal.UpsertGroupMembership( lg0lg1 );
+            _dal.UpsertGroupMembership( lg1lg2 );
+            _dal.UpsertGroupMembership( lg2lg3 );
+            _dal.UpsertGroupMembership( lg3lg4 );
+            _dal.UpsertGroupMembership( lg4lg5 );
+            _dal.UpsertGroupMembership( lgalg1 );
+            _dal.UpsertGroupMembership( lgblg2 );
+
+            // (group + ascendents) cannot contain (member + descendents)
+            // lg1
+            // - lg2
+            //   - lg3
+            //     - lg4
+            //       - lg5
+            // lga
+            // - lg1
+            //   - lg2 
+            //     - ...
+            // lgb
+            // - lg2
+            //   - lg3 
+            //     - ...
+
+            // cannot add lg2 to lg3
+            _dal.UpsertGroupMembership( new GroupMembershipItem { GroupUId = lg3.UId, MemberUId = lg2.UId } );
+            int count = _dal.Store.GroupMembership.Where( x => x.GroupUId == lg3.UId && x.MemberUId == lg2.UId ).Count();
+            Assert.AreEqual( 0, count );
+
+            // cannot add lga to lg1
+            _dal.UpsertGroupMembership( new GroupMembershipItem { GroupUId = lg1.UId, MemberUId = lga.UId } );
+            count = _dal.Store.GroupMembership.Where( x => x.GroupUId == lg1.UId && x.MemberUId == lga.UId ).Count();
+            Assert.AreEqual( 0, count );
+
+            // cannot add lga to lg3
+            _dal.UpsertGroupMembership( new GroupMembershipItem { GroupUId = lg3.UId, MemberUId = lga.UId } );
+            count = _dal.Store.GroupMembership.Where( x => x.GroupUId == lg3.UId && x.MemberUId == lga.UId ).Count();
+            Assert.AreEqual( 0, count );
+
+            // can lg4 to lg2
+            _dal.UpsertGroupMembership( new GroupMembershipItem { GroupUId = lg2.UId, MemberUId = lg4.UId } );
+            count = _dal.Store.GroupMembership.Where( x => x.GroupUId == lg2.UId && x.MemberUId == lg4.UId ).Count();
+            Assert.AreNotEqual( 0, count );
+
+            // can add lgb to lg1
+            _dal.UpsertGroupMembership( new GroupMembershipItem { GroupUId = lg1.UId, MemberUId = lgb.UId } );
+            count = _dal.Store.GroupMembership.Where( x => x.GroupUId == lg1.UId && x.MemberUId == lgb.UId ).Count();
+            Assert.AreNotEqual( 0, count );
+
+        }
+
         #endregion
     }
 }
