@@ -302,7 +302,7 @@ namespace Suplex.Security.DataAccess
         }
 
 
-        public virtual ISecureObject EvalSecureObjectSecurity(string uniqueName, string userName, IEnumerable<string> externalGroupMembership)
+        public virtual ISecureObject EvalSecureObjectSecurity(string uniqueName, string userName, IEnumerable<string> externalGroupMembership = null)
         {
             ISecureObject secureObject = GetSecureObjectByUniqueName( uniqueName, includeChildren: true, includeDisabled: false );
             if( secureObject == null )
@@ -315,9 +315,9 @@ namespace Suplex.Security.DataAccess
             return EvalSecureObjectSecurity( secureObject, users[0], externalGroupMembership );
         }
 
-        public virtual ISecureObject EvalSecureObjectSecurity(Guid secureObjectUId, Guid userUId, IEnumerable<string> externalGroupMembership)
+        public virtual ISecureObject EvalSecureObjectSecurity(Guid secureObjectUId, Guid userUId, IEnumerable<string> externalGroupMembership = null)
         {
-            ISecureObject secureObject = GetSecureObjectByUId( secureObjectUId, includeChildren: false, includeDisabled: false );
+            ISecureObject secureObject = GetSecureObjectByUId( secureObjectUId, includeChildren: true, includeDisabled: false );
             if( secureObject == null )
                 throw new Exception( $"Could oot find a match for {nameof( secureObjectUId )} [{secureObjectUId}]." );
 
@@ -328,7 +328,7 @@ namespace Suplex.Security.DataAccess
             return EvalSecureObjectSecurity( secureObject, user, externalGroupMembership );
         }
 
-        public virtual ISecureObject EvalSecureObjectSecurity(ISecureObject secureObject, User user, IEnumerable<string> externalGroupMembership)
+        public virtual ISecureObject EvalSecureObjectSecurity(ISecureObject secureObject, User user, IEnumerable<string> externalGroupMembership = null)
         {
             //get utility lookups for groups list
             Store.Groups.ToDictionaries( out Dictionary<Guid, Group> groupsByUId, out Dictionary<string, Group> groupsByName );
@@ -372,6 +372,7 @@ namespace Suplex.Security.DataAccess
                         if( !((ISecureObject)parent.Children[i]).UId.Equals( curr.UId ) )
                             parent.Children.RemoveAt( i );
 
+                    //if the Parent property is set the object won't serialize for a WebApi call
                     curr.Parent = null;
                     curr = parent;
                 }
