@@ -11,6 +11,21 @@ namespace Suplex.Security.AclModel
         {
             secureObject.Security.Eval();
 
+            if( secureObject.Security.Converters != null )
+            {
+                foreach( IAccessControlEntryConverter acec in secureObject.Security.Converters )
+                {
+                    IAccessControlEntry ace = AccessControlEntryUtilities.MakeGenericAceFromType( acec.GetTargetType() );
+                    ace.Allowed = secureObject.Security.Results.GetByTypeRight( acec.GetSourceType(), acec.GetSourceValue() ).AccessAllowed;
+                    ace.Inheritable = acec.Inheritable;
+                    ace.InheritedFrom = Guid.Empty;
+
+                    secureObject.Security.Dacl.Add( ace );
+                }
+
+                secureObject.Security.Eval();
+            }
+
             if( secureObject.Children != null && secureObject.Children.Count > 0 )
                 foreach( ISecureObject child in secureObject.Children )
                 {

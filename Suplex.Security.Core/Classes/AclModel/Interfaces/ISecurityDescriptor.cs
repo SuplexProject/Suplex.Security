@@ -9,6 +9,7 @@ namespace Suplex.Security.AclModel
         AuditType SaclAuditTypeFilter { get; set; }
 
         IDiscretionaryAcl Dacl { get; set; }
+        AceConverters Converters { get; set; }
         ISystemAcl Sacl { get; set; }
         SecurityResults Results { get; }
     }

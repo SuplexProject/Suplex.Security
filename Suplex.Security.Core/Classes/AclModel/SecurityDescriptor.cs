@@ -83,6 +83,9 @@ namespace Suplex.Security.AclModel
         public virtual DiscretionaryAcl Dacl { get; set; } = new DiscretionaryAcl();
         IDiscretionaryAcl ISecurityDescriptor.Dacl { get => Dacl; set => Dacl = value as DiscretionaryAcl; }
 
+        public virtual AceConverters Converters { get; set; } = new AceConverters();
+
+
         public virtual SystemAcl Sacl { get; set; } = new SystemAcl();
         ISystemAcl ISecurityDescriptor.Sacl { get => Sacl; set => Sacl = value as SystemAcl; }
 
