@@ -9,6 +9,20 @@ namespace Suplex.Security.AclModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        Guid _uId = Guid.NewGuid();
+        public virtual Guid UId
+        {
+            get => _uId;
+            set
+            {
+                if( value != _uId )
+                {
+                    _uId = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( UId ) ) );
+                }
+            }
+        }
+
         TSource _sourceRight;
         public virtual TSource SourceRight
         {
@@ -21,6 +35,10 @@ namespace Suplex.Security.AclModel
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( SourceRight ) ) );
                 }
             }
+        }
+        public void SetSourceRightValue(string value)
+        {
+            SourceRight = (TSource)Enum.Parse( SourceRight.GetType(), value );
         }
         public Type SourceRightType { get { return typeof( TSource ); } }
         public string SourceRightName { get { return SourceRight.ToString(); } }
@@ -38,6 +56,10 @@ namespace Suplex.Security.AclModel
                     PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( TargetRight ) ) );
                 }
             }
+        }
+        public void SetTargetRightValue(string value)
+        {
+            TargetRight = (TTarget)Enum.Parse( TargetRight.GetType(), value );
         }
         public Type TargetRightType { get { return typeof( TTarget ); } }
         public string TargetRightName { get { return TargetRight.ToString(); } }
