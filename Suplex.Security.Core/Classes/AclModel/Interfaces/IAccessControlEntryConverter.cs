@@ -2,7 +2,7 @@
 
 namespace Suplex.Security.AclModel
 {
-    public interface IAccessControlEntryConverter
+    public interface IAccessControlEntryConverter : ICloneable<IAccessControlEntryConverter>
     {
         Guid UId { get; set; }
 

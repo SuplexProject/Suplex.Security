@@ -25,6 +25,7 @@ namespace Suplex.Security.AclModel
         public static void CopyTo(this ISecurityDescriptor sd, ISecurityDescriptor targetSecurityDescriptor, bool forceInheritance = false)
         {
             sd.Dacl.CopyTo( targetSecurityDescriptor.Dacl, forceInheritance );
+            sd.DaclConverters.CopyTo( targetSecurityDescriptor.DaclConverters );
             sd.Sacl.CopyTo( targetSecurityDescriptor.Sacl, forceInheritance );
         }
 

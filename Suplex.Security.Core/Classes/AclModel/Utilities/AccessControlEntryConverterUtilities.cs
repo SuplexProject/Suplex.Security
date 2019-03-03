@@ -39,5 +39,11 @@ namespace Suplex.Security.AclModel
 
             return converter;
         }
+
+        public static void CopyTo(this IAceConverters daclConverters, IAceConverters targetDacConvertersl)
+        {
+            foreach( IAccessControlEntryConverter converter in daclConverters )
+                targetDacConvertersl.Add( converter.Clone() );
+        }
     }
 }

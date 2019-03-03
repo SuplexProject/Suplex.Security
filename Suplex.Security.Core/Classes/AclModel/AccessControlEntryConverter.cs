@@ -81,6 +81,34 @@ namespace Suplex.Security.AclModel
             }
         }
 
+
+        #region Clone/Sync
+        object ICloneable.Clone()
+        {
+            return Clone( true );
+        }
+
+        public virtual IAccessControlEntryConverter Clone(bool shallow = true)
+        {
+            IAccessControlEntryConverter converter = (IAccessControlEntryConverter)MemberwiseClone();
+            converter.SetSourceRightValue( SourceRightName );
+            converter.SetTargetRightValue( TargetRightName );
+
+            converter.UId = Guid.NewGuid();
+
+            return converter;
+        }
+
+        public virtual void Sync(IAccessControlEntryConverter source, bool shallow = true)
+        {
+            UId = source.UId;
+            SourceRight = ((IAccessControlEntryConverter<TSource,TTarget>)source).SourceRight;
+            TargetRight = ((IAccessControlEntryConverter<TSource, TTarget>)source).TargetRight;
+            Inheritable = source.Inheritable;
+        }
+        #endregion
+
+
         public override string ToString()
         {
             return $"Source: {SourceRightType.Name}/{SourceRightName}, Target: {TargetRightType.Name}/{TargetRightName}, Inheritable: {Inheritable}";
