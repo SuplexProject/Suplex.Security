@@ -1,32 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Text;
 
 namespace Suplex.Security.AclModel
 {
-    public interface IAccessControlEntryConverter
-    {
-        bool Inheritable { get; set; }
-        Type GetSourceType();
-        int GetSourceValue();
-        Type GetTargetType();
-    }
-
-    public class AccessControlEntryConverter<TSource, TTarget> : INotifyPropertyChanged, IAccessControlEntryConverter
+    public class AccessControlEntryConverter<TSource, TTarget> : IAccessControlEntryConverter<TSource, TTarget>, INotifyPropertyChanged
         where TSource : struct, IConvertible
         where TTarget : struct, IConvertible
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public virtual TSource SourceRight { get; set; }
+        TSource _sourceRight;
+        public virtual TSource SourceRight
+        {
+            get => _sourceRight;
+            set
+            {
+                if( !value.Equals( _sourceRight ) )
+                {
+                    _sourceRight = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( SourceRight ) ) );
+                }
+            }
+        }
+        public Type SourceRightType { get { return typeof( TSource ); } }
+        public string SourceRightName { get { return SourceRight.ToString(); } }
+        public int SourceRightValue { get { return Convert.ToInt32( SourceRight ); } }
 
-        public virtual TTarget TargetRight { get; set; }
-
-        public Type GetSourceType() { return typeof( TSource ); }
-        public int GetSourceValue() { return Convert.ToInt32( SourceRight ); }
-        public Type GetTargetType() { return typeof( TTarget ); }
+        TTarget _targetRight;
+        public virtual TTarget TargetRight
+        {
+            get => _targetRight;
+            set
+            {
+                if( !value.Equals( _targetRight ) )
+                {
+                    _targetRight = value;
+                    PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( nameof( TargetRight ) ) );
+                }
+            }
+        }
+        public Type TargetRightType { get { return typeof( TTarget ); } }
+        public string TargetRightName { get { return TargetRight.ToString(); } }
+        public int TargetRightValue { get { return Convert.ToInt32( TargetRight ); } }
 
         bool _inheritable = true;
         public virtual bool Inheritable
@@ -41,11 +56,10 @@ namespace Suplex.Security.AclModel
                 }
             }
         }
+
+        public override string ToString()
+        {
+            return $"Source: {SourceRightType.Name}/{SourceRightName}, Target: {TargetRightType.Name}/{TargetRightName}, Inheritable: {Inheritable}";
+        }
     }
-
-    public interface IAceConverters : IList<IAccessControlEntryConverter>
-    { }
-
-    public class AceConverters : ObservableCollection<IAccessControlEntryConverter>, IAceConverters
-    { }
 }
