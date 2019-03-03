@@ -7,8 +7,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.18355.0</FileVersion>
-    <Version>1.0.18355.0</Version>
+    <FileVersion>1.0.19062.0</FileVersion>
+    <Version>1.0.19062.0</Version>
     <PackageReleaseNotes>1.0 Release.  All features are presently working and passing unit tests.
 
 - 18355: includes updates to ISuplexDal specification, fixes to EvalSecureObjectSecurity

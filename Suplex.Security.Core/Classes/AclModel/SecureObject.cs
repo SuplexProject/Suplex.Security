@@ -140,7 +140,14 @@ namespace Suplex.Security.AclModel
         public virtual ObservableCollection<SecureObject> Children { get; set; } = new ObservableCollection<SecureObject>();
         IList ISecureObject.Children
         {
-            get => Children == null ? new ObservableCollection<ISecureObject>() : new ObservableCollection<ISecureObject>( Children.OfType<SecureObject>() );
+            //get => Children == null ? new ObservableCollection<ISecureObject>() : new ObservableCollection<ISecureObject>( Children.OfType<SecureObject>() );
+            get
+            {
+                if( Children == null )
+                    Children = new ObservableCollection<SecureObject>();
+
+                return Children;
+            }
             set => Children = value == null ? null : new ObservableCollection<SecureObject>( value?.OfType<SecureObject>() );
         }
 
@@ -168,6 +175,8 @@ namespace Suplex.Security.AclModel
                 secureObject.Security.DaclAllowInherit = Security.DaclAllowInherit;
                 secureObject.Security.SaclAllowInherit = Security.SaclAllowInherit;
                 secureObject.Security.SaclAuditTypeFilter = Security.SaclAuditTypeFilter;
+
+                //Children?.CloneTo( secureObject.Children, shallow: false );
             }
 
             secureObject.SetIsSecure();

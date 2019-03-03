@@ -313,19 +313,21 @@ namespace Suplex.Security.DataAccess
         public virtual ISecureObject GetSecureObjectByUId(Guid secureObjectUId, bool includeChildren = false, bool includeDisabled = false)
         {
             SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UId == secureObjectUId && (o.IsEnabled || includeDisabled) );
-            if( found != null && !includeChildren )
-                found = found.Clone( shallow: false );
+            SecureObject secureObject = found?.Clone( shallow: false );
+            if( includeChildren )
+                found?.Children.CloneTo( secureObject.Children, shallow: false );
 
-            return found;
+            return secureObject;
         }
 
         public virtual ISecureObject GetSecureObjectByUniqueName(string uniqueName, bool includeChildren = true, bool includeDisabled = false)
         {
             SecureObject found = Store.SecureObjects.FindRecursive<SecureObject>( o => o.UniqueName.Equals( uniqueName, StringComparison.OrdinalIgnoreCase ) && (o.IsEnabled || includeDisabled) );
-            if( found != null && !includeChildren )
-                found = found.Clone( shallow: false );
+            SecureObject secureObject = found?.Clone( shallow: false );
+            if( includeChildren )
+                found?.Children.CloneTo( secureObject.Children, shallow: false );
 
-            return found;
+            return secureObject;
         }
 
         public virtual ISecureObject UpsertSecureObject(ISecureObject secureObject)
@@ -452,6 +454,9 @@ namespace Suplex.Security.DataAccess
 
         public virtual ISecureObject EvalSecureObjectSecurity(ISecureObject secureObject, User user, IEnumerable<string> externalGroupMembership = null)
         {
+            if( !user.IsEnabled )
+                return null;
+
             //get utility lookups for groups list
             Store.Groups.ToDictionaries( out Dictionary<Guid, Group> groupsByUId, out Dictionary<string, Group> groupsByName );
 
@@ -473,7 +478,13 @@ namespace Suplex.Security.DataAccess
                     if( groupsByName.ContainsKey( externalGroupName ) )
                         resolved[groupsByName[externalGroupName].UId] = groupsByName[externalGroupName];
 
-            //walk SecureObj hier and remove unresolvable Aces
+            //walk SecureObj hier [down] and remove unresolvable Aces
+            if( secureObject.Children != null && secureObject.Children.Count > 0 )
+                TrimAcesFromChildrenRecursive( secureObject.Children, resolved );
+
+            EnsureAscendantParentRecursive( secureObject );
+
+            //walk SecureObj hier [up] and remove unresolvable Aces
             ISecureObject curr = secureObject;
             ISecureObject top = secureObject;
             while( curr != null )
@@ -499,7 +510,9 @@ namespace Suplex.Security.DataAccess
                     curr = parent;
                 }
                 else
+                {
                     curr = null;
+                }
             }
 
             //eval the SecurityDescriptor
@@ -507,6 +520,47 @@ namespace Suplex.Security.DataAccess
 
             //return the resolved object
             return secureObject;
+        }
+
+        void EnsureAscendantParentRecursive(ISecureObject secureObject)
+        {
+            ISecureObject curr = secureObject;
+            while( curr != null )
+                if( curr.ParentUId != null )
+                {
+                    if( curr.Parent == null )
+                    {
+                        //returns a childless clone (or null), so need to establish hier
+                        curr.Parent = GetSecureObjectByUId( curr.ParentUId.Value );
+                        curr.Parent?.Children.Add( curr );
+                    }
+
+                    curr = curr.Parent;
+                }
+                else
+                {
+                    curr = null;
+                }
+        }
+
+
+
+        //walk SecureObj hier [down] and remove unresolvable Aces
+        void TrimAcesFromChildrenRecursive(System.Collections.IList children, Dictionary<Guid, SecurityPrincipalBase> resolved)
+        {
+            foreach( ISecureObject curr in children )
+            {
+                for( int i = curr.Security.Dacl.Count - 1; i >= 0; i-- )
+                    if( !resolved.ContainsKey( curr.Security.Dacl[i].TrusteeUId.Value ) )
+                        curr.Security.Dacl.RemoveAt( i );
+
+                for( int i = curr.Security.Sacl.Count - 1; i >= 0; i-- )
+                    if( !resolved.ContainsKey( curr.Security.Sacl[i].TrusteeUId.Value ) )
+                        curr.Security.Sacl.RemoveAt( i );
+
+                if( curr.Children != null && curr.Children.Count > 0 )
+                    TrimAcesFromChildrenRecursive( curr.Children, resolved );
+            }
         }
         #endregion
     }

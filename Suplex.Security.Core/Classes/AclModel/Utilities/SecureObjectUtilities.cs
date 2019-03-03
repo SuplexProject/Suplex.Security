@@ -42,6 +42,12 @@ namespace Suplex.Security.AclModel
             return (T)found;
         }
 
+        public static T FindChild<T>(this ISecureObject source, string uniqueName, bool cloneResult = false, bool shallowClone = true) where T : ISecureObject
+        {
+            T found = source.Children.FindRecursive<T>( o => o.UniqueName.Equals( uniqueName, StringComparison.OrdinalIgnoreCase ) );
+            return cloneResult ? (T)found?.Clone( shallow: shallowClone ) : found;
+        }
+
         public static void EnsureParentUIdRecursive(this IEnumerable<ISecureObject> secureObjects)
         {
             foreach( ISecureObject secureObject in secureObjects )
@@ -59,6 +65,7 @@ namespace Suplex.Security.AclModel
                 }
         }
 
+        [Obsolete( "Use CloneTo(IList<SecureObject> destination, bool shallow = true)", false )]
         public static void ShallowCloneTo(this IList<SecureObject> source, IList<SecureObject> destination)
         {
             foreach( SecureObject item in source )
@@ -67,6 +74,17 @@ namespace Suplex.Security.AclModel
                 destination.Add( clone );
                 if( item.Children != null && item.Children.Count > 0 )
                     item.Children.ShallowCloneTo( clone.Children );
+            }
+        }
+
+        public static void CloneTo(this IList<SecureObject> source, IList<SecureObject> destination, bool shallow = true)
+        {
+            foreach( SecureObject item in source )
+            {
+                SecureObject clone = item.Clone( shallow );
+                destination.Add( clone );
+                if( item.Children != null && item.Children.Count > 0 )
+                    item.Children.CloneTo( clone.Children, shallow );
             }
         }
 
