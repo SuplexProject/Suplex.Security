@@ -43,6 +43,7 @@ namespace Suplex.Security.AclModel
         public Type SourceRightType { get { return typeof( TSource ); } }
         public string SourceRightName { get { return SourceRight.ToString(); } }
         public int SourceRightValue { get { return Convert.ToInt32( SourceRight ); } }
+        public string FriendlySourceRightTypeNameValue { get { return $"{SourceRight.GetFriendlyRightTypeName()}\\{SourceRightName}"; } }
 
         TTarget _targetRight;
         public virtual TTarget TargetRight
@@ -64,6 +65,7 @@ namespace Suplex.Security.AclModel
         public Type TargetRightType { get { return typeof( TTarget ); } }
         public string TargetRightName { get { return TargetRight.ToString(); } }
         public int TargetRightValue { get { return Convert.ToInt32( TargetRight ); } }
+        public string FriendlyTargetRightTypeNameValue { get { return $"{TargetRight.GetFriendlyRightTypeName()}\\{TargetRightName}"; } }
 
         bool _inheritable = true;
         public virtual bool Inheritable
