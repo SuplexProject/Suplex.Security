@@ -5,13 +5,13 @@ namespace Suplex.Security.AclModel
 {
     public static class AccessControlEntryConverterUtilities
     {
-        public static IAccessControlEntryConverter MakeAceFromRightType(string sourceRightTypeName, string targetRightTypeName, Dictionary<string, string> props = null)
+        public static IAccessControlEntryConverter MakeAceConverterFromRightType(string sourceRightTypeName, string targetRightTypeName, Dictionary<string, string> props = null)
         {
             Type sourceRightType = Type.GetType( sourceRightTypeName );
             Type targetRightType = Type.GetType( targetRightTypeName );
-            return MakeGenericAceFromType( sourceRightType, targetRightType, props );
+            return MakeGenericAceConvertreFromType( sourceRightType, targetRightType, props );
         }
-        public static IAccessControlEntryConverter MakeGenericAceFromType(Type sourceRightType, Type targetRightType, Dictionary<string, string> props = null)
+        public static IAccessControlEntryConverter MakeGenericAceConvertreFromType(Type sourceRightType, Type targetRightType, Dictionary<string, string> props = null)
         {
             sourceRightType.ValidateIsEnum();
 

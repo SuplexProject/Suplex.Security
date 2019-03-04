@@ -93,7 +93,7 @@ namespace Suplex.Security.AclModel
         }
         internal bool GetIsSecure()
         {
-            return !Security.DaclAllowInherit || !Security.SaclAllowInherit || Security.Dacl.Count > 0 || Security.Sacl.Count > 0;
+            return !Security.DaclAllowInherit || !Security.SaclAllowInherit || Security.Dacl.Count > 0 || Security.DaclConverters.Count > 0 || Security.Sacl.Count > 0;
         }
 
         bool? _isDirty = null;
@@ -116,6 +116,7 @@ namespace Suplex.Security.AclModel
             IsDirty = false;
             Security.PropertyChanged += Security_PropertyChanged;
             Security.Dacl.CollectionChanged += SecurityAcl_CollectionChanged;
+            Security.DaclConverters.CollectionChanged += SecurityAcl_CollectionChanged;
             Security.Sacl.CollectionChanged += SecurityAcl_CollectionChanged;
         }
         public virtual void DisableIsDirty()
@@ -123,6 +124,7 @@ namespace Suplex.Security.AclModel
             _enableIsDirty = false;
             Security.PropertyChanged -= Security_PropertyChanged;
             Security.Dacl.CollectionChanged -= SecurityAcl_CollectionChanged;
+            Security.DaclConverters.CollectionChanged -= SecurityAcl_CollectionChanged;
             Security.Sacl.CollectionChanged -= SecurityAcl_CollectionChanged;
         }
         private void Security_PropertyChanged(object sender, PropertyChangedEventArgs e) { IsDirty = true; SetIsSecure(); }
