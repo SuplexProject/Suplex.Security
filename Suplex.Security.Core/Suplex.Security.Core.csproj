@@ -7,8 +7,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.19063.0</FileVersion>
-    <Version>1.0.19063.0</Version>
+    <FileVersion>1.0.19075.0</FileVersion>
+    <Version>1.0.19075.0</Version>
     <PackageReleaseNotes>1.0 Release.  All features are presently working and passing unit tests.
 
 - 19063: Added support for AceConverters, corrected SecurityDescriptor.Eval bugs

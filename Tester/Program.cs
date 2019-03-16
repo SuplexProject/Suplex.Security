@@ -81,18 +81,17 @@ GroupMembership:
             //bool hasAccess = secureObject.Security.Results.GetByTypeRight( FileSystemRight.Execute ).AccessAllowed;
             //return;
 
-            SecureObject top = new SecureObject() { UniqueName = "top" };
-            DiscretionaryAcl topdacl = new DiscretionaryAcl
+            SecureObject secureObject = new SecureObject() { UniqueName = "top" };
+            secureObject.Security.Dacl = new DiscretionaryAcl
             {
                 new AccessControlEntry<FileSystemRight> { Allowed = true, Right = FileSystemRight.FullControl },
                 new AccessControlEntry<FileSystemRight> { Allowed = false, Right = FileSystemRight.Execute | FileSystemRight.List, Inheritable = false },
                 new AccessControlEntry<UIRight> { Right= UIRight.Operate | UIRight.Visible }
             };
-            top.Security.Dacl = topdacl;
 
-            top.Security.DaclConverters.Add( new AccessControlEntryConverter<FileSystemRight, RecordRight> { SourceRight = FileSystemRight.Create, TargetRight = RecordRight.Insert | RecordRight.Update } );
+            secureObject.Security.DaclConverters.Add( new AccessControlEntryConverter<FileSystemRight, RecordRight> { SourceRight = FileSystemRight.Create, TargetRight = RecordRight.Insert | RecordRight.Update } );
 
-            top.EvalSecurity();
+            secureObject.EvalSecurity();
 
             List<User> users = new List<User>
             {

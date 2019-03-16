@@ -468,7 +468,7 @@ namespace Suplex.Security.DataAccess
             };
 
             //get groupMembership
-            IEnumerable<GroupMembershipItem> membership = GetGroupMemberOf( user.UId, includeDisabledMembers: false );
+            IEnumerable<GroupMembershipItem> membership = GetGroupMembershipHierarchy( user.UId, includeDisabledMembership: false );
             foreach( GroupMembershipItem gmi in membership )
                 resolved[gmi.GroupUId] = groupsByUId[gmi.GroupUId];
 
